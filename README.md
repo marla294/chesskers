@@ -1,5 +1,17 @@
 # Chess
 
+## About
+
+This project is just for fun, not meant for profit or procuring greatness (well, maybe just a little bit of greatness would be nice :) ).
+
+## References
+
+Chess piece images can be downloaded at: https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent#
+
+License: By en:User:Cburnett (File:Chess bdt45.svg) [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+
+# Angular CLI
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.5.
 
 ## Development server
