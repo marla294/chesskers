@@ -25,19 +25,24 @@ export class GameBoardComponent implements OnInit {
   	) {}
 
   	ngOnInit() {
-        //Observables
-        this.resetGame$ = this.checkers.resetGameObs;
-        this.resetGame$.subscribe(reset => {
-            if (reset) {
-                this.onReset();
-            }
-        });
+        if (this.chessOrCheckers === 'checkers') {
+            //Observables
+            this.resetGame$ = this.checkers.resetGameObs;
+            this.resetGame$.subscribe(reset => {
+                if (reset) {
+                    this.onResetCheckers();
+                }
+            });
 
-        // Always reset game on init anyway
-        this.onReset();
+            // Always reset game on init anyway
+            this.onResetCheckers();
+        } else if (this.chessOrCheckers === 'chess') {
+
+        }
+        
   	}
 
-    onReset() {
+    onResetCheckers() {
         this.checkers.resetGame();
         this.board = this.checkers.board;
     }

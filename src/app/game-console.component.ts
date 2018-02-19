@@ -21,7 +21,7 @@ export class GameConsoleComponent implements OnInit {
 	public _resetGame: BehaviorSubject<boolean>;
 	
 	constructor(
-	  	private checkers: CheckersService
+	  	private checkers: CheckersService,
 	  	private chess: ChessService
 	) {}
 
