@@ -2,7 +2,7 @@ import { Component } 	         from '@angular/core';
 import { OnInit } 		         from '@angular/core';
 import { GameBoardComponent }    from './game-board.component';
 import { GameConsoleComponent }  from './game-console.component';
-import { GameService }	   		 from './game.service';
+import { GameService }	   		 from './checkers.service';
 import { Observable }      		 from 'rxjs/Observable';
 import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
 

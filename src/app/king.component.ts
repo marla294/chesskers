@@ -1,6 +1,5 @@
 import { Component, Input }	from '@angular/core';
 import { King }				from './piece';
-import { GameService }	   	from './game.service';
 
 @Component({
   	selector: 'king',
@@ -10,7 +9,4 @@ import { GameService }	   	from './game.service';
 export class KingComponent {
 	@Input() king: King;
 
-	constructor(
-		private service: GameService
-	) {}
 }

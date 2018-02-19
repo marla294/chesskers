@@ -1,6 +1,5 @@
 import { Component, Input }	from '@angular/core';
-import { Piece, Pawn }		from './piece';
-import { GameService }	   	from './game.service';
+import { Pawn }		from './piece';
 
 @Component({
   	selector: 'pawn',
@@ -10,7 +9,4 @@ import { GameService }	   	from './game.service';
 export class PawnComponent {
 	@Input() pawn: Pawn;
 
-	constructor(
-		private service: GameService
-	) {}
 }

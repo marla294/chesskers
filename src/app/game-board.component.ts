@@ -2,7 +2,7 @@
 import { Component }	     from '@angular/core';
 import { OnInit } 		     from '@angular/core';
 import { Piece }	 	       from './piece';
-import { GameService }	   from './game.service';
+import { GameService }	   from './checkers.service';
 import { Observable }      from 'rxjs/Observable';
 import { SpaceComponent }  from './space.component';
 

@@ -4,7 +4,7 @@ import { NgModule }              from '@angular/core';
 import { AppComponent }          from './app.component';
 import { GameBoardComponent }    from './game-board.component';
 import { GameConsoleComponent }  from './game-console.component';
-import { GameService }	         from './game.service';
+import { GameService }	         from './checkers.service';
 import { SpaceComponent }        from './space.component';
 import { PawnComponent }         from './pawn.component';
 import { KingComponent }         from './king.component';
