@@ -26,17 +26,22 @@ export class GameConsoleComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		//Observables
-		this.redTurn$ = this.checkers.redTurnObs;
-		this.redTurn$.subscribe(redTurn => {
-			this.turn = redTurn ? 'Red' : 'Black';
-		});
+		if (this.chessOrCheckers === 'checkers') {
+			//Observables
+			this.redTurn$ = this.checkers.redTurnObs;
+			this.redTurn$.subscribe(redTurn => {
+				this.turn = redTurn ? 'Red' : 'Black';
+			});
 
-		// Behavior Subjects
-		this._resetGame = this.checkers.resetGameBeh;
-		this._resetGame.subscribe(reset => {
-			this.turn = 'Red'; // When the game is reset by someone else set the turn to Red
-		});
+			// Behavior Subjects
+			this._resetGame = this.checkers.resetGameBeh;
+			this._resetGame.subscribe(reset => {
+				this.turn = 'Red'; // When the game is reset by someone else set the turn to Red
+			});
+		} else if (this.chessOrCheckers === 'chess') {
+
+		}
+
 	}
 
 	resetGame() {

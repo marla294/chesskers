@@ -46,7 +46,6 @@ export class AppComponent {
             // Behavior Subjects
             this._resetGame = this.checkers.resetGameBeh;
         } else if (this.chessOrCheckers === 'chess') {
-            console.log('chess');
         }
   		  
   	}
