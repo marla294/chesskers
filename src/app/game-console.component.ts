@@ -1,5 +1,5 @@
 // This will be on the side of the actual checkers game board, showing things like the reset button, whose turn it is, and whether someone has won the game or not
-import { Component, OnInit }	from '@angular/core';
+import { Component, OnInit, Input }	from '@angular/core';
 import { CheckersService }		from './checkers.service';
 import { ChessService }			from './chess.service';
 import { Observable }			from 'rxjs/Observable';
@@ -11,7 +11,7 @@ import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
   styleUrls: ['./game-console.component.css'],
 })
 export class GameConsoleComponent implements OnInit {
-	public chessOrCheckers = 'chess';
+	@Input() chessOrCheckers = 'chess';
 	public turn: string = null;
 
 	// Observables

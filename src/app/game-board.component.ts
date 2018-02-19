@@ -1,11 +1,11 @@
 // This will be a component that houses the actual checkers game board
-import { Component }	     from '@angular/core';
-import { OnInit } 		     from '@angular/core';
-import { Piece }	 	       from './piece';
-import { CheckersService } from './checkers.service';
-import { ChessService }    from './chess.service';
-import { Observable }      from 'rxjs/Observable';
-import { SpaceComponent }  from './space.component';
+import { Component, Input }	     from '@angular/core';
+import { OnInit } 		           from '@angular/core';
+import { Piece }	 	             from './piece';
+import { CheckersService }       from './checkers.service';
+import { ChessService }          from './chess.service';
+import { Observable }            from 'rxjs/Observable';
+import { SpaceComponent }        from './space.component';
 
 @Component({
   selector: 'game-board',
@@ -13,7 +13,7 @@ import { SpaceComponent }  from './space.component';
   styleUrls: ['./game-board.component.css'],
 })
 export class GameBoardComponent implements OnInit {
-    public chessOrCheckers = 'chess';
+    @Input() chessOrCheckers;
 	  public board: any;
 
     // Observables
