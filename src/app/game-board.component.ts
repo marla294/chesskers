@@ -2,7 +2,7 @@
 import { Component }	     from '@angular/core';
 import { OnInit } 		     from '@angular/core';
 import { Piece }	 	       from './piece';
-import { GameService }	   from './checkers.service';
+import { CheckersService }	   from './checkers.service';
 import { Observable }      from 'rxjs/Observable';
 import { SpaceComponent }  from './space.component';
 
@@ -18,12 +18,12 @@ export class GameBoardComponent implements OnInit {
     public resetGame$: Observable<boolean>;
 
   	constructor(
-  		  private service: GameService
+  		  private checkers: CheckersService
   	) {}
 
   	ngOnInit() {
         //Observables
-        this.resetGame$ = this.service.resetGameObs;
+        this.resetGame$ = this.checkers.resetGameObs;
         this.resetGame$.subscribe(reset => {
             if (reset) {
                 this.onReset();
@@ -35,7 +35,7 @@ export class GameBoardComponent implements OnInit {
   	}
 
     onReset() {
-        this.service.resetGame();
-        this.board = this.service.board;
+        this.checkers.resetGame();
+        this.board = this.checkers.board;
     }
 }

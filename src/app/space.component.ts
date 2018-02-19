@@ -1,6 +1,6 @@
 import { Component, Input }	from '@angular/core';
 import { Space }			from './space';
-import { GameService }	   	from './checkers.service';
+import { CheckersService }	from './checkers.service';
 import { PawnComponent }	from './pawn.component';
 import { KingComponent }	from './king.component';
 
@@ -13,6 +13,6 @@ export class SpaceComponent {
 	@Input() space: Space;
 
 	constructor(
-  		private service: GameService
+  		private checkers: CheckersService
   	) {}
 }

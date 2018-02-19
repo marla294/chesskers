@@ -2,7 +2,7 @@ import { Component } 	         from '@angular/core';
 import { OnInit } 		         from '@angular/core';
 import { GameBoardComponent }    from './game-board.component';
 import { GameConsoleComponent }  from './game-console.component';
-import { GameService }	   		 from './checkers.service';
+import { CheckersService }	   		 from './checkers.service';
 import { Observable }      		 from 'rxjs/Observable';
 import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
 
@@ -12,39 +12,41 @@ import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-	isWinner = false;
-	winner: string = null;
+  	isWinner = false;
+  	winner: string = null;
 
-	// Observables
+  	// Observables
     public isWinner$: Observable<string>;
 
     // Behavior Subjects
-	public _resetGame: BehaviorSubject<boolean>;
+  	public _resetGame: BehaviorSubject<boolean>;
 
-	constructor(
-  		  private service: GameService
+  	constructor(
+  		  private checkers: CheckersService
   	) {}
 
   	ngOnInit() {
-  		// Observables
-  		this.isWinner$ = this.service.isWinnerObs;
-  		this.isWinner$.subscribe(w => {
-  			if (w !== "none") {
-  				this.isWinner = true;
-  				this.winner = w;
-  			}
-  			else {
-  				this.isWinner = false;
-  				this.winner = "none";
-  			}
-  		});
 
-  		// Behavior Subjects
-		this._resetGame = this.service.resetGameBeh;
+  		  // Observables
+        this.isWinner$ = this.checkers.isWinnerObs;
+    		this.isWinner$.subscribe(w => {
+      			if (w !== "none") {
+        				this.isWinner = true;
+        				this.winner = w;
+      			}
+      			else {
+        				this.isWinner = false;
+        				this.winner = "none";
+      			}
+  		  });
+
+      	// Behavior Subjects
+    		this._resetGame = this.checkers.resetGameBeh;
+
   	}
 
-	onReset() {
+	  onReset() {
 		this._resetGame.next(true);
-	}
+	  }
 
 }

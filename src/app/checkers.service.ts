@@ -5,7 +5,7 @@ import { CheckerBoard }	        from './checkerBoard';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class GameService {
+export class CheckersService {
   	public board: any;
     private _selectedPiece: Piece = null;
     private _redTurn: boolean = true;
