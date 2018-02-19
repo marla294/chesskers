@@ -2,7 +2,8 @@
 import { Component }	     from '@angular/core';
 import { OnInit } 		     from '@angular/core';
 import { Piece }	 	       from './piece';
-import { CheckersService }	   from './checkers.service';
+import { CheckersService } from './checkers.service';
+import { ChessService }    from './chess.service';
 import { Observable }      from 'rxjs/Observable';
 import { SpaceComponent }  from './space.component';
 
@@ -12,13 +13,15 @@ import { SpaceComponent }  from './space.component';
   styleUrls: ['./game-board.component.css'],
 })
 export class GameBoardComponent implements OnInit {
+    public chessOrCheckers = 'chess';
 	  public board: any;
 
     // Observables
     public resetGame$: Observable<boolean>;
 
   	constructor(
-  		  private checkers: CheckersService
+  		  private checkers: CheckersService,
+        private chess: ChessService
   	) {}
 
   	ngOnInit() {
