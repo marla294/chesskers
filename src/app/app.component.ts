@@ -1,10 +1,10 @@
-import { Component } 	         from '@angular/core';
-import { OnInit } 		         from '@angular/core';
-import { GameBoardComponent }    from './game-board.component';
-import { GameConsoleComponent }  from './game-console.component';
+import { Component, OnInit } 	     from '@angular/core';
+import { GameBoardComponent }      from './game-board.component';
+import { GameConsoleComponent }    from './game-console.component';
 import { CheckersService }	   		 from './checkers.service';
-import { Observable }      		 from 'rxjs/Observable';
-import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
+import { ChessService }            from './chess.service';
+import { Observable }      		     from 'rxjs/Observable';
+import { BehaviorSubject }         from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,9 @@ import { BehaviorSubject }       from 'rxjs/BehaviorSubject';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  	isWinner = false;
+  	chessOrCheckers = 'chess';
+
+    isWinner = false;
   	winner: string = null;
 
   	// Observables
@@ -22,27 +24,31 @@ export class AppComponent {
   	public _resetGame: BehaviorSubject<boolean>;
 
   	constructor(
-  		  private checkers: CheckersService
+  		  private checkers: CheckersService,
+        private chess: ChessService
   	) {}
 
   	ngOnInit() {
+        if (this.chessOrCheckers === 'checkers') {
+            // Observables
+            this.isWinner$ = this.checkers.isWinnerObs;
+            this.isWinner$.subscribe(w => {
+                if (w !== "none") {
+                    this.isWinner = true;
+                    this.winner = w;
+                }
+                else {
+                    this.isWinner = false;
+                    this.winner = "none";
+                }
+            });
 
-  		  // Observables
-        this.isWinner$ = this.checkers.isWinnerObs;
-    		this.isWinner$.subscribe(w => {
-      			if (w !== "none") {
-        				this.isWinner = true;
-        				this.winner = w;
-      			}
-      			else {
-        				this.isWinner = false;
-        				this.winner = "none";
-      			}
-  		  });
-
-      	// Behavior Subjects
-    		this._resetGame = this.checkers.resetGameBeh;
-
+            // Behavior Subjects
+            this._resetGame = this.checkers.resetGameBeh;
+        } else if (this.chessOrCheckers === 'chess') {
+            console.log('chess');
+        }
+  		  
   	}
 
 	  onReset() {
