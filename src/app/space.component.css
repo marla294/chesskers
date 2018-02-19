@@ -1,0 +1,20 @@
+.square {
+	height: 62.25px;
+	width: 12.5%;
+	border: 1px solid #27802B;
+}
+.playable {
+	background-color: #27802B;
+}
+.notplayable {
+	background-color: #FDFFD3;
+}
+.highlight {
+	background-color: yellow;
+	border: 1px solid yellow;
+}
+@media only screen and (max-width: 768px) {
+	.square {
+			height: 37.25px;
+	}
+}

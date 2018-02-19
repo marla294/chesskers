@@ -1,0 +1,20 @@
+<div 
+class="square float-left"
+[class.playable]="space.playable"
+[class.notplayable]="!space.playable"
+[class.highlight]="space.highlight">
+	<div *ngIf="space.piece" 
+    	(click)="service.clickAPiece(space.piece)"
+    	class="style=width: 100%; height: 100%">
+    		<div *ngIf="space.piece.type ==='pawn'">
+	    		<pawn [pawn]="space.piece"></pawn>
+    		</div>
+    		<div *ngIf="space.piece.type ==='king'">
+	    		<king [king]="space.piece"></king>
+    		</div>
+		</div>
+		<div *ngIf="space.playable && !space.piece"
+		style="width: 100%; height: 100%"
+		(click)="service.clickEmptySpace(space)">
+	</div>
+</div>
