@@ -37,7 +37,8 @@ export class GameBoardComponent implements OnInit {
             // Always reset game on init anyway
             this.onResetCheckers();
         } else if (this.chessOrCheckers === 'chess') {
-
+            // Always reset game on init anyway
+            this.onResetChess();
         }
         
   	}
@@ -45,5 +46,10 @@ export class GameBoardComponent implements OnInit {
     onResetCheckers() {
         this.checkers.resetGame();
         this.board = this.checkers.board;
+    }
+
+    onResetChess() {
+        this.chess.resetGame();
+        this.board = this.chess.board;
     }
 }
