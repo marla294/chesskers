@@ -100,18 +100,18 @@ export class chessPawn extends Piece {
 		let canM = false;
 		let rowMove = row - this.row;
 		if (col === this.col) { // Can only move forward in the same column
-			if (this.initialized === false) {
+			if (this.initialized === false) { // Pawn has not been used
 				if (this.isRed === true && rowMove < 3 && rowMove > 0) {
 					canM = true;
 				}
 				if (this.isRed === false && rowMove > -3 && rowMove < 0) {
 					canM = true;
 				}
-			} else {
+			} else { // Pawn has been used
 				if (this.isRed === true && rowMove === 1) {
 					canM = true;
 				}
-				if (this.isRed === false && rowMove === 1) {
+				if (this.isRed === false && rowMove === -1) {
 					canM = true;
 				}
 			}

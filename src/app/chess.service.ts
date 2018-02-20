@@ -56,11 +56,25 @@ export class ChessService {
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
     	if (this._selectedPiece !== null) { // Clicking on an empty space
-    		console.log((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col));
-    		this.findPiece(this._selectedPiece).clearPiece();
-    		sp.addPiece(this._selectedPiece);
-    		this.clearSelections();
+    		let type = this._selectedPiece.type;
+
+    		switch (type) {
+    			case 'chessPawn':
+    			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col)) {
+    				(<chessPawn>this._selectedPiece).initialized = true; // Initialize chesspawn if it moves once
+    				this.moveSelectedToEmptySp(sp);
+    			}
+    			break;
+    		}
+
     	}
+    }
+
+    // Move the selected piece to an empty space
+    moveSelectedToEmptySp(sp: Space) {
+    	this.findPiece(this._selectedPiece).clearPiece();
+		sp.addPiece(this._selectedPiece);
+		this.clearSelections();
     }
 
     // Finds a piece on the board and returns the space it is on
