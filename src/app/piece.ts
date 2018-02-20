@@ -1,6 +1,6 @@
 export class Piece {
 	type: string = 'piece';
-	isRed: boolean = true;
+	isRed: boolean = true; // Red == white in chess, for now
 	jump: boolean = false; // Says whether the piece was jumped or not
 	row: number = null;
 	col: number = null;
@@ -22,6 +22,7 @@ export class Piece {
 	}
 }
 
+// Checkers
 export class Pawn extends Piece {
 	type: string = "pawn";
 
@@ -78,6 +79,40 @@ export class King extends Pawn {
 	getDiagDownLeftMove() {
 		let col = this.col - 2;
 		let row = this.isRed ? this.row - 2 : this.row + 2;
+		return {row, col};
+	}
+}
+
+// Chess
+export class chessPawn extends Piece {
+	type: string = "chessPawn";
+
+	// Regular Moves
+
+	// On first move, pawns are allowed to move 2 spaces forward
+	getInitialMove() {
+		let col = this.col;
+		let row = this.isRed ? this.row + 2 : this.row - 2;
+		return {row, col};
+	}
+
+	getForwardMove() {
+		let col = this.col;
+		let row = this.isRed ? this.row + 1 : this.row - 1;
+		return {row, col};
+	}
+
+	// Capture Moves
+
+	getCaptureLeftMove() {
+		let col = this.col - 1;
+		let row = this.isRed ? this.row - 1 : this.row + 1;
+		return {row, col};
+	}
+
+	getCaptureRightMove() {
+		let col = this.col + 1;
+		let row = this.isRed ? this.row - 1 : this.row + 1;
 		return {row, col};
 	}
 }
