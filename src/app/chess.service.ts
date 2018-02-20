@@ -75,6 +75,11 @@ export class ChessService {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
+    			case 'bishop':
+    			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col)) {
+    				this.moveSelectedToEmptySp(sp);
+    			}
+    			break;
     		}
 
     	}
