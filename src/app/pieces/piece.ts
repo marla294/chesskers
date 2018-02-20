@@ -1,5 +1,6 @@
 export class Piece {
 	type: string = 'piece';
+	game: string = null;
 	isRed: boolean = true; // Red == white in chess, for now
 	jump: boolean = false; // Says whether the piece was jumped or not
 	row: number = null;
@@ -25,6 +26,7 @@ export class Piece {
 // Checkers
 export class Pawn extends Piece {
 	type: string = "pawn";
+	game: string = "checkers";
 
 	// Nextdoor space moves
 	getUpRightMove() {
@@ -55,6 +57,7 @@ export class Pawn extends Piece {
 
 export class King extends Pawn {
 	type: string = "king";
+	game: string = "checkers";
 
 	// Nextdoor space moves
 	getDownRightMove() {
@@ -86,6 +89,7 @@ export class King extends Pawn {
 // Chess
 export class chessPawn extends Piece {
 	type: string = "chessPawn";
+	game: string = "chess";
 
 	// Regular Moves
 
@@ -118,5 +122,26 @@ export class chessPawn extends Piece {
 }
 
 export class Rook extends Piece {
-	type: string = "Rook";
+	type: string = "rook";
+	game: string = "chess";
+}
+
+export class Knight extends Piece {
+	type: string = "knight";
+	game: string = "chess";
+}
+
+export class Bishop extends Piece {
+	type: string = "bishop";
+	game: string = "chess";
+}
+
+export class chessKing extends Piece {
+	type: string = "chessKing";
+	game: string = "chess";
+}
+
+export class Queen extends Piece {
+	type: string = "queen";
+	game: string = "chess";
 }
