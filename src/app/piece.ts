@@ -125,3 +125,23 @@ export class Rook extends Piece {
 	type: string = "rook";
 	game: string = "chess";
 }
+
+export class Knight extends Piece {
+	type: string = "knight";
+	game: string = "chess";
+}
+
+export class Bishop extends Piece {
+	type: string = "bishop";
+	game: string = "chess";
+}
+
+export class chessKing extends Piece {
+	type: string = "chessKing";
+	game: string = "chess";
+}
+
+export class Queen extends Piece {
+	type: string = "queen";
+	game: string = "chess";
+}
