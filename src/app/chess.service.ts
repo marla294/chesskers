@@ -7,6 +7,7 @@ import { Piece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pie
 @Injectable()
 export class ChessService {
 	public board: any;
+	private _selectedPiece: Piece = null;
 
 	constructor() {
 		this.resetGame();
@@ -47,9 +48,28 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: Piece) {
+    	this._selectedPiece = p;
     }
 
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
+    	if (this._selectedPiece !== null) {
+    		this.findPiece(this._selectedPiece).clearPiece();
+    		sp.addPiece(this._selectedPiece);
+    	}
+    }
+
+    // Finds a piece on the board and returns the space it is on
+    findPiece(p: Piece): Space {
+        let sp: Space = null;
+
+        // Look through the board and see if the piece is on a space
+        this.board.forEach(row => row.forEach(space => {
+            if (space.piece === p) {
+                sp = space;
+            }
+        }));
+
+        return sp;
     }
 }
