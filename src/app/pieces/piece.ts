@@ -118,36 +118,6 @@ export class chessPawn extends Piece {
 		}
 		return canM;
 	}
-
-
-	// Regular Moves
-
-	// On first move, pawns are allowed to move 2 spaces forward
-	getInitialMove() {
-		let col = this.col;
-		let row = this.isRed ? this.row + 2 : this.row - 2;
-		return {row, col};
-	}
-
-	getForwardMove() {
-		let col = this.col;
-		let row = this.isRed ? this.row + 1 : this.row - 1;
-		return {row, col};
-	}
-
-	// Capture Moves
-
-	getCaptureLeftMove() {
-		let col = this.col - 1;
-		let row = this.isRed ? this.row - 1 : this.row + 1;
-		return {row, col};
-	}
-
-	getCaptureRightMove() {
-		let col = this.col + 1;
-		let row = this.isRed ? this.row - 1 : this.row + 1;
-		return {row, col};
-	}
 }
 
 export class Rook extends Piece {
