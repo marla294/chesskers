@@ -42,4 +42,14 @@ export class ChessService {
     	this.board[0][4].addPiece(new Queen('red', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
     }
+
+    // Click events for pieces and spaces
+
+    // Click on a piece on the board
+    clickAPiece(p: Piece) {
+    }
+
+    // Click on an empty space on the board
+    clickEmptySpace(sp: Space) {
+    }
 }
