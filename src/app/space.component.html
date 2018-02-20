@@ -12,6 +12,9 @@ class="square float-left"
     		<div *ngIf="space.piece.type ==='king'">
 	    		<king [king]="space.piece"></king>
     		</div>
+    		<div *ngIf="space.piece.type ==='chessPawn'">
+	    		<chessPawn [chessPawn]="space.piece"></chessPawn>
+    		</div>
 		</div>
 		<div *ngIf="space.playable && !space.piece"
 		style="width: 100%; height: 100%"
