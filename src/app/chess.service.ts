@@ -48,7 +48,9 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: Piece) {
+    	this.clearSelections();
     	this._selectedPiece = p;
+    	this.findPiece(this._selectedPiece).highlight = true;
     }
 
     // Click on an empty space on the board
@@ -56,6 +58,7 @@ export class ChessService {
     	if (this._selectedPiece !== null) {
     		this.findPiece(this._selectedPiece).clearPiece();
     		sp.addPiece(this._selectedPiece);
+    		this.clearSelections();
     	}
     }
 
@@ -71,5 +74,17 @@ export class ChessService {
         }));
 
         return sp;
+    }
+
+
+    // Clears all highlights, direction flags, and selected pieces from board
+    clearSelections() {
+        this.board.forEach(row => row.forEach(space => {
+            space.highlight = space.moveTo = space.jump = false;
+            if (space.piece !== null) {
+                space.piece.jump = false;
+            }
+        }));
+        this._selectedPiece = null;
     }
 }
