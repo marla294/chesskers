@@ -92,10 +92,12 @@ export class chessPawn extends Piece {
 	game: string = "chess";
 	initialized: boolean = false; // Whether the pawn has moved 1 space or not
 
-	// Given an empty space on the board, determines whether pawn can move to this space or not,
-	// according to the rules of chess.
-	// The first move, the piece is allowed to move 2 spaces forward.  Otherwise,
-	// the piece is only allowed to move forward 1 space
+	// Given an empty space on the board, determines whether pawn can move to this
+	// space or not, according to the rules of chess.  The first move, the pawn
+	// is allowed to move 2 spaces forward.  Otherwise, the pawn is only allowed
+	// to move forward 1 space.  This function does not take into account if there
+	// are pieces in the way.  That will be the job of the chess service to figure 
+	// out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
 		let rowMove = row - this.row;
@@ -123,6 +125,24 @@ export class chessPawn extends Piece {
 export class Rook extends Piece {
 	type: string = "rook";
 	game: string = "chess";
+
+	// Given an empty space on the board, determines whether rook can move to this
+	// space or not, according to the rules of chess.  Rooks are allowed to move
+	// straight forward or straight back.  This function does not take into account 
+	// if there are pieces in the way.  That will be the job of the chess service  
+	// to figure out.
+	canMove(row: number, col: number): boolean {
+		let canM = false;
+		if (this.row === row && this.col === col) { // no moving to the same spot
+			canM = false;
+		} else if (this.row === row) {
+			canM = true;
+		} else if (this.col === col) {
+			canM = true;
+		}
+		
+		return canM;
+	}
 }
 
 export class Knight extends Piece {
