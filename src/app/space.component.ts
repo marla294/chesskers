@@ -1,8 +1,8 @@
 import { Component, Input }	from '@angular/core';
 import { Space }			from './space';
 import { CheckersService }	from './checkers.service';
-import { PawnComponent }	from './pawn.component';
-import { KingComponent }	from './king.component';
+import { PawnComponent }	from './pieces/pawn.component';
+import { KingComponent }	from './pieces/king.component';
 
 @Component({
   	selector: 'space',

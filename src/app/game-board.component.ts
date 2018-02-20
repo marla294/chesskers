@@ -1,7 +1,7 @@
 // This will be a component that houses the actual checkers game board
 import { Component, Input }	     from '@angular/core';
 import { OnInit } 		           from '@angular/core';
-import { Piece }	 	             from './piece';
+import { Piece }	 	             from './pieces/piece';
 import { CheckersService }       from './checkers.service';
 import { ChessService }          from './chess.service';
 import { Observable }            from 'rxjs/Observable';

@@ -1,7 +1,7 @@
 import { Injectable }           from '@angular/core';
 import { CheckerBoard }	        from './checkerBoard';
 import { Space }                from './space';
-import { Piece, chessPawn }		from './piece';
+import { Piece, chessPawn }		from './pieces/piece';
 
 
 @Injectable()

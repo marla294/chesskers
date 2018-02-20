@@ -1,5 +1,5 @@
 import { Injectable }           from '@angular/core';
-import { Piece, Pawn, King }	from './piece';
+import { Piece, Pawn, King }	from './pieces/piece';
 import { Space }                from './space';
 import { CheckerBoard }	        from './checkerBoard';
 import { BehaviorSubject }      from 'rxjs/BehaviorSubject';

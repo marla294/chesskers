@@ -9,12 +9,12 @@ import { SpaceComponent }        from './space.component';
 
 // Checkers Only
 import { CheckersService }       from './checkers.service';
-import { PawnComponent }         from './pawn.component';
-import { KingComponent }         from './king.component';
+import { PawnComponent }         from './pieces/pawn.component';
+import { KingComponent }         from './pieces/king.component';
 
 // Chess Only
 import { ChessService }          from './chess.service';
-import { ChessPawnComponent }    from './chessPawn.component';
+import { ChessPawnComponent }    from './pieces/chessPawn.component';
 
 @NgModule({
   declarations: [

@@ -1,4 +1,4 @@
-import { Piece }	from './piece';
+import { Piece }	from './pieces/piece';
 
 export class Space {
 	playable: boolean;
