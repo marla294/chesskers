@@ -14,7 +14,7 @@ import { KingComponent }         from './pieces/king.component';
 
 // Chess Only
 import { ChessService }          from './chess.service';
-import { ChessPawnComponent }    from './pieces/chessPawn.component';
+import { ChessPieceComponent }    from './pieces/chessPiece.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { ChessPawnComponent }    from './pieces/chessPawn.component';
     SpaceComponent,
     PawnComponent,
     KingComponent,
-    ChessPawnComponent
+    ChessPieceComponent
   ],
   imports: [
     BrowserModule

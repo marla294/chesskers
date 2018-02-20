@@ -13,7 +13,7 @@ class="square float-left"
 	    		<king [king]="space.piece"></king>
     		</div>
     		<div *ngIf="space.piece.type ==='chessPawn'">
-	    		<chessPawn [chessPawn]="space.piece"></chessPawn>
+	    		<chessPiece [chessPiece]="space.piece"></chessPiece>
     		</div>
 		</div>
 		<div *ngIf="space.playable && !space.piece"
