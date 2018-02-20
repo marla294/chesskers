@@ -55,7 +55,8 @@ export class ChessService {
 
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
-    	if (this._selectedPiece !== null) {
+    	if (this._selectedPiece !== null) { // Clicking on an empty space
+    		console.log((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col));
     		this.findPiece(this._selectedPiece).clearPiece();
     		sp.addPiece(this._selectedPiece);
     		this.clearSelections();

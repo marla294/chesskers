@@ -90,6 +90,35 @@ export class King extends Pawn {
 export class chessPawn extends Piece {
 	type: string = "chessPawn";
 	game: string = "chess";
+	initialized: boolean = false; // Whether the pawn has moved 1 space or not
+
+	// Given an empty space on the board, determines whether pawn can move to this space or not,
+	// according to the rules of chess.
+	// The first move, the piece is allowed to move 2 spaces forward.  Otherwise,
+	// the piece is only allowed to move forward 1 space
+	canMove(row: number, col: number): boolean {
+		let canM = false;
+		let rowMove = row - this.row;
+		if (col === this.col) { // Can only move forward in the same column
+			if (this.initialized === false) {
+				if (this.isRed === true && rowMove < 3 && rowMove > 0) {
+					canM = true;
+				}
+				if (this.isRed === false && rowMove > -3 && rowMove < 0) {
+					canM = true;
+				}
+			} else {
+				if (this.isRed === true && rowMove === 1) {
+					canM = true;
+				}
+				if (this.isRed === false && rowMove === 1) {
+					canM = true;
+				}
+			}
+		}
+		return canM;
+	}
+
 
 	// Regular Moves
 
