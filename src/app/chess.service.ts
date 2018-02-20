@@ -60,7 +60,8 @@ export class ChessService {
 
     		switch (type) {
     			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col)) {
+    			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
+    				this.isMoveClearStraight(sp)) {
     				(<chessPawn>this._selectedPiece).initialized = true; // Initialize chesspawn if it moves once
     				this.moveSelectedToEmptySp(sp);
     			}
@@ -100,6 +101,37 @@ export class ChessService {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
 		this.clearSelections();
+    }
+
+    // Determines if the selected space has a piece between the selected piece
+    // and the space on a straight line
+    isMoveClearStraight(sp: Space): boolean {
+    	let spRow = sp.row;
+    	let spCol = sp.col;
+    	let pRow = this._selectedPiece.row;
+    	let pCol = this._selectedPiece.col;
+    	let isClear = true;
+
+    	if (spCol === pCol) {
+    		// Up
+    		if (spRow < pRow) {
+    			for (let i = spRow + 1; i < pRow; i++) {
+    				if (this.board[i][pCol].piece !== null) {
+    					isClear = false;
+    				}
+    			}
+    		} 
+
+    		// Down
+    		if (spRow > pRow) {
+    			for (let i = spRow - 1; i > pRow; i--) {
+    				if (this.board[i][pCol].piece !== null) {
+    					isClear = false;
+    				}
+    			}
+    		}
+    	}
+    	return isClear;
     }
 
     // Finds a piece on the board and returns the space it is on
