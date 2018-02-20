@@ -191,9 +191,46 @@ export class Bishop extends Piece {
 export class chessKing extends Piece {
 	type: string = "chessKing";
 	game: string = "chess";
+
+	// Given an empty space on the board, determines whether king can move to this
+	// space or not, according to the rules of chess.  Kings are allowed to move
+	// on a diagonal forward or back, OR on a straight line forward or back, but 
+	// only one space at a time.  This function does not take into account if there
+	// are pieces in the way.  That will be the job of the chess service to figure 
+	// out.
+	canMove(row: number, col: number): boolean {
+		let canM = false;
+		let rowMove = Math.abs(row - this.row);
+		let colMove = Math.abs(col - this.col);
+		if (rowMove < 2 && colMove < 2) {
+			canM = true;
+		}
+		
+		return canM;
+	}
 }
 
 export class Queen extends Piece {
 	type: string = "queen";
 	game: string = "chess";
+
+	// Given an empty space on the board, determines whether queen can move to this
+	// space or not, according to the rules of chess.  Queens are allowed to move
+	// on a diagonal forward or back, OR on a straight line forward or back.  This 
+	// function does not take into account if there are pieces in the way.  That 
+	// will be the job of the chess service to figure out.
+	canMove(row: number, col: number): boolean {
+		let canM = false;
+		let rowMove = Math.abs(row - this.row);
+		let colMove = Math.abs(col - this.col);
+		if (rowMove === colMove) { // diagonal
+			canM = true;
+		} else if (this.row === row) { // straight
+			canM = true;
+		} else if (this.col === col) { // straight
+			canM = true;
+		}
+		
+		return canM;
+	}
 }

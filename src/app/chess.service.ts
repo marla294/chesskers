@@ -80,6 +80,16 @@ export class ChessService {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
+    			case 'queen':
+    			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col)) {
+    				this.moveSelectedToEmptySp(sp);
+    			}
+    			break;
+    			case 'chessKing':
+    			if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
+    				this.moveSelectedToEmptySp(sp);
+    			}
+    			break;
     		}
 
     	}
