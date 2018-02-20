@@ -70,6 +70,11 @@ export class ChessService {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
+    			case 'knight':
+    			if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
+    				this.moveSelectedToEmptySp(sp);
+    			}
+    			break;
     		}
 
     	}
