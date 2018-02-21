@@ -48,14 +48,19 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: Piece) {
-    	this.clearSelections();
-    	this._selectedPiece = p;
-    	this.findPiece(this._selectedPiece).highlight = true;
+    	if (this._selectedPiece === null) { // Piece is being selected not taken
+	    	this.clearSelections();
+	    	this._selectedPiece = p;
+	    	this.findPiece(this._selectedPiece).highlight = true;
+    	} else if (this._selectedPiece !== null) { // Piece is being taken by another piece
+    		console.log("I got you");
+    	}
+
     }
 
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
-    	if (this._selectedPiece !== null) { // Clicking on an empty space
+    	if (this._selectedPiece !== null) {
     		let type = this._selectedPiece.type;
 
     		switch (type) {
