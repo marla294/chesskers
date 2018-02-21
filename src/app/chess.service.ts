@@ -67,7 +67,8 @@ export class ChessService {
     			}
     			break;
     			case 'rook':
-    			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col)) {
+    			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
+    				this.isMoveClearStraight(sp)) {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
@@ -131,6 +132,27 @@ export class ChessService {
     			}
     		}
     	}
+
+    	if (spRow === pRow) {
+    		// Left
+    		if (spCol < pCol) {
+    			for (let i = spCol + 1; i < pCol; i++) {
+    				if (this.board[pRow][i].piece !== null) {
+    					isClear = false;
+    				}
+    			}
+    		}
+
+    		// Right
+    		if (spCol > pCol) {
+    			for (let i = spCol - 1; i > pCol; i--) {
+    				if (this.board[pRow][i].piece !== null) {
+    					isClear = false;
+    				}
+    			}
+    		}
+    	}
+
     	return isClear;
     }
 
