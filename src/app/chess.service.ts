@@ -50,21 +50,20 @@ export class ChessService {
     clickAPiece(p: Piece) {
     	if (this._selectedPiece === null) { // Piece is being selected not taken
 	    	this.selectAPiece(p);
-    	} else if (this._selectedPiece !== null) { // Piece is being taken by another piece
+    	} else if (this._selectedPiece !== null && p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
     		let type = this._selectedPiece.type;
 
     		switch (type) {
     			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col) &&
-    				p.isRed === !this._selectedPiece.isRed) { // can take the selected piece
+    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take the selected piece
     				this.moveSelectedToTake(p);
-    			} else if (p.isRed === this._selectedPiece.isRed) { // piece is same team so select this piece instead
-    				this.selectAPiece(p);
     			} else { // can't take piece and it's on opposite team
     				this.selectAPiece(this._selectedPiece);
     			}
     			break;
     		}
+    	} else { // piece is same color as selected piece so select the new piece
+    		this.selectAPiece(p);
     	}
     }
 
