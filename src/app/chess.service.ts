@@ -196,47 +196,31 @@ export class ChessService {
     // Determines if the selected space has a piece between the selected piece
     // and the space on a straight line
     isMoveClearStraight(sp: Space): boolean {
-    	let spRow = sp.row;
-    	let spCol = sp.col;
-    	let pRow = this._selectedPiece.row;
-    	let pCol = this._selectedPiece.col;
+	   	let colDiff = Math.abs(this._selectedPiece.col - sp.col);
+    	let rowDiff = Math.abs(this._selectedPiece.row - sp.row);
+
     	let isClear = true;
 
-    	if (spCol === pCol) {
-    		// Up
-    		if (spRow < pRow) {
-    			for (let i = spRow + 1; i < pRow; i++) {
-    				if (this.board[i][pCol].piece !== null) {
-    					isClear = false;
-    				}
-    			}
-    		} 
-    		// Down
-    		if (spRow > pRow) {
-    			for (let i = spRow - 1; i > pRow; i--) {
-    				if (this.board[i][pCol].piece !== null) {
-    					isClear = false;
-    				}
-    			}
-    		}
+    	if (colDiff === 0) {
+    		let rowStart = Math.min(this._selectedPiece.row, sp.row);
+    		let rowEnd = rowStart + rowDiff;
+
+    		for (let i = rowStart + 1; i < rowEnd; i++) {
+				if (this.board[i][this._selectedPiece.col].piece !== null) {
+					isClear = false;
+				}
+			}
     	}
-    	if (spRow === pRow) {
-    		// Left
-    		if (spCol < pCol) {
-    			for (let i = spCol + 1; i < pCol; i++) {
-    				if (this.board[pRow][i].piece !== null) {
-    					isClear = false;
-    				}
-    			}
-    		}
-    		// Right
-    		if (spCol > pCol) {
-    			for (let i = spCol - 1; i > pCol; i--) {
-    				if (this.board[pRow][i].piece !== null) {
-    					isClear = false;
-    				}
-    			}
-    		}
+
+    	if (rowDiff === 0) {
+    		let colStart = Math.min(this._selectedPiece.col, sp.col);
+    		let colEnd = colStart + colDiff;
+
+    		for (let i = colStart + 1; i < colEnd; i++) {
+				if (this.board[this._selectedPiece.row][i].piece !== null) {
+					isClear = false;
+				}
+			}
     	}
 
     	return isClear;
