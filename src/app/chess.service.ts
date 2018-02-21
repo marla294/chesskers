@@ -215,12 +215,9 @@ export class ChessService {
     	if (rowDiff === 0) {
     		let colStart = Math.min(this._selectedPiece.col, sp.col);
     		let colEnd = colStart + colDiff;
+    		let colArr = this.board[this._selectedPiece.row].slice(colStart+1, colEnd);
 
-    		for (let i = colStart + 1; i < colEnd; i++) {
-				if (this.board[this._selectedPiece.row][i].piece !== null) {
-					isClear = false;
-				}
-			}
+    		colArr.forEach(sp => {if (sp.piece !== null) {isClear = false}});
     	}
 
     	return isClear;
