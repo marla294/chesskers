@@ -53,7 +53,14 @@ export class ChessService {
 	    	this._selectedPiece = p;
 	    	this.findPiece(this._selectedPiece).highlight = true;
     	} else if (this._selectedPiece !== null) { // Piece is being taken by another piece
-    		console.log("I got you");
+    		let type = this._selectedPiece.type;
+
+    		switch (type) {
+    			case 'chessPawn':
+    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) {
+    				console.log("got you");
+    			}
+    		}
     	}
 
     }

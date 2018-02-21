@@ -120,6 +120,17 @@ export class chessPawn extends Piece {
 		}
 		return canM;
 	}
+
+	// A pawn can take pieces directly to the left or right of him
+	canTake(row: number, col: number): boolean {
+		let canT = false;
+
+		if (Math.abs(this.col - col) === 1 && Math.abs(this.row - row) === 1) {
+			canT = true;
+		}
+
+		return canT;
+	}
 }
 
 export class Rook extends Piece {
