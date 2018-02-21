@@ -55,7 +55,42 @@ export class ChessService {
 
     		switch (type) {
     			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take the selected piece
+    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take piece
+    				this.moveSelectedToTake(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
+    			}
+    			break;
+    			case 'rook':
+    			if ((<Rook>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+    				this.moveSelectedToTake(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
+    			}
+    			break;
+    			case 'knight':
+    			if ((<Knight>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+    				this.moveSelectedToTake(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
+    			}
+    			break;
+    			case 'bishop':
+    			if ((<Bishop>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+    				this.moveSelectedToTake(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
+    			}
+    			break;
+    			case 'queen':
+    			if ((<Queen>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+    				this.moveSelectedToTake(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
+    			}
+    			break;
+    			case 'chessKing':
+    			if ((<chessKing>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
     				this.moveSelectedToTake(p);
     			} else { // can't take piece and it's on opposite team
     				this.selectAPiece(this._selectedPiece);

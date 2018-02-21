@@ -11,7 +11,7 @@
 }
 .highlight {
 	background-color: yellow;
-	border: 1px solid yellow;
+	border: 1px solid #27802B;
 }
 @media only screen and (max-width: 768px) {
 	.square {
