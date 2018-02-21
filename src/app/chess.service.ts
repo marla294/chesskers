@@ -3,11 +3,11 @@ import { CheckerBoard }	        from './checkerBoard';
 import { Space }                from './space';
 import { Piece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
 
-
 @Injectable()
 export class ChessService {
 	public board: any;
 	private _selectedPiece: Piece = null;
+    private _redTurn: boolean = true;
 
 	constructor() {
 		this.resetGame();
@@ -16,6 +16,7 @@ export class ChessService {
 	// Resets game back to beginning
     resetGame() {
     	this.board = new CheckerBoard().board;
+    	this._redTurn = true;
     	// Adding pawns
     	for (let j = 0; j < 8; j++) {
     		this.board[1][j].addPiece(new chessPawn('red', 1, j));
@@ -48,65 +49,67 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: Piece) {
-    	if (this._selectedPiece === null) { // Piece is being selected not taken
-	    	this.selectAPiece(p);
-    	} else if (this._selectedPiece !== null && p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
-    		let type = this._selectedPiece.type;
+	    	if (this._selectedPiece === null) { // Piece is being selected not taken
+		    	this.selectAPiece(p);
+	    	} else if (this._selectedPiece !== null && p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
+	    		let type = this._selectedPiece.type;
 
-    		switch (type) {
-    			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    			case 'rook':
-    			if ((<Rook>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    			case 'knight':
-    			if ((<Knight>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    			case 'bishop':
-    			if ((<Bishop>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    			case 'queen':
-    			if ((<Queen>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    			case 'chessKing':
-    			if ((<chessKing>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
-    				this.moveSelectedToTake(p);
-    			} else { // can't take piece and it's on opposite team
-    				this.selectAPiece(this._selectedPiece);
-    			}
-    			break;
-    		}
-    	} else { // piece is same color as selected piece so select the new piece
-    		this.selectAPiece(p);
-    	}
+	    		switch (type) {
+	    			case 'chessPawn':
+	    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    			case 'rook':
+	    			if ((<Rook>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    			case 'knight':
+	    			if ((<Knight>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    			case 'bishop':
+	    			if ((<Bishop>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    			case 'queen':
+	    			if ((<Queen>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    			case 'chessKing':
+	    			if ((<chessKing>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    				this.moveSelectedToTake(p);
+	    			} else { // can't take piece and it's on opposite team
+	    				this.selectAPiece(this._selectedPiece);
+	    			}
+	    			break;
+	    		}
+	    	} else { // piece is same color as selected piece so select the new piece
+	    		this.selectAPiece(p);
+	    	}
     }
 
     // Selecting a piece to move
     selectAPiece(p) {
-    	this.clearSelections();
-	    this._selectedPiece = p;
-	    this.findPiece(this._selectedPiece).highlight = true;
+    	if (p.isRed === this._redTurn) {
+	    	this.clearSelections();
+		    this._selectedPiece = p;
+		    this.findPiece(this._selectedPiece).highlight = true;
+		}
     }
 
     // Move the selected piece to take a piece
@@ -115,6 +118,7 @@ export class ChessService {
     	sp.clearPiece();
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
+		this._redTurn = !this._redTurn;
 		this.clearSelections();
     }
 
@@ -168,6 +172,7 @@ export class ChessService {
     moveSelectedToEmptySp(sp: Space) {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
+		this._redTurn = !this._redTurn;
 		this.clearSelections();
     }
 
@@ -251,28 +256,24 @@ export class ChessService {
 			// Up Right
 			if (spRow < pRow && spCol > pCol) {
     			if (this.board[pRow - i][pCol + i].piece !== null) {
-    				console.log("up right");
     				isClear = false;
     			}
     		}
     		// Up Left
 			if (spRow < pRow && spCol < pCol) {
     			if (this.board[pRow - i][pCol - i].piece !== null) {
-    				console.log("up left");
     				isClear = false;
     			}
     		}
     		// Down Right
 			if (spRow > pRow && spCol > pCol) {
     			if (this.board[pRow + i][pCol + i].piece !== null) {
-    				console.log("down right");
     				isClear = false;
     			}
     		}
     		// Down Left
 			if (spRow > pRow && spCol < pCol) {
     			if (this.board[pRow + i][pCol - i].piece !== null) {
-    				console.log("down left");
     				isClear = false;
     			}
     		}
