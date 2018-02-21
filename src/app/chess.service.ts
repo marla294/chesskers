@@ -61,14 +61,14 @@ export class ChessService {
     		switch (type) {
     			case 'chessPawn':
     			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
-    				this.isMoveClearStraight(sp)) {
+    				this.isMoveClear(sp)) {
     				(<chessPawn>this._selectedPiece).initialized = true; // Initialize chesspawn if it moves once
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
     			case 'rook':
     			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
-    				this.isMoveClearStraight(sp)) {
+    				this.isMoveClear(sp)) {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
@@ -79,12 +79,13 @@ export class ChessService {
     			break;
     			case 'bishop':
     			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
-    				this.isMoveClearDiag(sp)) {
+    				this.isMoveClear(sp)) {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
     			case 'queen':
-    			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col)) {
+    			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
+    				this.isMoveClear(sp)) {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
@@ -103,6 +104,23 @@ export class ChessService {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
 		this.clearSelections();
+    }
+
+    // Determines whether to use the straight or diag function to check
+    isMoveClear(sp: Space) {
+    	let spRow = sp.row;
+    	let spCol = sp.col;
+    	let pRow = this._selectedPiece.row;
+    	let pCol = this._selectedPiece.col;
+    	let isClear = true;
+
+    	if (spRow === pRow || spCol === pCol) {
+    		isClear = this.isMoveClearStraight(sp);
+    	} else {
+    		isClear = this.isMoveClearDiag(sp);
+    	}
+
+    	return isClear;
     }
 
     // Determines if the selected space has a piece between the selected piece
