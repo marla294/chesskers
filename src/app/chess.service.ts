@@ -49,20 +49,39 @@ export class ChessService {
     // Click on a piece on the board
     clickAPiece(p: Piece) {
     	if (this._selectedPiece === null) { // Piece is being selected not taken
-	    	this.clearSelections();
-	    	this._selectedPiece = p;
-	    	this.findPiece(this._selectedPiece).highlight = true;
+	    	this.selectAPiece(p);
     	} else if (this._selectedPiece !== null) { // Piece is being taken by another piece
     		let type = this._selectedPiece.type;
 
     		switch (type) {
     			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) {
-    				console.log("got you");
+    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col) &&
+    				p.isRed === !this._selectedPiece.isRed) { // can take the selected piece
+    				this.moveSelectedToTake(p);
+    			} else if (p.isRed === this._selectedPiece.isRed) { // piece is same team so select this piece instead
+    				this.selectAPiece(p);
+    			} else { // can't take piece and it's on opposite team
+    				this.selectAPiece(this._selectedPiece);
     			}
+    			break;
     		}
     	}
+    }
 
+    // Selecting a piece to move
+    selectAPiece(p) {
+    	this.clearSelections();
+	    this._selectedPiece = p;
+	    this.findPiece(this._selectedPiece).highlight = true;
+    }
+
+    // Move the selected piece to take a piece
+    moveSelectedToTake(p: Piece) {
+    	let sp = this.findPiece(p);
+    	sp.clearPiece();
+    	this.findPiece(this._selectedPiece).clearPiece();
+		sp.addPiece(this._selectedPiece);
+		this.clearSelections();
     }
 
     // Click on an empty space on the board
