@@ -78,7 +78,8 @@ export class ChessService {
     			}
     			break;
     			case 'bishop':
-    			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col)) {
+    			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
+    				this.isMoveClearDiag(sp)) {
     				this.moveSelectedToEmptySp(sp);
     			}
     			break;
@@ -122,7 +123,6 @@ export class ChessService {
     				}
     			}
     		} 
-
     		// Down
     		if (spRow > pRow) {
     			for (let i = spRow - 1; i > pRow; i--) {
@@ -132,7 +132,6 @@ export class ChessService {
     			}
     		}
     	}
-
     	if (spRow === pRow) {
     		// Left
     		if (spCol < pCol) {
@@ -142,13 +141,56 @@ export class ChessService {
     				}
     			}
     		}
-
     		// Right
     		if (spCol > pCol) {
     			for (let i = spCol - 1; i > pCol; i--) {
     				if (this.board[pRow][i].piece !== null) {
     					isClear = false;
     				}
+    			}
+    		}
+    	}
+
+    	return isClear;
+    }
+
+    // Determines if the selected space has a piece between the selected piece
+    // and the space on a diagonal line
+    isMoveClearDiag(sp: Space): boolean {
+		let spRow = sp.row;
+    	let spCol = sp.col;
+    	let pRow = this._selectedPiece.row;
+    	let pCol = this._selectedPiece.col;
+    	let diagLen = Math.abs(spRow - pRow);
+    	let isClear = true;
+
+    	for (let i = 1; i < diagLen; i++) {
+			// Up Right
+			if (spRow < pRow && spCol > pCol) {
+    			if (this.board[pRow - i][pCol + i].piece !== null) {
+    				console.log("up right");
+    				isClear = false;
+    			}
+    		}
+    		// Up Left
+			if (spRow < pRow && spCol < pCol) {
+    			if (this.board[pRow - i][pCol - i].piece !== null) {
+    				console.log("up left");
+    				isClear = false;
+    			}
+    		}
+    		// Down Right
+			if (spRow > pRow && spCol > pCol) {
+    			if (this.board[pRow + i][pCol + i].piece !== null) {
+    				console.log("down right");
+    				isClear = false;
+    			}
+    		}
+    		// Down Left
+			if (spRow > pRow && spCol < pCol) {
+    			if (this.board[pRow + i][pCol - i].piece !== null) {
+    				console.log("down left");
+    				isClear = false;
     			}
     		}
     	}
