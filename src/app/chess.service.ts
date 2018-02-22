@@ -97,7 +97,7 @@ export class ChessService {
 				this.moveSelectedToTake(sp.piece);
 			} else if (!take && (<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
 			this.isMoveClear(sp)) {
-				this.moveSelectedToEmptySp(sp)
+				this.moveSelectedToEmptySp(sp);
 			} else {
 				this.selectAPiece(this._selectedPiece);
 			}
@@ -145,20 +145,31 @@ export class ChessService {
 
     // Move the selected piece to take a piece
     moveSelectedToTake(p: Piece) {
-    	let sp = this.findPiece(p);
-    	sp.clearPiece();
-    	this.findPiece(this._selectedPiece).clearPiece();
-		sp.addPiece(this._selectedPiece);
-		this._redTurn = !this._redTurn;
-		this.clearSelections();
+    	this.findPiece(p).clearPiece(); // clear out the taken piece from the space
+    	this.moveSelectedToEmptySp(sp); // Move the selected piece to the newly vacated space
     }
 
     // Move the selected piece to an empty space
     moveSelectedToEmptySp(sp: Space) {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
+		this.initializeSelected();
 		this._redTurn = !this._redTurn;
 		this.clearSelections();
+    }
+
+    // If the selected piece needs to be initialized on the first turn, do that here
+    initializeSelected() {
+    	let type = this._selectedPiece.type;
+    	if (type === 'chessPawn') {
+			(<chessPawn>this._selectedPiece).initialized = true;
+		}
+		if (type === 'chessKing') {
+			(<chessKing>this._selectedPiece).initialized = true;
+		}
+		if (type === 'rook') {
+			(<Rook>this._selectedPiece).initialized = true;
+		}
     }
 
     // Special move where the king and rook switch places
