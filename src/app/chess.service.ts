@@ -206,7 +206,15 @@ export class ChessService {
     	}
 
     	if (isAllowed) {
-    		console.log("castle");
+    		if (isLeft) {
+    			this.board[row][0].clearPiece();
+    			this.board[row][2].addPiece(rook);
+    			this.moveSelectedToEmptySp(sp);
+    		} else {
+    			this.board[row][7].clearPiece();
+    			this.board[row][4].addPiece(rook);
+    			this.moveSelectedToEmptySp(sp);
+    		}
     	} else {
     		this.moveSelected(sp);
     	}
