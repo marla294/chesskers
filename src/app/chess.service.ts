@@ -191,7 +191,7 @@ export class ChessService {
 			rookSp.piece !== null && 
 			rookSp.piece.type === "rook" &&
 			!(<Rook>rookSp.piece).initialized ) {
-				rook = rookSp.piece;
+				rook = <Rook>rookSp.piece;
 				isAllowed = true;
 			}  		
     	}
