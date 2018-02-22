@@ -174,44 +174,35 @@ export class ChessService {
     }
 
     // Special move where the king and rook switch places
+    // See https://en.wikipedia.org/wiki/Castling?oldformat=true
     castle(sp: Space) {
     	let isAllowed: boolean = false;
     	let isLeft: boolean = sp.col < this._selectedPiece.col;
     	let spaceMoved: number = Math.abs(this._selectedPiece.col - sp.col);
     	let row: number = this._selectedPiece.isRed ? 0 : 7;
+    	let rookCol: number = isLeft ? 0 : 7;
+    	let rookSp: Space = this.board[row][rookCol];
     	let rook: Rook;
 
     	if (this._selectedPiece.type === "chessKing" && 
     		!(<chessKing>this._selectedPiece).initialized) 
     	{
-	    		if (isLeft && 
-	    		spaceMoved === 2 &&
-				this.board[row][0].piece !== null && 
-				this.board[row][0].piece.type === "rook" &&
-				!(<Rook>this.board[row][0].piece).initialized) 
-				{
-					rook = this.board[row][0].piece;
-					isAllowed = true;
-				} 
-
-				else if (!isLeft && 
-				spaceMoved === 2 &&
-				this.board[row][7].piece !== null && 
-				this.board[row][7].piece.type === "rook" && 
-				!(<Rook>this.board[row][7].piece).initialized) 
-				{
-					rook = this.board[row][7].piece;
-					isAllowed = true;
-				}    		
+    		if (spaceMoved === 2 &&
+			rookSp.piece !== null && 
+			rookSp.piece.type === "rook" &&
+			!(<Rook>rookSp.piece).initialized ) {
+				rook = rookSp.piece;
+				isAllowed = true;
+			}  		
     	}
 
     	if (isAllowed) {
     		if (isLeft) {
-    			this.board[row][0].clearPiece();
+    			rookSp.clearPiece();
     			this.board[row][2].addPiece(rook);
     			this.moveSelectedToEmptySp(sp);
     		} else {
-    			this.board[row][7].clearPiece();
+    			rookSp.clearPiece();
     			this.board[row][4].addPiece(rook);
     			this.moveSelectedToEmptySp(sp);
     		}
