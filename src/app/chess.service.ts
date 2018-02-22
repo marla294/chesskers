@@ -145,7 +145,8 @@ export class ChessService {
 
     // Move the selected piece to take a piece
     moveSelectedToTake(p: Piece) {
-    	this.findPiece(p).clearPiece(); // clear out the taken piece from the space
+    	let sp = this.findPiece(p);
+    	sp.clearPiece(); // clear out the taken piece from the space
     	this.moveSelectedToEmptySp(sp); // Move the selected piece to the newly vacated space
     }
 
