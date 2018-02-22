@@ -63,7 +63,9 @@ export class ChessService {
 
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
-    	if (this._selectedPiece !== null) {
+    	if (this._selectedPiece !== null && this._selectedPiece.type === 'chessKing') {
+    		this.castle(sp);
+    	} else if (this._selectedPiece !== null) {
     		this.moveSelected(sp);
     	}
     }
@@ -157,6 +159,17 @@ export class ChessService {
 		sp.addPiece(this._selectedPiece);
 		this._redTurn = !this._redTurn;
 		this.clearSelections();
+    }
+
+    // Special move where the king and rook switch places
+    castle(sp: Space) {
+    	let isAllowed: boolean = true;
+
+    	if (isAllowed) {
+    		console.log("castle");
+    	} else {
+    		this.moveSelected(sp);
+    	}
     }
 
     /* Is Move Clear functionality
