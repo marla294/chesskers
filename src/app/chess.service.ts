@@ -108,12 +108,65 @@ export class ChessService {
 	    	}
     }
 
-    // Selecting a piece to move
+    // Click on an empty space on the board
+    clickEmptySpace(sp: Space) {
+    	if (this._selectedPiece !== null) {
+    		this.moveSelected(sp);
+    	}
+    }
+
+	// Selecting a piece to move
     selectAPiece(p) {
     	if (p.isRed === this._redTurn) {
 	    	this.clearSelections();
 		    this._selectedPiece = p;
 		    this.findPiece(this._selectedPiece).highlight = true;
+		}
+    }
+
+    /* Function that will move the selected piece to the given space
+    If the space contains a piece of the opposite color the piece will be taken,
+    otherwise the selected piece will just move to the empty space.
+    */
+    moveSelected(sp: Space) {
+    	let type = this._selectedPiece.type;
+
+    	switch (type) {
+			case 'chessPawn':
+			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
+				this.isMoveClear(sp)) {
+				(<chessPawn>this._selectedPiece).initialized = true; // Initialize pawn
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
+			case 'rook':
+			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
+				this.isMoveClear(sp)) {
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
+			case 'knight':
+			if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
+			case 'bishop':
+			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
+				this.isMoveClear(sp)) {
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
+			case 'queen':
+			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
+				this.isMoveClear(sp)) {
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
+			case 'chessKing':
+			if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
+				this.moveSelectedToEmptySp(sp);
+			}
+			break;
 		}
     }
 
@@ -125,52 +178,6 @@ export class ChessService {
 		sp.addPiece(this._selectedPiece);
 		this._redTurn = !this._redTurn;
 		this.clearSelections();
-    }
-
-    // Click on an empty space on the board
-    clickEmptySpace(sp: Space) {
-    	if (this._selectedPiece !== null) {
-    		let type = this._selectedPiece.type;
-
-    		switch (type) {
-    			case 'chessPawn':
-    			if ((<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
-    				this.isMoveClear(sp)) {
-    				(<chessPawn>this._selectedPiece).initialized = true; // Initialize chesspawn if it moves once
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    			case 'rook':
-    			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
-    				this.isMoveClear(sp)) {
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    			case 'knight':
-    			if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    			case 'bishop':
-    			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
-    				this.isMoveClear(sp)) {
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    			case 'queen':
-    			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
-    				this.isMoveClear(sp)) {
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    			case 'chessKing':
-    			if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
-    				this.moveSelectedToEmptySp(sp);
-    			}
-    			break;
-    		}
-
-    	}
     }
 
     // Move the selected piece to an empty space
