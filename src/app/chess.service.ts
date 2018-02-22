@@ -55,6 +55,9 @@ export class ChessService {
 	    		let type = this._selectedPiece.type;
 	    		let sp = this.findPiece(p);
 
+	    		this.moveSelected(sp);
+
+	    		/*
 	    		switch (type) {
 	    			case 'chessPawn':
 	    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col) &&
@@ -103,6 +106,7 @@ export class ChessService {
 	    			}
 	    			break;
 	    		}
+	    		*/
 	    	} else { // piece is same color as selected piece so select the new piece
 	    		this.selectAPiece(p);
 	    	}
@@ -130,6 +134,11 @@ export class ChessService {
     */
     moveSelected(sp: Space) {
     	let type = this._selectedPiece.type;
+    	let take = false;
+
+    	if (sp.piece !== null && sp.piece.isRed === !this._selectedPiece.isRed) {
+    		take = true;
+    	}
 
     	switch (type) {
 			case 'chessPawn':
@@ -142,30 +151,40 @@ export class ChessService {
 			case 'rook':
 			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
 				this.isMoveClear(sp)) {
-				this.moveSelectedToEmptySp(sp);
-			}
+				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+			} else {
+	    		this.selectAPiece(this._selectedPiece);
+	    	}
 			break;
 			case 'knight':
 			if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
-				this.moveSelectedToEmptySp(sp);
-			}
+				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+			} else {
+	    		this.selectAPiece(this._selectedPiece);
+	    	}
 			break;
 			case 'bishop':
 			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
 				this.isMoveClear(sp)) {
-				this.moveSelectedToEmptySp(sp);
-			}
+				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+			} else {
+	    		this.selectAPiece(this._selectedPiece);
+	    	}
 			break;
 			case 'queen':
 			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
 				this.isMoveClear(sp)) {
-				this.moveSelectedToEmptySp(sp);
-			}
+				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+			} else {
+	    		this.selectAPiece(this._selectedPiece);
+	    	}
 			break;
 			case 'chessKing':
 			if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
-				this.moveSelectedToEmptySp(sp);
-			}
+				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+			} else {
+	    		this.selectAPiece(this._selectedPiece);
+	    	}
 			break;
 		}
     }
