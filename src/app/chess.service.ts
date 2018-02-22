@@ -79,8 +79,7 @@ export class ChessService {
 
     /* Function that will move the selected piece to the given space
     If the space contains a piece of the opposite color the piece will be taken,
-    otherwise the selected piece will just move to the empty space.
-    */
+    otherwise the selected piece will just move to the empty space. */
     moveSelected(sp: Space) {
     	let type = this._selectedPiece.type;
     	let take = false;
@@ -160,11 +159,9 @@ export class ChessService {
 		this.clearSelections();
     }
 
-    // Is Move Clear functionality
-    /*
+    /* Is Move Clear functionality
 	These functions help determine if the path is clear between the selected piece
-	and the space that the piece is moving to
-    */
+	and the space that the piece is moving to */
 
     // Determines whether to use the straight or diag function to check
     isMoveClear(sp: Space) {

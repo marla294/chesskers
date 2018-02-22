@@ -136,6 +136,7 @@ export class chessPawn extends Piece {
 export class Rook extends Piece {
 	type: string = "rook";
 	game: string = "chess";
+	initialized: boolean = false;  // for castling
 
 	// Given an empty space on the board, determines whether rook can move to this
 	// space or not, according to the rules of chess.  Rooks are allowed to move
@@ -202,6 +203,7 @@ export class Bishop extends Piece {
 export class chessKing extends Piece {
 	type: string = "chessKing";
 	game: string = "chess";
+	initialized: boolean = false; // for castling
 
 	// Given an empty space on the board, determines whether king can move to this
 	// space or not, according to the rules of chess.  Kings are allowed to move
