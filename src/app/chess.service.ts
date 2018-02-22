@@ -53,17 +53,20 @@ export class ChessService {
 		    	this.selectAPiece(p);
 	    	} else if (this._selectedPiece !== null && p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
 	    		let type = this._selectedPiece.type;
+	    		let sp = this.findPiece(p);
 
 	    		switch (type) {
 	    			case 'chessPawn':
-	    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col)) { // can take piece
+	    			if ((<chessPawn>this._selectedPiece).canTake(p.row, p.col) &&
+	    			this.isMoveClear(sp)) { // can take piece
 	    				this.moveSelectedToTake(p);
 	    			} else { // can't take piece and it's on opposite team
 	    				this.selectAPiece(this._selectedPiece);
 	    			}
 	    			break;
 	    			case 'rook':
-	    			if ((<Rook>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    			if ((<Rook>this._selectedPiece).canMove(p.row, p.col) &&
+	    			this.isMoveClear(sp)) { // can take piece
 	    				this.moveSelectedToTake(p);
 	    			} else { // can't take piece and it's on opposite team
 	    				this.selectAPiece(this._selectedPiece);
@@ -77,14 +80,16 @@ export class ChessService {
 	    			}
 	    			break;
 	    			case 'bishop':
-	    			if ((<Bishop>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    			if ((<Bishop>this._selectedPiece).canMove(p.row, p.col) &&
+	    			this.isMoveClear(sp)) { // can take piece
 	    				this.moveSelectedToTake(p);
 	    			} else { // can't take piece and it's on opposite team
 	    				this.selectAPiece(this._selectedPiece);
 	    			}
 	    			break;
 	    			case 'queen':
-	    			if ((<Queen>this._selectedPiece).canMove(p.row, p.col)) { // can take piece
+	    			if ((<Queen>this._selectedPiece).canMove(p.row, p.col) &&
+	    			this.isMoveClear(sp)) { // can take piece
 	    				this.moveSelectedToTake(p);
 	    			} else { // can't take piece and it's on opposite team
 	    				this.selectAPiece(this._selectedPiece);
@@ -175,6 +180,12 @@ export class ChessService {
 		this._redTurn = !this._redTurn;
 		this.clearSelections();
     }
+
+    // Is Move Clear functionality
+    /*
+	These functions help determine if the path is clear between the selected piece
+	and the space that the piece is moving to
+    */
 
     // Determines whether to use the straight or diag function to check
     isMoveClear(sp: Space) {
