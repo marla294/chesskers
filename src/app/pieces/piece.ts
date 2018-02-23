@@ -87,7 +87,27 @@ export class King extends Pawn {
 }
 
 // Chess
-export class chessPawn extends Piece {
+
+/*
+This will be the master class that all other chess pieces will build off of.  'isRed' will eventually be removed from the main Piece class and put on a 'checkerPiece' class instead.
+*/
+export class chessPiece extends Piece {
+	type: string = "chessPawn";
+	game: string = "chess";
+	isWhite: boolean = true; 
+
+	constructor(color: string, r: number, c: number) {
+		super(color, r, c);
+		if (color === "black") {
+			this.isWhite = false;
+		} else if (color === "red") {
+			this.isWhite = true;
+		}
+	}
+}
+
+
+export class chessPawn extends chessPiece {
 	type: string = "chessPawn";
 	game: string = "chess";
 	initialized: boolean = false; // Whether the pawn has moved 1 space or not
@@ -133,7 +153,7 @@ export class chessPawn extends Piece {
 	}
 }
 
-export class Rook extends Piece {
+export class Rook extends chessPiece {
 	type: string = "rook";
 	game: string = "chess";
 	initialized: boolean = false;  // for castling
@@ -157,7 +177,7 @@ export class Rook extends Piece {
 	}
 }
 
-export class Knight extends Piece {
+export class Knight extends chessPiece {
 	type: string = "knight";
 	game: string = "chess";
 
@@ -179,7 +199,7 @@ export class Knight extends Piece {
 	}
 }
 
-export class Bishop extends Piece {
+export class Bishop extends chessPiece {
 	type: string = "bishop";
 	game: string = "chess";
 
@@ -200,7 +220,7 @@ export class Bishop extends Piece {
 	}
 }
 
-export class chessKing extends Piece {
+export class chessKing extends chessPiece {
 	type: string = "chessKing";
 	game: string = "chess";
 	initialized: boolean = false; // for castling
@@ -223,7 +243,7 @@ export class chessKing extends Piece {
 	}
 }
 
-export class Queen extends Piece {
+export class Queen extends chessPiece {
 	type: string = "queen";
 	game: string = "chess";
 
