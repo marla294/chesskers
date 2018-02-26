@@ -126,6 +126,8 @@ export class ChessService {
             }
         });
 
+        king.check = check ? true : false;
+        console.log(king);
         return check;
     }
 
