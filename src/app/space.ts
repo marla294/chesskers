@@ -33,4 +33,19 @@ export class Space {
 
 export class chessSpace extends Space {
 	piece: chessPiece = null;
+
+		// Add piece to space
+	addPiece(p: chessPiece) {
+		if (this.piece == null) {
+			this.piece = p;
+			this.piece.movePiece(this.row, this.col);
+		}
+	}
+
+	// Clear piece out of space by setting to null
+	clearPiece() {
+		if (this.piece != null) {
+			this.piece = null;
+		}
+    }
 }
