@@ -122,6 +122,13 @@ export class ChessService {
             })
         });
 
+        // Check if the pieces from the other team could take the king
+        let check: boolean = false;
+        pieceArray.forEach(piece => {
+            check = this.canTakeKing(piece, king);
+        });
+        
+        console.log(check);
     }
 
     /* For a piece on the board, check if it can take the king (to see if the king is in check). 
@@ -134,7 +141,7 @@ export class ChessService {
 
         switch (type) {
             case 'chessPawn':
-            if ((<chessPawn>this._selectedPiece).canTake(sp.row, sp.col) && this.isMoveClear(sp)) {
+            if ((<chessPawn>this._selectedPiece).canTake(sp.row, sp.col)) {
                 take = true;
             }
             break;
