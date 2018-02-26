@@ -1,7 +1,7 @@
 import { Injectable }                       from '@angular/core';
 import { CheckerBoard, ChessBoard }	        from './checkerBoard';
 import { Space }                            from './space';
-import { Piece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
+import { Piece, chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
 
 @Injectable()
 export class ChessService {
@@ -48,11 +48,11 @@ export class ChessService {
     // Click events for pieces and spaces
 
     // Click on a piece on the board
-    clickAPiece(p: Piece) {
+    clickAPiece(p: chessPiece) {
     	if (this._selectedPiece === null) { // Piece is being selected not taken
 	    	this.selectAPiece(p);
     	} else if (this._selectedPiece !== null && 
-    		p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
+    		p.isWhite === !this._selectedPiece.isWhite) { // Evaluating if piece can be taken by selected piece
     		let type = this._selectedPiece.type;
     		let sp = this.findPiece(p);
     		this.moveSelected(sp);
@@ -72,7 +72,7 @@ export class ChessService {
 
 	// Selecting a piece to move
     selectAPiece(p) {
-    	if (p.isRed === this._redTurn) {
+    	if (p.isWhite === this._redTurn) {
 	    	this.clearSelections();
 		    this._selectedPiece = p;
 		    this.findPiece(this._selectedPiece).highlight = true;
