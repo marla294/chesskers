@@ -125,9 +125,11 @@ export class ChessService {
         // Check if the pieces from the other team could take the king
         let check: boolean = false;
         pieceArray.forEach(piece => {
-            check = this.canTakeKing(piece, king);
+            if (this.canTakeKing(piece, king)) {
+                check = true;
+            }
         });
-        
+
         console.log(check);
     }
 
