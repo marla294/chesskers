@@ -6,7 +6,7 @@ import { Piece, chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }	
 @Injectable()
 export class ChessService {
 	public board: any;
-	private _selectedPiece: Piece = null;
+	private _selectedPiece: chessPiece = null;
     private _redTurn: boolean = true;
 
 	constructor() {
@@ -62,7 +62,7 @@ export class ChessService {
     }
 
     // Click on an empty space on the board
-    clickEmptySpace(sp: Space) {
+    clickEmptySpace(sp: chessSpace) {
     	if (this._selectedPiece !== null && this._selectedPiece.type === 'chessKing') {
     		this.castle(sp);
     	} else if (this._selectedPiece !== null) {
@@ -71,7 +71,7 @@ export class ChessService {
     }
 
 	// Selecting a piece to move
-    selectAPiece(p) {
+    selectAPiece(p: chessPiece) {
     	if (p.isWhite === this._redTurn) {
 	    	this.clearSelections();
 		    this._selectedPiece = p;
@@ -144,14 +144,14 @@ export class ChessService {
     }
 
     // Move the selected piece to take a piece
-    moveSelectedToTake(p: Piece) {
+    moveSelectedToTake(p: chessPiece) {
     	let sp = this.findPiece(p);
     	sp.clearPiece(); // clear out the taken piece from the space
     	this.moveSelectedToEmptySp(sp); // Move the selected piece to the newly vacated space
     }
 
     // Move the selected piece to an empty space
-    moveSelectedToEmptySp(sp: Space) {
+    moveSelectedToEmptySp(sp: chessSpace) {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
 		this.initializeSelected();
@@ -175,13 +175,13 @@ export class ChessService {
 
     // Special move where the king and rook switch places
     // See https://en.wikipedia.org/wiki/Castling?oldformat=true
-    castle(sp: Space) {
+    castle(sp: chessSpace) {
     	let isAllowed: boolean = false;
     	let isLeft: boolean = sp.col < this._selectedPiece.col;
     	let spaceMoved: number = Math.abs(this._selectedPiece.col - sp.col);
     	let row: number = this._selectedPiece.isRed ? 0 : 7;
     	let rookCol: number = isLeft ? 0 : 7;
-    	let rookSp: Space = this.board[row][rookCol];
+    	let rookSp: chessSpace = this.board[row][rookCol];
     	let rook: Rook;
 
     	if (this._selectedPiece.type === "chessKing" && 
@@ -216,7 +216,7 @@ export class ChessService {
 	and the space that the piece is moving to */
 
     // Determines whether to use the straight or diag function to check
-    isMoveClear(sp: Space) {
+    isMoveClear(sp: chessSpace) {
     	let spRow = sp.row;
     	let spCol = sp.col;
     	let pRow = this._selectedPiece.row;
@@ -234,7 +234,7 @@ export class ChessService {
 
     // Determines if the selected space has a piece between the selected piece
     // and the space on a straight line
-    isMoveClearStraight(sp: Space): boolean {
+    isMoveClearStraight(sp: chessSpace): boolean {
 	   	let colDiff = Math.abs(this._selectedPiece.col - sp.col);
     	let rowDiff = Math.abs(this._selectedPiece.row - sp.row);
 
@@ -264,7 +264,7 @@ export class ChessService {
 
     // Determines if the selected space has a piece between the selected piece
     // and the space on a diagonal line
-    isMoveClearDiag(sp: Space): boolean {
+    isMoveClearDiag(sp: chessSpace): boolean {
 		let spRow = sp.row;
     	let spCol = sp.col;
     	let pRow = this._selectedPiece.row;
@@ -303,8 +303,8 @@ export class ChessService {
     }
 
     // Finds a piece on the board and returns the space it is on
-    findPiece(p: Piece): Space {
-        let sp: Space = null;
+    findPiece(p: chessPiece): chessSpace {
+        let sp: chessSpace = null;
 
         // Look through the board and see if the piece is on a space
         this.board.forEach(row => row.forEach(space => {
