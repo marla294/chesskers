@@ -1,7 +1,7 @@
-import { Injectable }                       from '@angular/core';
-import { CheckerBoard, ChessBoard }	        from './checkerBoard';
-import { Space, chessSpace }                from './space';
-import { Piece, chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
+import { Injectable }           from '@angular/core';
+import { ChessBoard }	        from './checkerBoard';
+import { chessSpace }           from './space';
+import { chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen } from './pieces/piece';
 
 @Injectable()
 export class ChessService {
