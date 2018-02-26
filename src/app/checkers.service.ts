@@ -17,10 +17,10 @@ export class CheckersService {
     private _isWinner: BehaviorSubject<string>;
 
   	constructor() {
-          this._redTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
-          this._resetGame = <BehaviorSubject<boolean>>new BehaviorSubject(true);
-          this._isWinner = <BehaviorSubject<string>>new BehaviorSubject("none");
-  		  this.resetGame();
+        this._redTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
+        this._resetGame = <BehaviorSubject<boolean>>new BehaviorSubject(true);
+        this._isWinner = <BehaviorSubject<string>>new BehaviorSubject("none");
+        this.resetGame();
   	}
 
     // Resets game back to beginning

@@ -2,6 +2,7 @@ import { Injectable }           from '@angular/core';
 import { ChessBoard }	        from './checkerBoard';
 import { chessSpace }           from './space';
 import { chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen } from './pieces/piece';
+import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ChessService {
@@ -9,7 +10,14 @@ export class ChessService {
 	private _selectedPiece: chessPiece = null;
     private _whiteTurn: boolean = true;
 
+    // Behavior Subjects
+    private _whiteTurnBeh: BehaviorSubject<boolean>;
+
 	constructor() {
+        this._whiteTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
+        this._whiteTurnBeh.subscribe(turn => {
+            this.check();
+        });
 		this.resetGame();
 	}
 
@@ -43,6 +51,16 @@ export class ChessService {
     	// Adding queens
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
+    }
+
+    // Observables and Behavioral Subjects
+
+    loadWhiteTurn(turn: boolean) {
+        this._whiteTurnBeh.next(turn);
+    }
+
+    get whiteTurnObs() {
+        return this._whiteTurnBeh.asObservable();
     }
 
     // Click events for pieces and spaces
@@ -161,6 +179,7 @@ export class ChessService {
 		sp.addPiece(this._selectedPiece);
 		this.initializeSelected();
 		this._whiteTurn = !this._whiteTurn;
+        this.loadWhiteTurn(this._whiteTurn);
 		this.clearSelections();
     }
 
