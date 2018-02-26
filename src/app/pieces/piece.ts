@@ -102,6 +102,8 @@ export class chessPiece extends Piece {
 			this.isWhite = false;
 		} else if (color === "red") {
 			this.isWhite = true;
+		} else if (color === "white") {
+			this.isWhite = true;
 		}
 	}
 }
