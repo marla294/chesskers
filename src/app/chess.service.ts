@@ -1,13 +1,13 @@
 import { Injectable }                       from '@angular/core';
 import { CheckerBoard, ChessBoard }	        from './checkerBoard';
-import { Space, chessSpace }                            from './space';
+import { Space, chessSpace }                from './space';
 import { Piece, chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
 
 @Injectable()
 export class ChessService {
 	public board: any;
 	private _selectedPiece: chessPiece = null;
-    private _redTurn: boolean = true;
+    private _whiteTurn: boolean = true;
 
 	constructor() {
 		this.resetGame();
@@ -16,7 +16,7 @@ export class ChessService {
 	// Resets game back to beginning
     resetGame() {
     	this.board = new ChessBoard().board;
-    	this._redTurn = true;
+    	this._whiteTurn = true;
     	// Adding pawns
     	for (let j = 0; j < 8; j++) {
     		this.board[1][j].addPiece(new chessPawn('white', 1, j));
@@ -72,7 +72,7 @@ export class ChessService {
 
 	// Selecting a piece to move
     selectAPiece(p: chessPiece) {
-    	if (p.isWhite === this._redTurn) {
+    	if (p.isWhite === this._whiteTurn) {
 	    	this.clearSelections();
 		    this._selectedPiece = p;
 		    this.findPiece(this._selectedPiece).highlight = true;
@@ -155,7 +155,7 @@ export class ChessService {
     	this.findPiece(this._selectedPiece).clearPiece();
 		sp.addPiece(this._selectedPiece);
 		this.initializeSelected();
-		this._redTurn = !this._redTurn;
+		this._whiteTurn = !this._whiteTurn;
 		this.clearSelections();
     }
 
