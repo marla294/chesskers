@@ -256,15 +256,21 @@ export class ChessService {
 
     // Move the selected piece to an empty space
     moveSelectedToEmptySp(sp: chessSpace) {
-        if (!this.check()) {
-            this.findPiece(this._selectedPiece).clearPiece();
-            sp.addPiece(this._selectedPiece);
+        let space_old = this.findPiece(this._selectedPiece); // storing piece old space in case king is in check
+
+        space_old.clearPiece();
+        sp.addPiece(this._selectedPiece);
+
+        if (!this.check()) { // after the move the king is not in check
             this.initializeSelected();
             this._whiteTurn = !this._whiteTurn;
             this.loadWhiteTurn(this._whiteTurn);
-            this.clearSelections(); 
+            this.clearSelections();
+        } else { // after the move the king was in check so revert
+            sp.clearPiece();
+            space_old.addPiece(this._selectedPiece);
         }
-
+ 
     }
 
     // If the selected piece needs to be initialized on the first turn, do that here
