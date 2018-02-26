@@ -79,6 +79,11 @@ export class ChessService {
 		}
     }
 
+    /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
+    check() {
+        console.log("calling Check function");
+    }
+
     /* Function that will move the selected piece to the given space
     If the space contains a piece of the opposite color the piece will be taken,
     otherwise the selected piece will just move to the empty space. */
