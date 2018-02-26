@@ -1,6 +1,6 @@
 import { Injectable }                       from '@angular/core';
 import { CheckerBoard, ChessBoard }	        from './checkerBoard';
-import { Space }                            from './space';
+import { Space, chessSpace }                            from './space';
 import { Piece, chessPiece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
 
 @Injectable()
@@ -82,11 +82,11 @@ export class ChessService {
     /* Function that will move the selected piece to the given space
     If the space contains a piece of the opposite color the piece will be taken,
     otherwise the selected piece will just move to the empty space. */
-    moveSelected(sp: Space) {
+    moveSelected(sp: chessSpace) {
     	let type = this._selectedPiece.type;
     	let take = false;
 
-    	if (sp.piece !== null && sp.piece.isRed === !this._selectedPiece.isRed) {
+    	if (sp.piece !== null && sp.piece.isWhite === !this._selectedPiece.isWhite) {
     		take = true;
     	}
 
