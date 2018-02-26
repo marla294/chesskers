@@ -16,9 +16,7 @@ class="square float-left"
 	<div *ngIf="space.piece && space.piece.game==='chess'" 
     	(click)="chess.clickAPiece(space.piece)"
     	class="style=width: 100%; height: 100%">
-    		<div *ngIf="space.piece.game ==='chess'">
-	    		<chessPiece [chessPiece]="space.piece"></chessPiece>
-    		</div>
+	    <chessPiece [chessPiece]="space.piece"></chessPiece>
 	</div>
 	<!-- Will eventually add a flag to say if you are playing chess or checkers to use the different service "clickEmptySpace" function !-->
 	<div *ngIf="!space.piece"

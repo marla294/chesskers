@@ -33,6 +33,7 @@ export class Space {
 
 export class chessSpace extends Space {
 	piece: chessPiece = null;
+	check: boolean = false;
 
 		// Add piece to space
 	addPiece(p: chessPiece) {

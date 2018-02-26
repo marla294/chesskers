@@ -1,5 +1,5 @@
 import { Component, Input }	from '@angular/core';
-import { Space }			from './space';
+import { Space, chessSpace }			from './space';
 import { CheckersService }	from './checkers.service';
 import { ChessService }		from './chess.service';
 import { trigger, state, style, animate, transition, animateChild }	from '@angular/animations';
@@ -11,7 +11,7 @@ import { trigger, state, style, animate, transition, animateChild }	from '@angul
   	animations: []
 })
 export class SpaceComponent {
-	@Input() space: Space;
+	@Input() space: chessSpace;
 
 	constructor(
   		private checkers: CheckersService,
