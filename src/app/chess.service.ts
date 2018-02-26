@@ -111,17 +111,68 @@ export class ChessService {
         });
 
         // Get the King of the current team
-        let king: chessKing = null
+        let king: chessSpace = null
         this.board.forEach(row => {
             row.forEach(space => {
                 if (space.piece !== null && 
                     space.piece.isWhite === this._whiteTurn && 
                     space.piece.type === 'chessKing') {
-                        king = space.piece;
+                        king = space;
                 }
             })
         });
-        
+
+    }
+
+    /* For a piece on the board, check if it can take the king (to see if the king is in check). 
+    Returns True if the king can be taken, false if not.  sp = king space */
+    canTakeKing(p: chessPiece, sp: chessSpace): boolean {
+        let selectedOld = this._selectedPiece; // saving old selected piece to put back after done
+        this._selectedPiece = p;
+        let type = this._selectedPiece.type;
+        let take = false;
+
+        switch (type) {
+            case 'chessPawn':
+            if ((<chessPawn>this._selectedPiece).canTake(sp.row, sp.col) && this.isMoveClear(sp)) {
+                take = true;
+            }
+            break;
+
+            case 'rook':
+            if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+                take = true;
+            }
+            break;
+
+            case 'knight':
+            if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
+                take = true;
+            }
+            break;
+
+            case 'bishop':
+            if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+                take = true;
+            }
+            break;
+
+            case 'queen':
+            if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+                take = true;
+            }
+            break;
+
+            case 'chessKing':
+            if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
+                take = true;
+            }
+            break;
+
+        }
+
+        this._selectedPiece = selectedOld;
+        return take;
     }
 
     /* Function that will move the selected piece to the given space
