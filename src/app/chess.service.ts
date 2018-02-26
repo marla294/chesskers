@@ -49,16 +49,16 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: Piece) {
-	    	if (this._selectedPiece === null) { // Piece is being selected not taken
-		    	this.selectAPiece(p);
-	    	} else if (this._selectedPiece !== null && 
-	    		p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
-	    		let type = this._selectedPiece.type;
-	    		let sp = this.findPiece(p);
-	    		this.moveSelected(sp);
-	    	} else { // piece is same color as selected piece so select the new piece
-	    		this.selectAPiece(p);
-	    	}
+    	if (this._selectedPiece === null) { // Piece is being selected not taken
+	    	this.selectAPiece(p);
+    	} else if (this._selectedPiece !== null && 
+    		p.isRed === !this._selectedPiece.isRed) { // Evaluating if piece can be taken by selected piece
+    		let type = this._selectedPiece.type;
+    		let sp = this.findPiece(p);
+    		this.moveSelected(sp);
+    	} else { // piece is same color as selected piece so select the new piece
+    		this.selectAPiece(p);
+    	}
     }
 
     // Click on an empty space on the board

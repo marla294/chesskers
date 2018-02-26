@@ -1,4 +1,4 @@
-import { Piece }	from './pieces/piece';
+import { Piece, chessPiece }	from './pieces/piece';
 
 export class Space {
 	playable: boolean;
@@ -29,4 +29,8 @@ export class Space {
 			this.piece = null;
 		}
     }
+}
+
+export class chessSpace extends Space {
+	piece: chessPiece = null;
 }
