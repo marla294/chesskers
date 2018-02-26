@@ -1,6 +1,6 @@
-import { Injectable }           from '@angular/core';
-import { CheckerBoard }	        from './checkerBoard';
-import { Space }                from './space';
+import { Injectable }                       from '@angular/core';
+import { CheckerBoard, ChessBoard }	        from './checkerBoard';
+import { Space }                            from './space';
 import { Piece, chessPawn, Rook, Knight, Bishop, chessKing, Queen }		from './pieces/piece';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ChessService {
 
 	// Resets game back to beginning
     resetGame() {
-    	this.board = new CheckerBoard().board;
+    	this.board = new ChessBoard().board;
     	this._redTurn = true;
     	// Adding pawns
     	for (let j = 0; j < 8; j++) {
