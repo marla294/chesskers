@@ -100,7 +100,7 @@ export class ChessService {
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
     check() {
-        //Put other team into chessPiece array
+        // Get other team pieces
         let pieceArray = new Array();
         this.board.forEach(row => {
             row.forEach(space => {
@@ -110,7 +110,18 @@ export class ChessService {
             })
         });
 
-        console.log(pieceArray);
+        // Get the King of the current team
+        let king: chessKing = null
+        this.board.forEach(row => {
+            row.forEach(space => {
+                if (space.piece !== null && 
+                    space.piece.isWhite === this._whiteTurn && 
+                    space.piece.type === 'chessKing') {
+                        king = space.piece;
+                }
+            })
+        });
+        
     }
 
     /* Function that will move the selected piece to the given space
