@@ -15,9 +15,6 @@ export class ChessService {
 
 	constructor() {
         this._whiteTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
-        this._whiteTurnBeh.subscribe(turn => {
-            this.check();
-        });
 		this.resetGame();
 	}
 
@@ -51,6 +48,10 @@ export class ChessService {
     	// Adding queens
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
+
+        this._whiteTurnBeh.subscribe(turn => {
+            this.check();
+        });
     }
 
     // Observables and Behavioral Subjects
@@ -99,7 +100,17 @@ export class ChessService {
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
     check() {
-        console.log("calling Check function");
+        //Put other team into chessPiece array
+        let pieceArray = new Array();
+        this.board.forEach(row => {
+            row.forEach(space => {
+                if (space.piece !== null && space.piece.isWhite === !this._whiteTurn) {
+                    pieceArray.push(space.piece);
+                }
+            })
+        });
+
+        console.log(pieceArray);
     }
 
     /* Function that will move the selected piece to the given space
