@@ -48,10 +48,6 @@ export class ChessService {
     	// Adding queens
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
-
-        this._whiteTurnBeh.subscribe(turn => {
-            this.check();
-        });
     }
 
     // Observables and Behavioral Subjects
@@ -99,7 +95,7 @@ export class ChessService {
     }
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
-    check() {
+    check(): boolean {
         // Get other team pieces
         let pieceArray = new Array();
         this.board.forEach(row => {
@@ -130,7 +126,7 @@ export class ChessService {
             }
         });
 
-        console.log(check);
+        return check;
     }
 
     /* For a piece on the board, check if it can take the king (to see if the king is in check). 
@@ -250,19 +246,25 @@ export class ChessService {
 
     // Move the selected piece to take a piece
     moveSelectedToTake(p: chessPiece) {
-    	let sp = this.findPiece(p);
-    	sp.clearPiece(); // clear out the taken piece from the space
-    	this.moveSelectedToEmptySp(sp); // Move the selected piece to the newly vacated space
+        let sp = this.findPiece(p);
+        if (!this.check()) {
+            sp.clearPiece(); // clear out the taken piece from the space
+            this.moveSelectedToEmptySp(sp); // Move the selected piece to the newly vacated space
+        }
+    	
     }
 
     // Move the selected piece to an empty space
     moveSelectedToEmptySp(sp: chessSpace) {
-    	this.findPiece(this._selectedPiece).clearPiece();
-		sp.addPiece(this._selectedPiece);
-		this.initializeSelected();
-		this._whiteTurn = !this._whiteTurn;
-        this.loadWhiteTurn(this._whiteTurn);
-		this.clearSelections();
+        if (!this.check()) {
+            this.findPiece(this._selectedPiece).clearPiece();
+            sp.addPiece(this._selectedPiece);
+            this.initializeSelected();
+            this._whiteTurn = !this._whiteTurn;
+            this.loadWhiteTurn(this._whiteTurn);
+            this.clearSelections(); 
+        }
+
     }
 
     // If the selected piece needs to be initialized on the first turn, do that here
