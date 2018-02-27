@@ -119,22 +119,26 @@ export class ChessService {
         let winner = false;
 
         // Get the King of the current team
-        let king: chessSpace = this.findKingSpace();
+        let kingSp: chessSpace = this.findKingSpace();
 
         // Get all the spaces around the King that the king could try to move to
         let kingRun = Array();
-        let startRow = (king.row - 1) >= 0 ? king.row - 1 : 0;
-        let endRow =  (king.row + 1) <= 7 ? king.row + 1 : 7;
-        let startCol = (king.col - 1) >= 0 ? king.col - 1 : 0;
-        let endCol =  (king.col + 1) <= 7 ? king.col + 1 : 7;
-
+        let startRow = (kingSp.row - 1) >= 0 ? kingSp.row - 1 : 0;
+        let endRow =  (kingSp.row + 1) <= 7 ? kingSp.row + 1 : 7;
+        let startCol = (kingSp.col - 1) >= 0 ? kingSp.col - 1 : 0;
+        let endCol =  (kingSp.col + 1) <= 7 ? kingSp.col + 1 : 7;
         for (let r = startRow; r <= endRow; r++) {
             for (let c = startCol; c <= endCol; c++) {
-                if (this.board[r][c].piece === null) {
-                    kingRun.push(this.board[r][c]);
-                }
+                kingRun.push(this.board[r][c]);
             }
         }
+
+        // Now, for each of the empty spaces, try moving the king there and see if it is still in check
+        let selectedOld = this._selectedPiece; // saving old selected piece to put back after done
+        this._selectedPiece = kingSp.piece; // making King selected to test it
+        kingRun.forEach(space => {
+            this.moveSelectedToEmptySp(space);
+        })
 
         console.log(kingRun);
     }
