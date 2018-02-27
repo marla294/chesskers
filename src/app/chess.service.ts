@@ -49,7 +49,7 @@ export class ChessService {
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
 
-        this._whiteTurnBeh.subscribe(turn => this.check());
+        this._whiteTurnBeh.subscribe(turn => this.highlightKingSpace(this.check()));
     }
 
     // Observables and Behavioral Subjects
@@ -119,7 +119,6 @@ export class ChessService {
             }
         });
 
-        this.highlightKingSpace(check);
         return check;
     }
 
@@ -268,6 +267,7 @@ export class ChessService {
 
     	if (this.moveSelectedToEmptySp(sp)) { // If the king was in check from the move, put the old piece back in the empty space
             sp.addPiece(p);
+            this.highlightKingSpace(true);
         }
     }
 
@@ -280,6 +280,7 @@ export class ChessService {
         sp.addPiece(this._selectedPiece);
 
         if (!this.check()) { // after the move the king is not in check
+            this.highlightKingSpace(false);
             this.initializeSelected();
             this._whiteTurn = !this._whiteTurn;
             this.loadWhiteTurn(this._whiteTurn);
