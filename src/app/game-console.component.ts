@@ -16,6 +16,7 @@ export class GameConsoleComponent implements OnInit {
 
 	// Observables
 	public redTurn$: Observable<boolean>;
+	public whiteTurn$: Observable<boolean>;
 
 	// Behavior Subjects
 	public _resetGame: BehaviorSubject<boolean>;
@@ -39,7 +40,16 @@ export class GameConsoleComponent implements OnInit {
 				this.turn = 'Red'; // When the game is reset by someone else set the turn to Red
 			});
 		} else if (this.chessOrCheckers === 'chess') {
+			//Observables
+			this.whiteTurn$ = this.chess.whiteTurnObs;
+			this.whiteTurn$.subscribe(whiteTurn => {
+				this.turn = whiteTurn ? 'White' : 'Black';
+			});
+
 			this._resetGame = this.chess.resetGameBeh;
+			this._resetGame.subscribe(reset => {
+				this.turn = 'White';
+			});
 		}
 
 	}
