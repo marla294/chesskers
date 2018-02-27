@@ -12,9 +12,11 @@ export class ChessService {
 
     // Behavior Subjects
     private _whiteTurnBeh: BehaviorSubject<boolean>;
+    private _resetGame: BehaviorSubject<boolean>;
 
 	constructor() {
         this._whiteTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
+        this._resetGame = <BehaviorSubject<boolean>>new BehaviorSubject(true);
 		this.resetGame();
 	}
 
@@ -22,6 +24,7 @@ export class ChessService {
     resetGame() {
     	this.board = new ChessBoard().board;
     	this._whiteTurn = true;
+        this.loadResetGame(false);
     	// Adding pawns
     	for (let j = 0; j < 8; j++) {
     		this.board[1][j].addPiece(new chessPawn('white', 1, j));
@@ -58,8 +61,22 @@ export class ChessService {
         this._whiteTurnBeh.next(turn);
     }
 
+    loadResetGame(reset: boolean) {
+        this._resetGame.next(reset);
+    }
+
     get whiteTurnObs() {
         return this._whiteTurnBeh.asObservable();
+    }
+
+    // For Game Console
+    get resetGameBeh() {
+        return this._resetGame; 
+    }
+
+    // For Game Board
+    get resetGameObs() {
+        return this._resetGame.asObservable();
     }
 
     // Click events for pieces and spaces

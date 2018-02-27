@@ -37,6 +37,14 @@ export class GameBoardComponent implements OnInit {
             // Always reset game on init anyway
             this.onResetCheckers();
         } else if (this.chessOrCheckers === 'chess') {
+            //Observables
+            this.resetGame$ = this.chess.resetGameObs;
+            this.resetGame$.subscribe(reset => {
+                if (reset) {
+                    this.onResetChess();
+                }
+            });
+
             // Always reset game on init anyway
             this.onResetChess();
         }

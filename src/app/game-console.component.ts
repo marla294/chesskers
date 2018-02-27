@@ -39,7 +39,7 @@ export class GameConsoleComponent implements OnInit {
 				this.turn = 'Red'; // When the game is reset by someone else set the turn to Red
 			});
 		} else if (this.chessOrCheckers === 'chess') {
-
+			this._resetGame = this.chess.resetGameBeh;
 		}
 
 	}
