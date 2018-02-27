@@ -48,6 +48,8 @@ export class ChessService {
     	// Adding queens
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
+
+        this._whiteTurnBeh.subscribe(turn => this.check());
     }
 
     // Observables and Behavioral Subjects
@@ -107,6 +109,29 @@ export class ChessService {
         });
 
         // Get the King of the current team
+        let king: chessSpace = this.findKingSpace();
+
+        // Check if the pieces from the other team could take the king
+        let check: boolean = false;
+        pieceArray.forEach(piece => {
+            if (this.canTakeKing(piece, king)) {
+                check = true;
+            }
+        });
+
+        this.highlightKingSpace(check);
+        return check;
+    }
+
+    /* Highlights the King space of the current team */
+    highlightKingSpace(check: boolean) {
+        this.board.forEach(row => row.forEach(space => space.check = false)); // First remove highlight from all old squares
+        let king: chessSpace = this.findKingSpace()
+        king.check = check;
+    }
+
+    /* Find the king space for the current team's turn */
+    findKingSpace(): chessSpace {
         let king: chessSpace = null
         this.board.forEach(row => {
             row.forEach(space => {
@@ -117,18 +142,7 @@ export class ChessService {
                 }
             })
         });
-
-        // Check if the pieces from the other team could take the king
-        let check: boolean = false;
-        pieceArray.forEach(piece => {
-            if (this.canTakeKing(piece, king)) {
-                check = true;
-            }
-        });
-
-        king.check = check ? true : false;
-        console.log(king);
-        return check;
+        return king;
     }
 
     /* For a piece on the board, check if it can take the king (to see if the king is in check). 
@@ -253,7 +267,6 @@ export class ChessService {
         sp.clearPiece(); // clear out the taken piece from the space
 
     	if (this.moveSelectedToEmptySp(sp)) { // If the king was in check from the move, put the old piece back in the empty space
-            console.log("Check on take");
             sp.addPiece(p);
         }
     }
