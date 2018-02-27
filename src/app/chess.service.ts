@@ -113,6 +113,32 @@ export class ChessService {
 		}
     }
 
+    /* Function that will determine whether the king can escape check.  Runs every time the king is in check.*/
+    isWinner() {
+        // Is there a winner?
+        let winner = false;
+
+        // Get the King of the current team
+        let king: chessSpace = this.findKingSpace();
+
+        // Get all the spaces around the King that the king could try to move to
+        let kingRun = Array();
+        let startRow = (king.row - 1) >= 0 ? king.row - 1 : 0;
+        let endRow =  (king.row + 1) <= 7 ? king.row + 1 : 7;
+        let startCol = (king.col - 1) >= 0 ? king.col - 1 : 0;
+        let endCol =  (king.col + 1) <= 7 ? king.col + 1 : 7;
+
+        for (let r = startRow; r <= endRow; r++) {
+            for (let c = startCol; c <= endCol; c++) {
+                if (this.board[r][c].piece === null) {
+                    kingRun.push(this.board[r][c]);
+                }
+            }
+        }
+
+        console.log(kingRun);
+    }
+
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
     check(): boolean {
         // Get other team pieces
@@ -135,6 +161,10 @@ export class ChessService {
                 check = true;
             }
         });
+
+        if (check) {
+            this.isWinner();
+        }
 
         return check;
     }
