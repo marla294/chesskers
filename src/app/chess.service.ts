@@ -52,10 +52,7 @@ export class ChessService {
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
 
-        this._whiteTurnBeh.subscribe(turn => {
-            this.highlightKingSpace(this.check()); // highlight king space if it is in check
-            this.isWinner(); // check if there is a winner
-        });
+        this._whiteTurnBeh.subscribe(turn => this.highlightKingSpace(this.check()));
     }
 
     // Observables and Behavioral Subjects
@@ -123,7 +120,6 @@ export class ChessService {
 
         // Get the King of the current team
         let kingSp: chessSpace = this.findKingSpace();
-        let king: chessPiece = kingSp.piece;
 
         // Get all the spaces around the King that the king could try to move to
         let kingRun = Array();
@@ -140,12 +136,6 @@ export class ChessService {
         }
 
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        let oldSelected: chessPiece = this._selectedPiece;
-        this._selectedPiece = king;
-        kingRun.forEach(space => {
-            console.log(this.moveSelectedToEmptySp(space, true));
-        });
-        this._selectedPiece = oldSelected;
         
     }
 
@@ -178,6 +168,10 @@ export class ChessService {
                 check = true;
             }
         });
+
+        if (check) {
+            this.isWinner();
+        }
 
         return check;
     }
@@ -333,33 +327,22 @@ export class ChessService {
 
     /* Move the selected piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.*/
     moveSelectedToEmptySp(sp: chessSpace, test: boolean): boolean {
-        let space_old = this.findPiece(this._selectedPiece); // storing piece old space
+        let space_old = this.findPiece(this._selectedPiece); // storing piece old space in case king is in check
         let check = false;
 
         space_old.clearPiece();
         sp.addPiece(this._selectedPiece);
 
-        if (!test) { // not a test so do everything as normal
-            if (!this.check()) { // after the move the king is not in check
-                this.highlightKingSpace(false);
-                this.initializeSelected();
-                this._whiteTurn = !this._whiteTurn;
-                this.loadWhiteTurn(this._whiteTurn);
-                this.clearSelections();
-            } else { // after the move the king was in check so revert
-                sp.clearPiece();
-                space_old.addPiece(this._selectedPiece);
-                check = true;
-            }
-        } else { // this is a test so in both cases move old piece back
-            if (!this.check()) {
-                sp.clearPiece();
-                space_old.addPiece(this._selectedPiece);
-            } else { // king was in check after move so return true
-                sp.clearPiece();
-                space_old.addPiece(this._selectedPiece);
-                check = true;
-            }
+        if (!this.check()) { // after the move the king is not in check
+            this.highlightKingSpace(false);
+            this.initializeSelected();
+            this._whiteTurn = !this._whiteTurn;
+            this.loadWhiteTurn(this._whiteTurn);
+            this.clearSelections();
+        } else { // after the move the king was in check so revert
+            sp.clearPiece();
+            space_old.addPiece(this._selectedPiece);
+            check = true;
         }
 
         return check;
