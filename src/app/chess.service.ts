@@ -54,6 +54,9 @@ export class ChessService {
 
         this._whiteTurnBeh.subscribe(turn => {
             this.highlightKingSpace(this.check()); // highlight king space if it is in check
+            if (this.check()) {
+                this.isWinner(); // check if there is a winner
+            }
         });
     }
 
@@ -132,7 +135,7 @@ export class ChessService {
         let endCol =  (kingSp.col + 1) <= 7 ? kingSp.col + 1 : 7;
         for (let r = startRow; r <= endRow; r++) {
             for (let c = startCol; c <= endCol; c++) {
-                if (this.board[r][c].piece !== null && this.board[r][c].piece.isWhite === !king.isWhite) {
+                if (this.board[r][c].piece === null) {
                     kingRun.push(this.board[r][c]);
                 }
             }
@@ -143,7 +146,7 @@ export class ChessService {
         this._selectedPiece = king;
         let canMove: boolean = false;
         kingRun.forEach(space => {
-            if (!this.moveSelectedToTake(space, true)) {
+            if (!this.moveSelectedToEmptySp(space, true)) {
                 canMove = true; // If there's a space the king can move to where he will not be in check, set canMove to true
             }
         });
@@ -375,9 +378,6 @@ export class ChessService {
             }
         }
 
-        if (check) {
-            this.isWinner();
-        }
         return check;
  
     }
