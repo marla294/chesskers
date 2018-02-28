@@ -89,7 +89,7 @@ export class ChessService {
     		p.isWhite === !this._selectedPiece.isWhite) { // Evaluating if piece can be taken by selected piece
     		let type = this._selectedPiece.type;
     		let sp = this.findPiece(p);
-    		this.moveSelected(sp);
+    		this.moveSelected(sp, false);
     	} else { // piece is same color as selected piece so select the new piece
     		this.selectAPiece(p);
     	}
@@ -100,7 +100,7 @@ export class ChessService {
     	if (this._selectedPiece !== null && this._selectedPiece.type === 'chessKing') {
     		this.castle(sp);
     	} else if (this._selectedPiece !== null) {
-    		this.moveSelected(sp);
+    		this.moveSelected(sp, false);
     	}
     }
 
@@ -252,7 +252,7 @@ export class ChessService {
     /* Function that will move the selected piece to the given space
     If the space contains a piece of the opposite color the piece will be taken,
     otherwise the selected piece will just move to the empty space. */
-    moveSelected(sp: chessSpace) {
+    moveSelected(sp: chessSpace, test: boolean) {
     	let type = this._selectedPiece.type;
     	let take = false;
 
@@ -264,10 +264,10 @@ export class ChessService {
 			case 'chessPawn':
 			if (take && (<chessPawn>this._selectedPiece).canTake(sp.row, sp.col) &&
 			this.isMoveClear(sp)) {
-				this.moveSelectedToTake(sp.piece);
+				this.moveSelectedToTake(sp.piece, test);
 			} else if (!take && (<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
 			this.isMoveClear(sp)) {
-				this.moveSelectedToEmptySp(sp);
+				this.moveSelectedToEmptySp(sp, test);
 			} else {
 				this.selectAPiece(this._selectedPiece);
 			}
@@ -275,14 +275,14 @@ export class ChessService {
 			case 'rook':
 			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
 				this.isMoveClear(sp)) {
-				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+				take ? this.moveSelectedToTake(sp.piece, test) : this.moveSelectedToEmptySp(sp, test);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
 	    	}
 			break;
 			case 'knight':
 			if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
-				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+				take ? this.moveSelectedToTake(sp.piece, test) : this.moveSelectedToEmptySp(sp, test);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
 	    	}
@@ -290,7 +290,7 @@ export class ChessService {
 			case 'bishop':
 			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
 				this.isMoveClear(sp)) {
-				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+				take ? this.moveSelectedToTake(sp.piece, test) : this.moveSelectedToEmptySp(sp, test);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
 	    	}
@@ -298,14 +298,14 @@ export class ChessService {
 			case 'queen':
 			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
 				this.isMoveClear(sp)) {
-				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+				take ? this.moveSelectedToTake(sp.piece, test) : this.moveSelectedToEmptySp(sp, test);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
 	    	}
 			break;
 			case 'chessKing':
 			if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
-				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
+				take ? this.moveSelectedToTake(sp.piece, test) : this.moveSelectedToEmptySp(sp, test);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
 	    	}
@@ -314,19 +314,19 @@ export class ChessService {
     }
 
     // Move the selected piece to take a piece
-    moveSelectedToTake(p: chessPiece) {
+    moveSelectedToTake(p: chessPiece, test: boolean) {
         let sp = this.findPiece(p);
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-    	if (this.moveSelectedToEmptySp(sp)) { // If the king was in check from the move, put the old piece back in the empty space
+    	if (this.moveSelectedToEmptySp(sp, test)) { // If the king was in check from the move, put the old piece back in the empty space
             sp.addPiece(p);
             this.highlightKingSpace(true);
         }
     }
 
-    // Move the selected piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake
-    moveSelectedToEmptySp(sp: chessSpace): boolean {
+    /* Move the selected piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.*/
+    moveSelectedToEmptySp(sp: chessSpace, test: boolean): boolean {
         let space_old = this.findPiece(this._selectedPiece); // storing piece old space in case king is in check
         let check = false;
 
@@ -390,14 +390,14 @@ export class ChessService {
     		if (isLeft) {
     			rookSp.clearPiece();
     			this.board[row][2].addPiece(rook);
-    			this.moveSelectedToEmptySp(sp);
+    			this.moveSelectedToEmptySp(sp, false);
     		} else {
     			rookSp.clearPiece();
     			this.board[row][4].addPiece(rook);
-    			this.moveSelectedToEmptySp(sp);
+    			this.moveSelectedToEmptySp(sp, false);
     		}
     	} else {
-    		this.moveSelected(sp);
+    		this.moveSelected(sp, false);
     	}
     }
 
