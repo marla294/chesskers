@@ -326,25 +326,15 @@ export class ChessService {
     }
 
     // Move the selected piece to take a piece
-    moveSelectedToTake(p: chessPiece, test: boolean): boolean {
+    moveSelectedToTake(p: chessPiece, test: boolean) {
         let sp = this.findPiece(p);
-        let check = false;
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-        if (!test) {
-            if (this.moveSelectedToEmptySp(sp, test)) { // If the king was in check from the move, put the old piece back in the empty space
-                sp.addPiece(p);
-                this.highlightKingSpace(true);
-                check = true;
-            }
-        } else { // test
-            if (this.moveSelectedToEmptySp(sp, test)) { check = true } 
+    	if (this.moveSelectedToEmptySp(sp, test)) { // If the king was in check from the move, put the old piece back in the empty space
             sp.addPiece(p);
+            this.highlightKingSpace(true);
         }
-
-        return check;
-
     }
 
     /* Move the selected piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.*/
