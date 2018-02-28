@@ -140,12 +140,22 @@ export class ChessService {
     }
 
     /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
-    testMove(p: chessPiece, sp: chessSpace) {
+    testMove(p: chessPiece, sp: chessSpace): boolean {
         let oldPiece: chessPiece = p; // Piece to try moving
         let oldPieceSpace: chessSpace = this.findPiece(p); // Piece moving space
         let newPiece: chessPiece = null; // Piece that exists in new space (if there is one)
         let newSpace: chessSpace = sp; // Space we're testing moving to
+        let removesCheck: boolean = false; // Flag that we return saying whether the move removes the check from the king
 
+        if (newSpace.piece === null) { // move to empty space
+
+        } else if (newSpace.piece !== null && newSpace.piece.isWhite === !p.isWhite) { // piece to take here
+            newPiece = newSpace.piece;
+        } else { // can't move to the space
+
+        }
+
+        return removesCheck;
     }
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
