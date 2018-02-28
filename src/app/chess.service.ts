@@ -147,6 +147,12 @@ export class ChessService {
             }
         });
 
+        // Now, if the king can't run away, let's see if anybody on the kings team can take the piece that's putting the king in check
+        let pieceArray = new Array();
+        if (winner) {      
+            pieceArray = this.getPieceArray(this._whiteTurn);
+        }
+
         console.log(winner);
     }
 
@@ -202,14 +208,7 @@ export class ChessService {
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
     check(): boolean {
         // Get other team pieces
-        let pieceArray = new Array();
-        this.board.forEach(row => {
-            row.forEach(space => {
-                if (space.piece !== null && space.piece.isWhite === !this._whiteTurn) {
-                    pieceArray.push(space.piece);
-                }
-            })
-        });
+        let pieceArray = this.getPieceArray(!this._whiteTurn);
 
         // Get the King space of the current team
         let kingSp: chessSpace = this.findKingSpace();
@@ -247,8 +246,7 @@ export class ChessService {
         return king;
     }
 
-    /* For a piece on the board, check if it can take the king (to see if the king is in check). 
-    Returns True if the king can be taken, false if not.  sp = king space */
+    /* For a piece on the board, check if it can take piece in the specified space.  sp = piece to take. */
     canTakePiece(p: chessPiece, sp: chessSpace): boolean {
         let type = p.type;
         let take = false;
@@ -548,6 +546,20 @@ export class ChessService {
         }));
 
         return sp;
+    }
+
+    // Get array of pieces for the white or the black team
+    getPieceArray(white: boolean): Array {
+        let pieceArray = new Array();
+        this.board.forEach(row => {
+            row.forEach(space => {
+                if (space.piece !== null && space.piece.isWhite === white) {
+                    pieceArray.push(space.piece);
+                }
+            })
+        });
+
+        return pieceArray;
     }
 
 
