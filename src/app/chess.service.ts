@@ -121,7 +121,7 @@ export class ChessService {
     /* Function that will determine whether the king can escape check.  Runs every time the king is in check.*/
     isWinner() {
         // Is there a winner?
-        let winner = false;
+        let winner = true;
 
         // Get the King of the current team
         let kingSp: chessSpace = this.findKingSpace();
@@ -135,21 +135,18 @@ export class ChessService {
         let endCol =  (kingSp.col + 1) <= 7 ? kingSp.col + 1 : 7;
         for (let r = startRow; r <= endRow; r++) {
             for (let c = startCol; c <= endCol; c++) {
-                if (this.board[r][c].piece === null) {
-                    kingRun.push(this.board[r][c]);
-                }
+                kingRun.push(this.board[r][c]);
             }
         }
 
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        let removesCheck: boolean = false
         kingRun.forEach(space => {
             if (this.testMove(king, space)) {
-                removesCheck = true;
+                winner = false;
             }
         });
 
-        console.log(removesCheck);
+        console.log(winner);
     }
 
     /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
@@ -164,14 +161,29 @@ export class ChessService {
             removesCheck = !this.movePieceToEmptySpTest(p, sp);
         } else if (newSpace.piece !== null && newSpace.piece.isWhite === !p.isWhite) { // piece to take here
             newPiece = newSpace.piece;
-        } else { // can't move to the space
-
+            removesCheck = !this.movePieceToTakeTest(p, newPiece);
         }
 
         return removesCheck;
     }
 
-        // Move any piece to an empty space.  For testing if king is in check
+    // Move the given piece to take a piece
+    movePieceToTakeTest(p: chessPiece, take: chessPiece): boolean {
+        let sp = this.findPiece(take);
+        let check = false;
+
+        sp.clearPiece(); // clear out the taken piece from the space
+
+        if (this.movePieceToEmptySpTest(p, sp)) { // If the king was in check from the move
+            check = true;
+        }
+
+        sp.addPiece(take);
+
+        return check;
+    }
+
+    // Move any piece to an empty space.  For testing if king is in check
     movePieceToEmptySpTest(p: chessPiece, sp: chessSpace): boolean {
         let space_old = this.findPiece(p); // storing piece old space in case king is in check
         let check = false;
