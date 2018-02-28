@@ -54,9 +54,7 @@ export class ChessService {
 
         this._whiteTurnBeh.subscribe(turn => {
             this.highlightKingSpace(this.check()); // highlight king space if it is in check
-            if (this.check()) {
-                this.isWinner(); // check if there is a winner
-            }
+            this.isWinner(); // check if there is a winner
         });
     }
 
@@ -144,13 +142,9 @@ export class ChessService {
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
         let oldSelected: chessPiece = this._selectedPiece;
         this._selectedPiece = king;
-        let canMove: boolean = false;
         kingRun.forEach(space => {
-            if (!this.moveSelectedToEmptySp(space, true)) {
-                canMove = true; // If there's a space the king can move to where he will not be in check, set canMove to true
-            }
+            console.log(this.moveSelectedToEmptySp(space, true));
         });
-        console.log(canMove);
         this._selectedPiece = oldSelected;
         
     }
