@@ -549,7 +549,7 @@ export class ChessService {
     }
 
     // Get array of pieces for the white or the black team
-    getPieceArray(white: boolean): Array {
+    getPieceArray(white: boolean) {
         let pieceArray = new Array();
         this.board.forEach(row => {
             row.forEach(space => {
