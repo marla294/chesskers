@@ -129,18 +129,21 @@ export class ChessService {
         let endCol =  (kingSp.col + 1) <= 7 ? kingSp.col + 1 : 7;
         for (let r = startRow; r <= endRow; r++) {
             for (let c = startCol; c <= endCol; c++) {
-                kingRun.push(this.board[r][c]);
+                if (this.board[r][c].piece === null) {
+                    kingRun.push(this.board[r][c]);
+                }
             }
         }
 
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        let selectedOld = this._selectedPiece; // saving old selected piece to put back after done
-        this._selectedPiece = kingSp.piece; // making King selected to test it
-        kingRun.forEach(space => {
-            this.moveSelectedToEmptySp(space);
-        })
+        
+    }
 
-        console.log(kingRun);
+    /* For a given piece, test if moving it to the given space will leave the king in check */
+    testMove(p: chessPiece, sp: chessSpace) {
+        let oldSpace: chessSpace = this.findPiece(p);
+        let oldSelected: chessPiece = this._selectedPiece;
+
     }
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
