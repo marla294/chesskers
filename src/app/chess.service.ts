@@ -52,7 +52,12 @@ export class ChessService {
     	this.board[0][4].addPiece(new Queen('white', 0, 4));
     	this.board[7][4].addPiece(new Queen('black', 7, 4));
 
-        this._whiteTurnBeh.subscribe(turn => this.highlightKingSpace(this.check()));
+        this._whiteTurnBeh.subscribe(turn => {
+            this.highlightKingSpace(this.check());
+            if (this.check()) {
+                this.isWinner();
+            }
+        });
     }
 
     // Observables and Behavioral Subjects
@@ -120,6 +125,7 @@ export class ChessService {
 
         // Get the King of the current team
         let kingSp: chessSpace = this.findKingSpace();
+        let king: chessPiece = kingSp.piece;
 
         // Get all the spaces around the King that the king could try to move to
         let kingRun = Array();
@@ -136,7 +142,14 @@ export class ChessService {
         }
 
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        
+        let removesCheck: boolean = false
+        kingRun.forEach(space => {
+            if (this.testMove(king, space)) {
+                removesCheck = true;
+            }
+        });
+
+        console.log(removesCheck);
     }
 
     /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
@@ -148,7 +161,7 @@ export class ChessService {
         let removesCheck: boolean = false; // Flag that we return saying whether the move removes the check from the king
 
         if (newSpace.piece === null) { // move to empty space
-
+            removesCheck = !this.movePieceToEmptySpTest(p, sp);
         } else if (newSpace.piece !== null && newSpace.piece.isWhite === !p.isWhite) { // piece to take here
             newPiece = newSpace.piece;
         } else { // can't move to the space
@@ -156,6 +169,24 @@ export class ChessService {
         }
 
         return removesCheck;
+    }
+
+        // Move any piece to an empty space.  For testing if king is in check
+    movePieceToEmptySpTest(p: chessPiece, sp: chessSpace): boolean {
+        let space_old = this.findPiece(p); // storing piece old space in case king is in check
+        let check = false;
+
+        space_old.clearPiece();
+        sp.addPiece(p);
+
+        if (this.check()) {
+            check = true;
+        }
+
+        sp.clearPiece();
+        space_old.addPiece(p);
+
+        return check;
     }
 
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
@@ -180,10 +211,6 @@ export class ChessService {
                 check = true;
             }
         });
-
-        if (check) {
-            this.isWinner();
-        }
 
         return check;
     }
@@ -356,9 +383,7 @@ export class ChessService {
             space_old.addPiece(this._selectedPiece);
             check = true;
         }
-
         return check;
- 
     }
 
     // If the selected piece needs to be initialized on the first turn, do that here
