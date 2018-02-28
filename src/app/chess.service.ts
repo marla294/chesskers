@@ -375,9 +375,6 @@ export class ChessService {
             }
         }
 
-        if (check) {
-            this.isWinner();
-        }
         return check;
  
     }
