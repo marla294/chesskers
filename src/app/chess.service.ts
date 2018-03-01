@@ -141,13 +141,11 @@ export class ChessService {
         }
 
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        /*
         kingRun.forEach(space => {
             if (!this.testMove(king, space)) {
                 winner = false;
             }
         });
-        */
 
         // Now, if the king can't run away, let's see if anybody on the kings team can take the piece that's putting the king in check
         let pieceArray = new Array();
@@ -156,7 +154,6 @@ export class ChessService {
             pieceArray = this.getPieceArray(this._whiteTurn);
             pieceArray.forEach(piece => {
                 if(this.canTakePiece(piece, checkSp)) {
-                    console.log(piece);
                     winner = false;
                 }
             });
@@ -468,7 +465,7 @@ export class ChessService {
     	if (spRow === pRow || spCol === pCol) {
     		isClear = this.isMoveClearStraight(p, sp);
     	} else {
-    		isClear = this.isMoveClearDiag(sp);
+    		isClear = this.isMoveClearDiag(p, sp);
     	}
 
     	return isClear;
