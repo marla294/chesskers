@@ -212,7 +212,7 @@ export class ChessService {
         // Check if the pieces from the other team could take the king
         let check: boolean = false;
         pieceArray.forEach(piece => {
-            if (this.canTakePiece(piece, kingSp)) {
+            if (this.canMovePiece(piece, kingSp)) {
                 this._checkPiece = piece;
                 check = true;
             }
@@ -290,7 +290,7 @@ export class ChessService {
         return take;
     }
 
-    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there) */
+    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
     canMovePiece(p: chessPiece, sp: chessSpace): boolean {
         let type = p.type;
         let move = false;
