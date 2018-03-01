@@ -124,42 +124,7 @@ export class ChessService {
         // Is there a winner?
         let winner = true;
 
-        // Get the King of the current team
-        let kingSp: chessSpace = this.findKingSpace();
-        let king: chessPiece = kingSp.piece;
-
-        // Get all the spaces around the King that the king could try to move to
-        let kingRun = Array();
-        let startRow = (kingSp.row - 1) >= 0 ? kingSp.row - 1 : 0;
-        let endRow =  (kingSp.row + 1) <= 7 ? kingSp.row + 1 : 7;
-        let startCol = (kingSp.col - 1) >= 0 ? kingSp.col - 1 : 0;
-        let endCol = (kingSp.col + 1) <= 7 ? kingSp.col + 1 : 7;
-        for (let r = startRow; r <= endRow; r++) {
-            for (let c = startCol; c <= endCol; c++) {
-                kingRun.push(this.board[r][c]);
-            }
-        }
-        /*
-        // Now, for each of the empty spaces, try moving the king there and see if it is still in check
-        kingRun.forEach(space => {
-            if (!this.testMove(king, space)) {
-                winner = false;
-            }
-        });
-
-        // Now, if the king can't run away, let's see if anybody on the kings team can take the piece that's putting the king in check
-        let pieceArray = this.getPieceArray(this._whiteTurn);
-        let checkSp: chessSpace = this.findPiece(this._checkPiece);
-        if (winner) {      
-            pieceArray.forEach(piece => {
-                if(this.canTakePiece(piece, checkSp)) {
-                    winner = false;
-                }
-            });
-        }
-        */
-
-        // Okay, finally, the only other option is to see if a piece can move inbetween the king and the piece that is checking the king.  I just feel like writing a function that moves every piece and tests whether the king is still in check, so I'm just going to do that.
+        // Moves every piece for the current team still on the board and tests whether it will get the king out of check.  If it does, then there's no winner.  If none of the pieces get the king out of check, even the king himself, then someone won.
         let pieceArray = this.getPieceArray(this._whiteTurn);
         if (winner) {
             pieceArray.forEach(piece => {
