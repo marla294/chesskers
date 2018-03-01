@@ -269,7 +269,7 @@ export class ChessService {
             break;
 
             case 'rook':
-            if ((<Rook>p).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+            if ((<Rook>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
                 take = true;
             }
             break;
@@ -281,13 +281,13 @@ export class ChessService {
             break;
 
             case 'bishop':
-            if ((<Bishop>p).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+            if ((<Bishop>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
                 take = true;
             }
             break;
 
             case 'queen':
-            if ((<Queen>p).canMove(sp.row, sp.col) && this.isMoveClear(sp)) {
+            if ((<Queen>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
                 take = true;
             }
             break;
@@ -317,10 +317,10 @@ export class ChessService {
     	switch (type) {
 			case 'chessPawn':
 			if (take && (<chessPawn>this._selectedPiece).canTake(sp.row, sp.col) &&
-			this.isMoveClear(sp)) {
+			this.isMoveClear(this._selectedPiece, sp)) {
 				this.moveSelectedToTake(sp.piece);
 			} else if (!take && (<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
-			this.isMoveClear(sp)) {
+			this.isMoveClear(this._selectedPiece, sp)) {
 				this.moveSelectedToEmptySp(sp);
 			} else {
 				this.selectAPiece(this._selectedPiece);
@@ -328,7 +328,7 @@ export class ChessService {
 			break;
 			case 'rook':
 			if ((<Rook>this._selectedPiece).canMove(sp.row, sp.col) && 
-				this.isMoveClear(sp)) {
+				this.isMoveClear(this._selectedPiece, sp)) {
 				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
@@ -343,7 +343,7 @@ export class ChessService {
 			break;
 			case 'bishop':
 			if ((<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
-				this.isMoveClear(sp)) {
+				this.isMoveClear(this._selectedPiece, sp)) {
 				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
@@ -351,7 +351,7 @@ export class ChessService {
 			break;
 			case 'queen':
 			if ((<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
-				this.isMoveClear(sp)) {
+				this.isMoveClear(this._selectedPiece, sp)) {
 				take ? this.moveSelectedToTake(sp.piece) : this.moveSelectedToEmptySp(sp);
 			} else {
 	    		this.selectAPiece(this._selectedPiece);
@@ -458,11 +458,11 @@ export class ChessService {
 	and the space that the piece is moving to */
 
     // Determines whether to use the straight or diag function to check
-    isMoveClear(sp: chessSpace) {
+    isMoveClear(p: chessPiece, sp: chessSpace) {
     	let spRow = sp.row;
     	let spCol = sp.col;
-    	let pRow = this._selectedPiece.row;
-    	let pCol = this._selectedPiece.col;
+    	let pRow = p.row;
+    	let pCol = p.col;
     	let isClear = true;
 
     	if (spRow === pRow || spCol === pCol) {
