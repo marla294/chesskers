@@ -56,7 +56,7 @@ export class ChessService {
         this._whiteTurnBeh.subscribe(turn => {
             this.highlightKingSpace(this.check());
             if (this.check()) {
-                this.isWinner();
+                this.checkmate();
             }
         });
     }
@@ -120,23 +120,22 @@ export class ChessService {
     }
 
     /* Function that will determine whether the king can escape check.  Runs every time the king is in check.*/
-    isWinner() {
-        // Is there a winner?
-        let winner = true;
+    checkmate() {
+        let checkmate = true;
 
         // Moves every piece for the current team still on the board and tests whether it will get the king out of check.  If it does, then there's no winner.  If none of the pieces get the king out of check, even the king himself, then someone won.
         let pieceArray = this.getPieceArray(this._whiteTurn);
-        if (winner) {
+        if (checkmate) {
             pieceArray.forEach(piece => {
                 this.getMoveSpaces(piece).forEach(space => {
                     if (!this.testMove(piece, space)) {
-                        winner = false;
+                        checkmate = false;
                     }
                 });
             });
         }
 
-        console.log(winner);
+        console.log(checkmate);
     }
 
     // Given a piece on the board, return an array of all the possible spaces it could move to, including those where it would be capturing another piece
