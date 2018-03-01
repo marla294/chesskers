@@ -243,53 +243,6 @@ export class ChessService {
         return king;
     }
 
-    /* For a piece on the board, check if it can take piece in the specified space.  sp = piece to take. */
-    canTakePiece(p: chessPiece, sp: chessSpace): boolean {
-        let type = p.type;
-        let take = false;
-
-        switch (type) {
-            case 'chessPawn':
-            if ((<chessPawn>p).canTake(sp.row, sp.col)) {
-                take = true;
-            }
-            break;
-
-            case 'rook':
-            if ((<Rook>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
-                take = true;
-            }
-            break;
-
-            case 'knight':
-            if ((<Knight>p).canMove(sp.row, sp.col)) {
-                take = true;
-            }
-            break;
-
-            case 'bishop':
-            if ((<Bishop>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
-                take = true;
-            }
-            break;
-
-            case 'queen':
-            if ((<Queen>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
-                take = true;
-            }
-            break;
-
-            case 'chessKing':
-            if ((<chessKing>p).canMove(sp.row, sp.col)) {
-                take = true;
-            }
-            break;
-
-        }
-
-        return take;
-    }
-
     /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
     canMovePiece(p: chessPiece, sp: chessSpace): boolean {
         let type = p.type;
