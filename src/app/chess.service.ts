@@ -139,7 +139,7 @@ export class ChessService {
                 kingRun.push(this.board[r][c]);
             }
         }
-
+        /*
         // Now, for each of the empty spaces, try moving the king there and see if it is still in check
         kingRun.forEach(space => {
             if (!this.testMove(king, space)) {
@@ -157,8 +157,19 @@ export class ChessService {
                 }
             });
         }
+        */
 
         // Okay, finally, the only other option is to see if a piece can move inbetween the king and the piece that is checking the king.  I just feel like writing a function that moves every piece and tests whether the king is still in check, so I'm just going to do that.
+        let pieceArray = this.getPieceArray(this._whiteTurn);
+        if (winner) {
+            pieceArray.forEach(piece => {
+                this.getMoveSpaces(piece).forEach(space => {
+                    if (!this.testMove(piece, space)) {
+                        winner = false;
+                    }
+                });
+            });
+        }
 
         console.log(winner);
     }
@@ -179,7 +190,7 @@ export class ChessService {
             }
         }));
 
-        console.log(spaceArray);
+        return spaceArray;
 
     }
 
