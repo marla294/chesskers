@@ -58,6 +58,7 @@ export class ChessService {
             if (this.check()) {
                 this.isWinner();
             }
+            this.getMoveSpace(this.board[0][0].piece);
         });
     }
 
@@ -148,10 +149,9 @@ export class ChessService {
         });
 
         // Now, if the king can't run away, let's see if anybody on the kings team can take the piece that's putting the king in check
-        let pieceArray = new Array();
+        let pieceArray = this.getPieceArray(this._whiteTurn);
         let checkSp: chessSpace = this.findPiece(this._checkPiece);
         if (winner) {      
-            pieceArray = this.getPieceArray(this._whiteTurn);
             pieceArray.forEach(piece => {
                 if(this.canTakePiece(piece, checkSp)) {
                     winner = false;
@@ -159,7 +159,21 @@ export class ChessService {
             });
         }
 
+        // Okay, finally, the only other option is to see if a piece can move inbetween the king and the piece that is checking the king.  I just feel like writing a function that moves every piece and tests whether the king is still in check, so I'm just going to do that.
+
         console.log(winner);
+    }
+
+    // Given a piece on the board, return an array of all the possible spaces it could move to, including those where it would be capturing another piece
+    getMoveSpace(p: chessPiece) {
+        let spaceArray = new Array();
+
+        this.board.forEach(row => row.forEach(space => {
+            
+        }));
+
+        console.log(spaceArray);
+
     }
 
     /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
@@ -298,6 +312,53 @@ export class ChessService {
         }
 
         return take;
+    }
+
+    /* For a piece on the board, check if it can move to the specified space. */
+    canMovePiece(p: chessPiece, sp: chessSpace): boolean {
+        let type = p.type;
+        let move = false;
+
+        switch (type) {
+            case 'chessPawn':
+            if ((<chessPawn>p).canMove(sp.row, sp.col)) {
+                move = true;
+            }
+            break;
+
+            case 'rook':
+            if ((<Rook>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
+                move = true;
+            }
+            break;
+
+            case 'knight':
+            if ((<Knight>p).canMove(sp.row, sp.col)) {
+                move = true;
+            }
+            break;
+
+            case 'bishop':
+            if ((<Bishop>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
+                move = true;
+            }
+            break;
+
+            case 'queen':
+            if ((<Queen>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)) {
+                move = true;
+            }
+            break;
+
+            case 'chessKing':
+            if ((<chessKing>p).canMove(sp.row, sp.col)) {
+                move = true;
+            }
+            break;
+
+        }
+
+        return move;
     }
 
     /* Function that will move the selected piece to the given space
