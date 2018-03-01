@@ -58,7 +58,6 @@ export class ChessService {
             if (this.check()) {
                 this.isWinner();
             }
-            this.getMoveSpace(this.board[0][0].piece);
         });
     }
 
@@ -165,11 +164,19 @@ export class ChessService {
     }
 
     // Given a piece on the board, return an array of all the possible spaces it could move to, including those where it would be capturing another piece
-    getMoveSpace(p: chessPiece) {
+    getMoveSpaces(p: chessPiece) {
         let spaceArray = new Array();
 
         this.board.forEach(row => row.forEach(space => {
-            
+            if (space.piece === null) {
+                if (this.canMovePiece(p, space)) {
+                    spaceArray.push(space);
+                }
+            } else if (space.piece !== null && space.piece.isWhite === !p.isWhite) {
+                if (this.canTakePiece(p, space)) {
+                    spaceArray.push(space);
+                }
+            }
         }));
 
         console.log(spaceArray);
