@@ -466,7 +466,7 @@ export class ChessService {
     	let isClear = true;
 
     	if (spRow === pRow || spCol === pCol) {
-    		isClear = this.isMoveClearStraight(sp);
+    		isClear = this.isMoveClearStraight(p, sp);
     	} else {
     		isClear = this.isMoveClearDiag(sp);
     	}
@@ -474,29 +474,29 @@ export class ChessService {
     	return isClear;
     }
 
-    // Determines if the selected space has a piece between the selected piece
+    // Determines if the space has a piece between the piece
     // and the space on a straight line
-    isMoveClearStraight(sp: chessSpace): boolean {
-	   	let colDiff = Math.abs(this._selectedPiece.col - sp.col);
-    	let rowDiff = Math.abs(this._selectedPiece.row - sp.row);
+    isMoveClearStraight(p: chessPiece, sp: chessSpace): boolean {
+	   	let colDiff = Math.abs(p.col - sp.col);
+    	let rowDiff = Math.abs(p.row - sp.row);
 
     	let isClear = true;
 
     	if (colDiff === 0) {
-    		let rowStart = Math.min(this._selectedPiece.row, sp.row);
+    		let rowStart = Math.min(p.row, sp.row);
     		let rowEnd = rowStart + rowDiff;
 
     		for (let i = rowStart + 1; i < rowEnd; i++) {
-				if (this.board[i][this._selectedPiece.col].piece !== null) {
+				if (this.board[i][p.col].piece !== null) {
 					isClear = false;
 				}
 			}
     	}
 
     	if (rowDiff === 0) {
-    		let colStart = Math.min(this._selectedPiece.col, sp.col);
+    		let colStart = Math.min(p.col, sp.col);
     		let colEnd = colStart + colDiff;
-    		let colArr = this.board[this._selectedPiece.row].slice(colStart+1, colEnd);
+    		let colArr = this.board[p.row].slice(colStart+1, colEnd);
 
     		colArr.forEach(sp => {if (sp.piece !== null) {isClear = false}});
     	}
@@ -504,13 +504,13 @@ export class ChessService {
     	return isClear;
     }
 
-    // Determines if the selected space has a piece between the selected piece
+    // Determines if the space has a piece between the piece
     // and the space on a diagonal line
-    isMoveClearDiag(sp: chessSpace): boolean {
+    isMoveClearDiag(p: chessPiece, sp: chessSpace): boolean {
 		let spRow = sp.row;
     	let spCol = sp.col;
-    	let pRow = this._selectedPiece.row;
-    	let pCol = this._selectedPiece.col;
+    	let pRow = p.row;
+    	let pCol = p.col;
     	let diagLen = Math.abs(spRow - pRow);
     	let isClear = true;
 
