@@ -143,14 +143,8 @@ export class ChessService {
         let spaceArray = new Array();
 
         this.board.forEach(row => row.forEach(space => {
-            if (space.piece === null) {
-                if (this.canMovePiece(p, space)) {
-                    spaceArray.push(space);
-                }
-            } else if (space.piece !== null && space.piece.isWhite === !p.isWhite) {
-                if (this.canTakePiece(p, space)) {
-                    spaceArray.push(space);
-                }
+            if (this.canMovePiece(p, space)) {
+                spaceArray.push(space);
             }
         }));
 
@@ -296,14 +290,14 @@ export class ChessService {
         return take;
     }
 
-    /* For a piece on the board, check if it can move to the specified space. */
+    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there) */
     canMovePiece(p: chessPiece, sp: chessSpace): boolean {
         let type = p.type;
         let move = false;
 
         switch (type) {
             case 'chessPawn':
-            if ((<chessPawn>p).canMove(sp.row, sp.col)) {
+            if ((<chessPawn>p).canMove(sp.row, sp.col) || (<chessPawn>p).canTake(sp.row, sp.col)) {
                 move = true;
             }
             break;
@@ -338,6 +332,11 @@ export class ChessService {
             }
             break;
 
+        }
+
+        // If there's a piece in the space I want to move to and it's the same color as me, don't allow a move here 
+        if (sp.piece !== null && sp.piece.isWhite === p.isWhite) {
+            move = false;
         }
 
         return move;
