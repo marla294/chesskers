@@ -28,6 +28,7 @@ export class ChessService {
     	this.board = new ChessBoard().board;
     	this._whiteTurn = true;
         this.loadResetGame(false);
+        this.loadIsWinner("none");
     	// Adding pawns
     	for (let j = 0; j < 8; j++) {
     		this.board[1][j].addPiece(new chessPawn('white', 1, j));
