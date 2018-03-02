@@ -14,10 +14,12 @@ export class ChessService {
     // Behavior Subjects
     private _whiteTurnBeh: BehaviorSubject<boolean>;
     private _resetGame: BehaviorSubject<boolean>;
+    private _isWinner: BehaviorSubject<string>;
 
 	constructor() {
         this._whiteTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
         this._resetGame = <BehaviorSubject<boolean>>new BehaviorSubject(true);
+        this._isWinner = <BehaviorSubject<string>>new BehaviorSubject("none");
 		this.resetGame();
 	}
 
@@ -71,6 +73,10 @@ export class ChessService {
         this._resetGame.next(reset);
     }
 
+    loadIsWinner(winner: string) {
+        this._isWinner.next(winner);
+    }
+
     get whiteTurnObs() {
         return this._whiteTurnBeh.asObservable();
     }
@@ -83,6 +89,11 @@ export class ChessService {
     // For Game Board
     get resetGameObs() {
         return this._resetGame.asObservable();
+    }
+
+    // For Game Board
+    get isWinnerObs() {
+        return this._isWinner.asObservable();
     }
 
     // Click events for pieces and spaces
@@ -133,6 +144,10 @@ export class ChessService {
                     }
                 });
             });
+        }
+
+        if (checkmate) {
+            this.loadIsWinner(this._whiteTurn ? "Black" : "White");
         }
 
         console.log(checkmate);

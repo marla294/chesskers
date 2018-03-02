@@ -46,6 +46,21 @@ export class AppComponent {
             // Behavior Subjects
             this._resetGame = this.checkers.resetGameBeh;
         } else if (this.chessOrCheckers === 'chess') {
+            // Observables
+            this.isWinner$ = this.chess.isWinnerObs;
+            this.isWinner$.subscribe(w => {
+                if (w !== "none") {
+                    this.isWinner = true;
+                    this.winner = w;
+                }
+                else {
+                    this.isWinner = false;
+                    this.winner = "none";
+                }
+            });
+
+            // Behavior Subjects
+            this._resetGame = this.chess.resetGameBeh;
         }
   		  
   	}

@@ -20,7 +20,7 @@ export class GameBoardComponent implements OnInit {
     public resetGame$: Observable<boolean>;
 
   	constructor(
-  		  private checkers: CheckersService,
+  		private checkers: CheckersService,
         private chess: ChessService
   	) {}
 
