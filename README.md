@@ -6,9 +6,11 @@ This project is just for fun, not meant for profit or procuring greatness (well,
 
 ## References
 
-Chess piece images can be downloaded at: https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent#
+Chess piece images can be downloaded at: https://openclipart.org/user-cliparts/portablejim
 
-License: By en:User:Cburnett (File:Chess bdt45.svg) [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Thank you, openclipart.org!
 
 # Angular CLI
 
