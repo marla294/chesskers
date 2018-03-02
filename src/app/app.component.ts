@@ -30,43 +30,27 @@ export class AppComponent {
 
   	ngOnInit() {
         if (this.chessOrCheckers === 'checkers') {
-            // Observables
             this.isWinner$ = this.checkers.isWinnerObs;
-            this.isWinner$.subscribe(w => {
-                if (w !== "none") {
-                    this.isWinner = true;
-                    this.winner = w;
-                }
-                else {
-                    this.isWinner = false;
-                    this.winner = "none";
-                }
-            });
-
-            // Behavior Subjects
             this._resetGame = this.checkers.resetGameBeh;
         } else if (this.chessOrCheckers === 'chess') {
-            // Observables
             this.isWinner$ = this.chess.isWinnerObs;
-            this.isWinner$.subscribe(w => {
-                if (w !== "none") {
-                    this.isWinner = true;
-                    this.winner = w;
-                }
-                else {
-                    this.isWinner = false;
-                    this.winner = "none";
-                }
-            });
-
-            // Behavior Subjects
             this._resetGame = this.chess.resetGameBeh;
         }
-  		  
+
+        this.isWinner$.subscribe(w => {
+            if (w !== "none") {
+                this.isWinner = true;
+                this.winner = w;
+            }
+            else {
+                this.isWinner = false;
+                this.winner = "none";
+            }
+        });
   	}
 
 	  onReset() {
-		this._resetGame.next(true);
+		    this._resetGame.next(true);
 	  }
 
 }

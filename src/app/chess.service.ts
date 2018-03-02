@@ -150,8 +150,6 @@ export class ChessService {
         if (checkmate) {
             this.loadIsWinner(this._whiteTurn ? "Black" : "White");
         }
-
-        console.log(checkmate);
     }
 
     // Given a piece on the board, return an array of all the possible spaces it could move to, including those where it would be capturing another piece
