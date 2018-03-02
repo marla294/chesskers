@@ -20,6 +20,7 @@ import { trigger, state, style, animate, transition, animateChild }	from '@angul
 })
 export class SpaceComponent {
 	@Input() space: chessSpace;
+  @Input() chessOrCheckers: string;
 
 	constructor(
   		private checkers: CheckersService,
