@@ -13,7 +13,6 @@ import { BehaviorSubject }         from 'rxjs/BehaviorSubject';
 })
 export class AppComponent {
   	chessOrCheckers = 'chess';
-
     isWinner = false;
   	winner: string = null;
 
