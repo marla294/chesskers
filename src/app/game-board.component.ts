@@ -17,7 +17,8 @@ export class GameBoardComponent implements OnInit {
     public board: any;
 
     // Observables
-    public resetGame$: Observable<boolean>;
+    public resetGameCheckers$: Observable<boolean>;
+    public resetGameChess$: Observable<boolean>;
 
     constructor(
         private checkers: CheckersService,
@@ -25,37 +26,35 @@ export class GameBoardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        if (this.chessOrCheckers === "checkers") {
-            //Observables
-            this.resetGame$ = this.checkers.resetGameObs;
-            this.resetGame$.subscribe(reset => {
-                if (reset) {
-                    this.onResetCheckers();
-                }
-            });
+        this.resetGameCheckers$ = this.checkers.resetGameObs;
+        this.resetGameCheckers$.subscribe(reset => {
+            if (reset) {
+                this.onResetCheckers();
+            }
+        });
 
-            // Always reset game on init anyway
-            this.onResetCheckers();
-        } else if (this.chessOrCheckers === "chess") {
-            //Observables
-            this.resetGame$ = this.chess.resetGameObs;
-            this.resetGame$.subscribe(reset => {
-                if (reset) {
-                    this.onResetChess();
-                }
-            });
+        this.resetGameChess$ = this.chess.resetGameObs;
+        this.resetGameChess$.subscribe(reset => {
+            if (reset) {
+                this.onResetChess();
+            }
+        });
 
-            // Always reset game on init anyway
+        if (this.chessOrCheckers === "chess") {
             this.onResetChess();
+        } else {
+            this.onResetCheckers();
         }
     }
 
     onResetCheckers() {
+        this.chess.deleteBoard();
         this.checkers.resetGame();
         this.board = this.checkers.board;
     }
 
     onResetChess() {
+        this.checkers.deleteBoard();
         this.chess.resetGame();
         this.board = this.chess.board;
     }

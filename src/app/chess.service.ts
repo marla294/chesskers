@@ -78,6 +78,11 @@ export class ChessService {
         });
     }
 
+    // When we're playing checkers we want to delete the chessboard
+    deleteBoard() {
+        delete this.board;
+    }
+
     // Observables and Behavioral Subjects
 
     loadWhiteTurn(turn: boolean) {

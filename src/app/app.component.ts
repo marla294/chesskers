@@ -12,7 +12,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-    chessOrCheckers = "chess";
+    chessOrCheckers = "checkers";
     isWinner = false;
     winner: string = null;
 
@@ -28,19 +28,21 @@ export class AppComponent {
     ) {}
 
     ngOnInit() {
-        this.startGame();
+        this.startGame(true);
     }
 
     onReset() {
         this._resetGame.next(true);
     }
 
-    startGame() {
+    startGame(init: boolean) {
         if (this.chessOrCheckers === "checkers") {
+            init ? null : this.chess.deleteBoard();
             this.isWinner$ = this.checkers.isWinnerObs;
             this._resetGame = this.checkers.resetGameBeh;
             this.onReset();
         } else if (this.chessOrCheckers === "chess") {
+            init ? null : this.checkers.deleteBoard();
             this.isWinner$ = this.chess.isWinnerObs;
             this._resetGame = this.chess.resetGameBeh;
             this.onReset();
@@ -60,6 +62,6 @@ export class AppComponent {
     toggleGame() {
         this.chessOrCheckers =
             this.chessOrCheckers === "chess" ? "checkers" : "chess";
-        this.startGame();
+        this.startGame(false);
     }
 }

@@ -50,6 +50,11 @@ export class CheckersService {
         }
     }
 
+    // When we're playing chess we want to delete the checkerboard
+    deleteBoard() {
+        delete this.board;
+    }
+
     // Observable stuff
 
     // Loading the behavior subjects (which turn into observables)
