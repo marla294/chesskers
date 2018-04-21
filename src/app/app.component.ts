@@ -15,9 +15,11 @@ export class AppComponent {
     chessOrCheckers = "checkers";
     isWinner = false;
     winner: string = null;
+    turn: string = null;
 
     // Observables
     public isWinner$: Observable<string>;
+    public turn$: Observable<boolean>;
 
     // Behavior Subjects
     public _resetGame: BehaviorSubject<boolean>;
@@ -31,22 +33,23 @@ export class AppComponent {
         this.startGame(true);
     }
 
-    onReset() {
-        this._resetGame.next(true);
-    }
-
     startGame(init: boolean) {
+        console.log("start game");
         if (this.chessOrCheckers === "checkers") {
             init ? null : this.chess.deleteBoard();
             this.isWinner$ = this.checkers.isWinnerObs;
             this._resetGame = this.checkers.resetGameBeh;
-            this.onReset();
+            this.turn$ = this.checkers.redTurnObs;
+            this.turn = "Red";
         } else if (this.chessOrCheckers === "chess") {
             init ? null : this.checkers.deleteBoard();
             this.isWinner$ = this.chess.isWinnerObs;
             this._resetGame = this.chess.resetGameBeh;
-            this.onReset();
+            this.turn$ = this.chess.whiteTurnObs;
+            this.turn = "White";
         }
+
+        this._resetGame.next(true);
 
         this.isWinner$.subscribe(w => {
             if (w !== "none") {
@@ -57,6 +60,17 @@ export class AppComponent {
                 this.winner = "none";
             }
         });
+
+        this.turn$.subscribe(t => {
+            if (t) {
+                this.turn = this.chessOrCheckers === "chess" ? "White" : "Red";
+            } else {
+                this.turn = "Black";
+            }
+        });
+
+        // Because subscription doesn't take effect until next turn
+        this.turn = this.chessOrCheckers === "chess" ? "White" : "Red";
     }
 
     toggleGame() {

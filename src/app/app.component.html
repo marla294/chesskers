@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
   <button (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button>
-  <button>Reset</button>
-  <p>Turn: White</p>
+  <button (click)="startGame(false)">Reset</button>
+  <p>Turn: {{turn}}</p>
 </nav>
 
 <div class="d-flex flex-md-row flex-column justify-content-center align-items-center app-container">
@@ -18,6 +18,6 @@
 <div class="notification d-flex justify-content-center align-items-center" *ngIf="isWinner">
 	<div class="notification-panel d-flex flex-column justify-content-center align-items-center">
 		<p class="m-3"><b>{{winner}} wins!</b></p>
-		<button (click)="onReset()">Play Again</button>
+		<button (click)="startGame(false)">Play Again</button>
 	</div>
 </div>
