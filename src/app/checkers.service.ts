@@ -1,12 +1,12 @@
-import { Injectable }           from '@angular/core';
-import { Piece, Pawn, King }	from './pieces/piece';
-import { Space }                from './space';
-import { CheckerBoard }	        from './checkerBoard';
-import { BehaviorSubject }      from 'rxjs/BehaviorSubject';
+import { Injectable } from "@angular/core";
+import { Piece, Pawn, King } from "./pieces/piece";
+import { Space } from "./space";
+import { CheckerBoard } from "./checkerBoard";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class CheckersService {
-  	public board: any;
+    public board: any;
     private _selectedPiece: Piece = null;
     private _redTurn: boolean = true;
     private _doubleJump: boolean = false;
@@ -16,12 +16,16 @@ export class CheckersService {
     private _resetGame: BehaviorSubject<boolean>;
     private _isWinner: BehaviorSubject<string>;
 
-  	constructor() {
+    constructor() {
         this._redTurnBeh = <BehaviorSubject<boolean>>new BehaviorSubject(true);
         this._resetGame = <BehaviorSubject<boolean>>new BehaviorSubject(true);
         this._isWinner = <BehaviorSubject<string>>new BehaviorSubject("none");
-        this.resetGame();
-  	}
+        this._resetGame.subscribe(reset => {
+            if (reset) {
+                this.resetGame();
+            }
+        });
+    }
 
     // Resets game back to beginning
     resetGame() {
@@ -33,14 +37,14 @@ export class CheckersService {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 8; j++) {
                 if (this.board[i][j].playable === true) {
-                  this.board[i][j].addPiece(new Pawn('red', i, j));
+                    this.board[i][j].addPiece(new Pawn("red", i, j));
                 }
             }
         }
         for (let i = 5; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 if (this.board[i][j].playable === true) {
-                    this.board[i][j].addPiece(new Pawn('black', i, j));
+                    this.board[i][j].addPiece(new Pawn("black", i, j));
                 }
             }
         }
@@ -70,7 +74,7 @@ export class CheckersService {
 
     // For Game Console
     get resetGameBeh() {
-        return this._resetGame; 
+        return this._resetGame;
     }
 
     // For Game Board
@@ -88,7 +92,7 @@ export class CheckersService {
         let redTeam: Piece[] = [];
         let blackTeam: Piece[] = [];
         let winner: boolean = true;
-        
+
         // Collecting the pieces on the board into arrays
         this.board.forEach(row => {
             row.forEach(space => {
@@ -103,15 +107,19 @@ export class CheckersService {
         });
 
         // Check each team to see if someone won
-        if (turn) { // red turn
+        if (turn) {
+            // red turn
             redTeam.forEach(piece => {
-                if (this.canMove(piece)) { // if any piece can move then no winner
+                if (this.canMove(piece)) {
+                    // if any piece can move then no winner
                     winner = false;
                 }
             });
-        } else { // black turn
+        } else {
+            // black turn
             blackTeam.forEach(piece => {
-                if (this.canMove(piece)) { // if any piece can move then no winner
+                if (this.canMove(piece)) {
+                    // if any piece can move then no winner
                     winner = false;
                 }
             });
@@ -149,22 +157,27 @@ export class CheckersService {
 
     // Click on an empty space on the board
     clickEmptySpace(sp: Space) {
-        if (this._selectedPiece !== null && sp.moveTo) { // If the space is empty and piece can move to it
+        if (this._selectedPiece !== null && sp.moveTo) {
+            // If the space is empty and piece can move to it
             this.findPiece(this._selectedPiece).clearPiece(); // First remove piece from old space
             sp.addPiece(this._selectedPiece); // Then add piece to the new space
-            if (sp.jump === true) { // A piece was jumped
+            if (sp.jump === true) {
+                // A piece was jumped
                 this.clearJumpedPiece(sp);
             }
-            if (this.isEndSpace(sp)) { // Selected piece became king
+            if (this.isEndSpace(sp)) {
+                // Selected piece became king
                 this.makeKing(this._selectedPiece);
             }
-            if (sp.jump === false || !this.checkForJump(sp)) { // if I didn't just jump or there is no jump
+            if (sp.jump === false || !this.checkForJump(sp)) {
+                // if I didn't just jump or there is no jump
                 this._redTurn = !this._redTurn;
                 this.loadRedTurn(this._redTurn);
                 this._doubleJump = false;
                 this.clearSelections();
                 this.isWinner(this._redTurn);
-            } else { // double jump opportunity
+            } else {
+                // double jump opportunity
                 this._doubleJump = true;
                 this.clickAPiece(this._selectedPiece);
             }
@@ -181,15 +194,47 @@ export class CheckersService {
 
         // If it's not the piece's second turn, get all move spaces, else only get the jump spaces
         if (!this._doubleJump) {
-            upRight = this.getDiagMoveSpace(p, this.calcAllDiag(p).upRightDiag.sp, this.calcAllDiag(p).upRightDiag.diag);
-            downRight = this.getDiagMoveSpace(p, this.calcAllDiag(p).downRightDiag.sp, this.calcAllDiag(p).downRightDiag.diag);
-            upLeft = this.getDiagMoveSpace(p, this.calcAllDiag(p).upLeftDiag.sp, this.calcAllDiag(p).upLeftDiag.diag);
-            downLeft = this.getDiagMoveSpace(p, this.calcAllDiag(p).downLeftDiag.sp, this.calcAllDiag(p).downLeftDiag.diag);
+            upRight = this.getDiagMoveSpace(
+                p,
+                this.calcAllDiag(p).upRightDiag.sp,
+                this.calcAllDiag(p).upRightDiag.diag
+            );
+            downRight = this.getDiagMoveSpace(
+                p,
+                this.calcAllDiag(p).downRightDiag.sp,
+                this.calcAllDiag(p).downRightDiag.diag
+            );
+            upLeft = this.getDiagMoveSpace(
+                p,
+                this.calcAllDiag(p).upLeftDiag.sp,
+                this.calcAllDiag(p).upLeftDiag.diag
+            );
+            downLeft = this.getDiagMoveSpace(
+                p,
+                this.calcAllDiag(p).downLeftDiag.sp,
+                this.calcAllDiag(p).downLeftDiag.diag
+            );
         } else {
-            upRight = this.getDiagJumpSpace(p, this.calcAllDiag(p).upRightDiag.sp, this.calcAllDiag(p).upRightDiag.diag);
-            downRight = this.getDiagJumpSpace(p, this.calcAllDiag(p).downRightDiag.sp, this.calcAllDiag(p).downRightDiag.diag);
-            upLeft = this.getDiagJumpSpace(p, this.calcAllDiag(p).upLeftDiag.sp, this.calcAllDiag(p).upLeftDiag.diag);
-            downLeft = this.getDiagJumpSpace(p, this.calcAllDiag(p).downLeftDiag.sp, this.calcAllDiag(p).downLeftDiag.diag);
+            upRight = this.getDiagJumpSpace(
+                p,
+                this.calcAllDiag(p).upRightDiag.sp,
+                this.calcAllDiag(p).upRightDiag.diag
+            );
+            downRight = this.getDiagJumpSpace(
+                p,
+                this.calcAllDiag(p).downRightDiag.sp,
+                this.calcAllDiag(p).downRightDiag.diag
+            );
+            upLeft = this.getDiagJumpSpace(
+                p,
+                this.calcAllDiag(p).upLeftDiag.sp,
+                this.calcAllDiag(p).upLeftDiag.diag
+            );
+            downLeft = this.getDiagJumpSpace(
+                p,
+                this.calcAllDiag(p).downLeftDiag.sp,
+                this.calcAllDiag(p).downLeftDiag.diag
+            );
         }
 
         return {
@@ -197,7 +242,7 @@ export class CheckersService {
             downRight: downRight,
             upLeft: upLeft,
             downLeft: downLeft
-        }
+        };
     }
 
     // Highlight and set moveTo flag on spaces a piece could move to
@@ -211,7 +256,7 @@ export class CheckersService {
         // If any of the potential move spaces exist, highlight and set moveTo flag
         if (upRight !== null) {
             upRight.highlight = upRight.moveTo = true;
-        } 
+        }
         if (upLeft !== null) {
             upLeft.highlight = upLeft.moveTo = true;
         }
@@ -231,10 +276,15 @@ export class CheckersService {
         let upLeft = this.findMoveableSpaces(p).upLeft;
         let downLeft = this.findMoveableSpaces(p).downLeft;
 
-        if (upRight == null && downRight == null && upLeft == null && downLeft == null) {
-            return false;  // Can't move in any direction
+        if (
+            upRight == null &&
+            downRight == null &&
+            upLeft == null &&
+            downLeft == null
+        ) {
+            return false; // Can't move in any direction
         } else {
-            return true;  // Able to move in at least one direction
+            return true; // Able to move in at least one direction
         }
     }
 
@@ -249,30 +299,52 @@ export class CheckersService {
         pieces.push(this.getPiece(sp.row + 1, sp.col - 1));
         pieces.push(this.getPiece(sp.row + 1, sp.col + 1));
 
-        this.findPiece(pieces.find(p => p !== null && p.jump === true)).clearPiece();
-
+        this.findPiece(
+            pieces.find(p => p !== null && p.jump === true)
+        ).clearPiece();
     }
 
     // Check and see if there is a potential jump opportunity, for multi jump
     checkForJump(sp: Space): boolean {
         let p = sp.piece;
 
-        if (this.canJump(p, this.calcAllDiag(p).upRightDiag.sp, this.calcAllDiag(p).upRightDiag.diag) || 
-            this.canJump(p, this.calcAllDiag(p).downRightDiag.sp, this.calcAllDiag(p).downRightDiag.diag) || 
-            this.canJump(p, this.calcAllDiag(p).upLeftDiag.sp, this.calcAllDiag(p).upLeftDiag.diag) ||
-            this.canJump(p, this.calcAllDiag(p).downLeftDiag.sp, this.calcAllDiag(p).downLeftDiag.diag) ) {
+        if (
+            this.canJump(
+                p,
+                this.calcAllDiag(p).upRightDiag.sp,
+                this.calcAllDiag(p).upRightDiag.diag
+            ) ||
+            this.canJump(
+                p,
+                this.calcAllDiag(p).downRightDiag.sp,
+                this.calcAllDiag(p).downRightDiag.diag
+            ) ||
+            this.canJump(
+                p,
+                this.calcAllDiag(p).upLeftDiag.sp,
+                this.calcAllDiag(p).upLeftDiag.diag
+            ) ||
+            this.canJump(
+                p,
+                this.calcAllDiag(p).downLeftDiag.sp,
+                this.calcAllDiag(p).downLeftDiag.diag
+            )
+        ) {
             return true;
         } else {
             return false;
         }
-        
     }
 
     // Can Jump - returns true if you can jump, if not then false
     canJump(p: Piece, sp: Space, diag: Space): boolean {
         if (sp === null || diag === null || sp.piece === null) {
             return false;
-        } else if (p.isRed === !sp.piece.isRed && diag !== null && diag.piece === null) {
+        } else if (
+            p.isRed === !sp.piece.isRed &&
+            diag !== null &&
+            diag.piece === null
+        ) {
             return true;
         } else {
             return false;
@@ -288,7 +360,7 @@ export class CheckersService {
             downRightDiag: this.calcDiag(p, false, true),
             upLeftDiag: this.calcDiag(p, true, false),
             downLeftDiag: this.calcDiag(p, false, false)
-        }
+        };
     }
 
     // Given a piece, and the direction, calculate the "diagonal" - the spaces on the right or left diagonally
@@ -331,7 +403,7 @@ export class CheckersService {
             p: p,
             sp: this.checkBoardSpace(neighborRow, neighborCol),
             diag: this.checkBoardSpace(diagRow, diagCol)
-        }
+        };
     }
 
     // Given a diagonal (a space and the next space up) return the space you can move to or null if you can't move
@@ -339,12 +411,15 @@ export class CheckersService {
         let space: Space = null;
 
         if (sp !== null) {
-            if (sp.piece === null) { // nextdoor is empty
+            if (sp.piece === null) {
+                // nextdoor is empty
                 space = sp;
-            } else if (this.canJump(p, sp, diag)) { // piece to jump
+            } else if (this.canJump(p, sp, diag)) {
+                // piece to jump
                 sp.piece.jump = diag.jump = true; // set jump flag on piece to jump and diag space
                 space = diag;
-            } else { // can't move down this diag
+            } else {
+                // can't move down this diag
                 space = null;
             }
         }
@@ -357,10 +432,12 @@ export class CheckersService {
         let space: Space = null;
 
         if (sp !== null) {
-            if (this.canJump(p, sp, diag)) { // piece to jump
+            if (this.canJump(p, sp, diag)) {
+                // piece to jump
                 sp.piece.jump = diag.jump = true; // set jump flag on piece to jump and diag space
                 space = diag;
-            } else { // can't move down this diag
+            } else {
+                // can't move down this diag
                 space = null;
             }
         }
@@ -372,7 +449,7 @@ export class CheckersService {
 
     // When a pawn makes it to the end of the board, replace the pawn piece with a king piece
     makeKing(p: Piece) {
-        let king = new King(p.isRed === true ? 'red' : 'black', p.row, p.col);
+        let king = new King(p.isRed === true ? "red" : "black", p.row, p.col);
         let space = this.findPiece(p);
 
         space.clearPiece();
@@ -409,11 +486,13 @@ export class CheckersService {
         let sp: Space = null;
 
         // Look through the board and see if the piece is on a space
-        this.board.forEach(row => row.forEach(space => {
-            if (space.piece === p) {
-                sp = space;
-            }
-        }));
+        this.board.forEach(row =>
+            row.forEach(space => {
+                if (space.piece === p) {
+                    sp = space;
+                }
+            })
+        );
 
         return sp;
     }
@@ -431,11 +510,13 @@ export class CheckersService {
 
     // Clears all highlights, direction flags, and selected pieces from board
     clearSelections() {
-        this.board.forEach(row => row.forEach(space => {
-            space.highlight = space.moveTo = space.jump = false;
-            if (space.piece !== null) {
-                space.piece.jump = false;
-            }
-        }));
+        this.board.forEach(row =>
+            row.forEach(space => {
+                space.highlight = space.moveTo = space.jump = false;
+                if (space.piece !== null) {
+                    space.piece.jump = false;
+                }
+            })
+        );
     }
 }

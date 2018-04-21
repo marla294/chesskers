@@ -48,8 +48,6 @@ export class GameBoardComponent implements OnInit {
             // Always reset game on init anyway
             this.onResetChess();
         }
-
-        console.log(window.innerHeight);
     }
 
     onResetCheckers() {
