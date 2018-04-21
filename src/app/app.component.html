@@ -1,5 +1,5 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
-  <button (click)="toggleGame()">Play Checkers</button>
+  <button (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button>
   <button>Reset</button>
   <p>Turn: White</p>
 </nav>
