@@ -33,8 +33,4 @@ export class SpaceComponent {
   @Input() chessOrCheckers: string;
 
   constructor(private checkers: CheckersService, private chess: ChessService) {}
-
-  onResize(event) {
-    console.log(event);
-  }
 }

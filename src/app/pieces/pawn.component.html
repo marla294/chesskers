@@ -1,11 +1,9 @@
-<div *ngIf="pawn.isRed==true" 
-class="d-flex flex-column justify-content-center align-items-center">
+<div *ngIf="pawn.isRed==true" class="flex-container justify-content">
 	<img src="./assets/Images/checkers/red.png" 
-	style="width: 95%; height: 95%">
+	class="pawn">
 </div>
 
-<div *ngIf="pawn.isRed==false" 
-class="d-flex flex-column justify-content-center align-items-center">
+<div *ngIf="pawn.isRed==false" class="flex-container justify-content">
 	<img src="./assets/Images/checkers/black.png" 
-	style="width: 95%; height: 95%">
+	class="pawn">
 </div>
