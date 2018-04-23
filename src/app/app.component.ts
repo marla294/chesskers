@@ -34,7 +34,6 @@ export class AppComponent {
     }
 
     startGame(init: boolean) {
-        console.log("start game");
         if (this.chessOrCheckers === "checkers") {
             init ? null : this.chess.deleteBoard();
             this.isWinner$ = this.checkers.isWinnerObs;
