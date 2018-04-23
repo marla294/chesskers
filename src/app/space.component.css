@@ -1,6 +1,6 @@
 .square {
-	height: 62.25px;
-	width: 12.5%;
+	height: 75px;
+	width: 75px;
 }
 .playable {
 	background-color: #27802B;
@@ -10,15 +10,14 @@
 }
 .highlight {
 	background-color: yellow;
-	border: 1px solid white;
 }
 .check {
 	background-color: red;
-	border: 1px solid white;
 }
 
 @media only screen and (max-width: 768px) {
 	.square {
-			height: 37.25px;
+		height: 37.25px;
+		width: 37.25px;
 	}
 }
