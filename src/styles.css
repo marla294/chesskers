@@ -2,6 +2,7 @@
 
 body {
 	background-color: #222;
+	font-size: 1rem;
 }
 
 .flex-container {
@@ -19,4 +20,10 @@ body {
 .align-items {
 	-ms-align-items: center;
 	align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+	body {
+		font-size: 0.8rem;
+	}
 }
