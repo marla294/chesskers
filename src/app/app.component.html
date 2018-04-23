@@ -17,9 +17,10 @@
 	<div class="notification-background"></div>
 </div>
 
-<div class="notification d-flex justify-content-center align-items-center" *ngIf="isWinner">
-	<div class="notification-panel d-flex flex-column justify-content-center align-items-center">
-		<p class="m-3"><b>{{winner}} wins!</b></p>
+<div class="notification flex-container justify-content align-items" *ngIf="isWinner">
+	<div class="notification-panel flex-container align-items justify-content">
+		<p class="winner">{{winner}} wins!</p>
 		<button (click)="startGame(false)">Play Again</button>
 	</div>
 </div>
+
