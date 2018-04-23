@@ -12,7 +12,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-    chessOrCheckers = "checkers";
+    chessOrCheckers = "chess";
     isWinner = false;
     winner: string = null;
     turn: string = null;
