@@ -1,15 +1,13 @@
-<div class="app-container">
-	<nav class="navbar">
-		<ul class="flex-container space-between">
-			<li><button class="play" (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button></li>
-			<li><button (click)="startGame(false)">Reset Game</button></li>
-			<li class="turn">{{turn}} Turn</li>
-		</ul>
-	</nav>
+<nav class="navbar">
+	<ul class="flex-container space-between">
+		<li><button class="play" (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button></li>
+		<li><button (click)="startGame(false)">Reset Game</button></li>
+		<li class="turn">{{turn}} Turn</li>
+	</ul>
+</nav>
 
-	<div class="board-container flex-container justify-content align-items">
-		<game-board [chessOrCheckers]="chessOrCheckers"></game-board>
-	</div>
+<div class="board-container flex-container justify-content align-items">
+	<game-board [chessOrCheckers]="chessOrCheckers"></game-board>
 </div>
 
 <!-- Notification panel that grays out the screen if there is a winner !-->

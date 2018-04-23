@@ -1,26 +1,20 @@
-.app-container {
-	height: 100vh;
-}
 .notification {
 	position: fixed;
-	left: 0px;
 	top: 0px;
 	height: 100vh;
 	width: 100%;
 }
+
 .notification-background {
 	background-color: gray;
 	opacity: 0.5;
 	height: 100vh;
-	width: 100%;
 }
 
 .notification-panel {
 	background-color: white;
-	position: relative;
 	height: 200px;
 	width: 200px;
-	opacity: 1;
 	flex-direction: column;
 }
 
@@ -31,7 +25,6 @@
 }
 
 .navbar ul {
-	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -58,6 +51,5 @@
 	.notification-panel {
 		height: 120px;
 		width: 120px;
-		font-size: 0.6em;
 	}
 }
