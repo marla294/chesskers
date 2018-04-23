@@ -1,9 +1,9 @@
 <div class="app-container">
 	<nav class="navbar">
-		<ul>
-			<li><button (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button></li>
+		<ul class="flex-container space-between">
+			<li><button class="play" (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button></li>
 			<li><button (click)="startGame(false)">Reset Game</button></li>
-			<li class="turn">Turn: {{turn}}</li>
+			<li class="turn">{{turn}} Turn</li>
 		</ul>
 	</nav>
 

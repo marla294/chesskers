@@ -16,6 +16,10 @@ p {
 	justify-content: center;
 }
 
+.space-between {
+	justify-content: space-between;
+}
+
 .align-items {
 	-ms-align-items: center;
 	align-items: center;
