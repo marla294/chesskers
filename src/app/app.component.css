@@ -24,6 +24,12 @@
 	flex-direction: column;
 }
 
+.navbar {
+	background-color: black;
+	position: sticky;
+	top: 0px;
+}
+
 .navbar ul {
 	list-style-type: none;
 	margin: 0;
