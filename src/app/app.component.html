@@ -1,11 +1,13 @@
 <div class="app-container">
-	<nav>
-	  <button (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button>
-	  <button (click)="startGame(false)">Reset</button>
-	  <p>Turn: {{turn}}</p>
+	<nav class="navbar">
+		<ul>
+			<li><button (click)="toggleGame()">Play {{this.chessOrCheckers === 'chess' ? 'Checkers' : 'Chess'}}</button></li>
+			<li><button (click)="startGame(false)">Reset Game</button></li>
+			<li class="turn">Turn: {{turn}}</li>
+		</ul>
 	</nav>
 
-	<div class="d-flex justify-content-center align-items-center">
+	<div class="board-container flex-container justify-content align-items">
 		<game-board [chessOrCheckers]="chessOrCheckers"></game-board>
 	</div>
 </div>

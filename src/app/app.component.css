@@ -22,8 +22,27 @@
 	width: 200px;
 	opacity: 1;
 }
-.navbar p {
-	margin-bottom: 0;
+
+.navbar {
+	background-color: gray;
+}
+
+.navbar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.navbar li {
+	display: inline;
+}
+
+.turn {
+	color: white;
+}
+
+.board-container {
+	height: 100vh;
 }
 
 @media only screen and (max-width: 768px) {
