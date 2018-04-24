@@ -378,88 +378,24 @@ export class ChessService {
     If the space contains a piece of the opposite color the piece will be taken,
     otherwise the selected piece will just move to the empty space. */
     moveSelected(sp: chessSpace) {
-        let type = this._selectedPiece.type;
-        let take = false;
-
-        if (
+        // take = whether the space the piece wants to move to holds a piece that can be taken
+        let take =
             sp.piece !== null &&
             sp.piece.isWhite === !this._selectedPiece.isWhite
-        ) {
-            take = true;
-        }
+                ? true
+                : false;
 
-        switch (type) {
-            case "chessPawn":
-                if (
-                    take &&
-                    (<chessPawn>this._selectedPiece).canTake(sp.row, sp.col) &&
-                    this.isMoveClear(this._selectedPiece, sp)
-                ) {
-                    this.moveSelectedToTake(sp.piece);
-                } else if (
-                    !take &&
-                    (<chessPawn>this._selectedPiece).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(this._selectedPiece, sp)
-                ) {
-                    this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
-            case "rook":
-                if (
-                    (<Rook>this._selectedPiece).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(this._selectedPiece, sp)
-                ) {
-                    take
-                        ? this.moveSelectedToTake(sp.piece)
-                        : this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
-            case "knight":
-                if ((<Knight>this._selectedPiece).canMove(sp.row, sp.col)) {
-                    take
-                        ? this.moveSelectedToTake(sp.piece)
-                        : this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
-            case "bishop":
-                if (
-                    (<Bishop>this._selectedPiece).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(this._selectedPiece, sp)
-                ) {
-                    take
-                        ? this.moveSelectedToTake(sp.piece)
-                        : this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
-            case "queen":
-                if (
-                    (<Queen>this._selectedPiece).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(this._selectedPiece, sp)
-                ) {
-                    take
-                        ? this.moveSelectedToTake(sp.piece)
-                        : this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
-            case "chessKing":
-                if ((<chessKing>this._selectedPiece).canMove(sp.row, sp.col)) {
-                    take
-                        ? this.moveSelectedToTake(sp.piece)
-                        : this.moveSelectedToEmptySp(sp);
-                } else {
-                    this.selectAPiece(this._selectedPiece);
-                }
-                break;
+        // If you can move the selected piece to a space, then do it.
+        // Either take the piece in the space or move to the empty space
+        // If you can't move the piece there, re-select it
+        if (this.canMovePieceNew(this._selectedPiece, sp)) {
+            if (take) {
+                this.moveSelectedToTake(sp.piece);
+            } else {
+                this.moveSelectedToEmptySp(sp);
+            }
+        } else {
+            this.selectAPiece(this._selectedPiece);
         }
     }
 
