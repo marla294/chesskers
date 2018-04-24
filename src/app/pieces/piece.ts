@@ -1,5 +1,5 @@
 export class Piece {
-	type: string = 'piece';
+	type: string = "piece";
 	game: string = null;
 	isRed: boolean = true; // Red == white in chess, for now
 	jump: boolean = false; // Says whether the piece was jumped or not
@@ -32,26 +32,26 @@ export class Pawn extends Piece {
 	getUpRightMove() {
 		let col = this.col + 1;
 		let row = this.isRed ? this.row + 1 : this.row - 1;
-		return {row, col};
+		return { row, col };
 	}
 
 	getUpLeftMove() {
 		let col = this.col - 1;
 		let row = this.isRed ? this.row + 1 : this.row - 1;
-		return {row, col};
+		return { row, col };
 	}
 
 	// Diag moves
 	getDiagUpRightMove() {
 		let col = this.col + 2;
 		let row = this.isRed ? this.row + 2 : this.row - 2;
-		return {row, col};
+		return { row, col };
 	}
 
 	getDiagUpLeftMove() {
 		let col = this.col - 2;
 		let row = this.isRed ? this.row + 2 : this.row - 2;
-		return {row, col};
+		return { row, col };
 	}
 }
 
@@ -63,26 +63,26 @@ export class King extends Pawn {
 	getDownRightMove() {
 		let col = this.col + 1;
 		let row = this.isRed ? this.row - 1 : this.row + 1;
-		return {row, col};
+		return { row, col };
 	}
 
 	getDownLeftMove() {
 		let col = this.col - 1;
 		let row = this.isRed ? this.row - 1 : this.row + 1;
-		return {row, col};
+		return { row, col };
 	}
 
 	// Diag moves
 	getDiagDownRightMove() {
 		let col = this.col + 2;
 		let row = this.isRed ? this.row - 2 : this.row + 2;
-		return {row, col};
+		return { row, col };
 	}
 
 	getDiagDownLeftMove() {
 		let col = this.col - 2;
 		let row = this.isRed ? this.row - 2 : this.row + 2;
-		return {row, col};
+		return { row, col };
 	}
 }
 
@@ -94,7 +94,7 @@ This will be the master class that all other chess pieces will build off of.  'i
 export class chessPiece extends Piece {
 	type: string = "chessPawn";
 	game: string = "chess";
-	isWhite: boolean = true; 
+	isWhite: boolean = true;
 
 	constructor(color: string, r: number, c: number) {
 		super(color, r, c);
@@ -106,8 +106,11 @@ export class chessPiece extends Piece {
 			this.isWhite = true;
 		}
 	}
-}
 
+	canMove(row: number, col: number): boolean {
+		return false;
+	}
+}
 
 export class chessPawn extends chessPiece {
 	type: string = "chessPawn";
@@ -118,20 +121,23 @@ export class chessPawn extends chessPiece {
 	// space or not, according to the rules of chess.  The first move, the pawn
 	// is allowed to move 2 spaces forward.  Otherwise, the pawn is only allowed
 	// to move forward 1 space.  This function does not take into account if there
-	// are pieces in the way.  That will be the job of the chess service to figure 
+	// are pieces in the way.  That will be the job of the chess service to figure
 	// out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
 		let rowMove = row - this.row;
-		if (col === this.col) { // Can only move forward in the same column
-			if (this.initialized === false) { // Pawn has not been used
+		if (col === this.col) {
+			// Can only move forward in the same column
+			if (this.initialized === false) {
+				// Pawn has not been used
 				if (this.isWhite === true && rowMove < 3 && rowMove > 0) {
 					canM = true;
 				}
 				if (this.isWhite === false && rowMove > -3 && rowMove < 0) {
 					canM = true;
 				}
-			} else { // Pawn has been used
+			} else {
+				// Pawn has been used
 				if (this.isWhite === true && rowMove === 1) {
 					canM = true;
 				}
@@ -158,23 +164,24 @@ export class chessPawn extends chessPiece {
 export class Rook extends chessPiece {
 	type: string = "rook";
 	game: string = "chess";
-	initialized: boolean = false;  // for castling
+	initialized: boolean = false; // for castling
 
 	// Given an empty space on the board, determines whether rook can move to this
 	// space or not, according to the rules of chess.  Rooks are allowed to move
-	// straight forward or straight back.  This function does not take into account 
-	// if there are pieces in the way.  That will be the job of the chess service  
+	// straight forward or straight back.  This function does not take into account
+	// if there are pieces in the way.  That will be the job of the chess service
 	// to figure out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
-		if (this.row === row && this.col === col) { // no moving to the same spot
+		if (this.row === row && this.col === col) {
+			// no moving to the same spot
 			canM = false;
 		} else if (this.row === row) {
 			canM = true;
 		} else if (this.col === col) {
 			canM = true;
 		}
-		
+
 		return canM;
 	}
 }
@@ -196,7 +203,7 @@ export class Knight extends chessPiece {
 		} else if (rowMove === 1 && colMove === 2) {
 			canM = true;
 		}
-		
+
 		return canM;
 	}
 }
@@ -207,8 +214,8 @@ export class Bishop extends chessPiece {
 
 	// Given an empty space on the board, determines whether bishop can move to this
 	// space or not, according to the rules of chess.  Bishops are allowed to move
-	// on a diagonal forward or back.  This function does not take into account 
-	// if there are pieces in the way.  That will be the job of the chess service  
+	// on a diagonal forward or back.  This function does not take into account
+	// if there are pieces in the way.  That will be the job of the chess service
 	// to figure out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
@@ -217,7 +224,7 @@ export class Bishop extends chessPiece {
 		if (rowMove === colMove) {
 			canM = true;
 		}
-		
+
 		return canM;
 	}
 }
@@ -229,9 +236,9 @@ export class chessKing extends chessPiece {
 
 	// Given an empty space on the board, determines whether king can move to this
 	// space or not, according to the rules of chess.  Kings are allowed to move
-	// on a diagonal forward or back, OR on a straight line forward or back, but 
+	// on a diagonal forward or back, OR on a straight line forward or back, but
 	// only one space at a time.  This function does not take into account if there
-	// are pieces in the way.  That will be the job of the chess service to figure 
+	// are pieces in the way.  That will be the job of the chess service to figure
 	// out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
@@ -240,7 +247,7 @@ export class chessKing extends chessPiece {
 		if (rowMove < 2 && colMove < 2) {
 			canM = true;
 		}
-		
+
 		return canM;
 	}
 }
@@ -251,21 +258,24 @@ export class Queen extends chessPiece {
 
 	// Given an empty space on the board, determines whether queen can move to this
 	// space or not, according to the rules of chess.  Queens are allowed to move
-	// on a diagonal forward or back, OR on a straight line forward or back.  This 
-	// function does not take into account if there are pieces in the way.  That 
+	// on a diagonal forward or back, OR on a straight line forward or back.  This
+	// function does not take into account if there are pieces in the way.  That
 	// will be the job of the chess service to figure out.
 	canMove(row: number, col: number): boolean {
 		let canM = false;
 		let rowMove = Math.abs(row - this.row);
 		let colMove = Math.abs(col - this.col);
-		if (rowMove === colMove) { // diagonal
+		if (rowMove === colMove) {
+			// diagonal
 			canM = true;
-		} else if (this.row === row) { // straight
+		} else if (this.row === row) {
+			// straight
 			canM = true;
-		} else if (this.col === col) { // straight
+		} else if (this.col === col) {
+			// straight
 			canM = true;
 		}
-		
+
 		return canM;
 	}
 }

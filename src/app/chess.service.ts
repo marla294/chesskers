@@ -168,7 +168,6 @@ export class ChessService {
             pieceArray.forEach(piece => {
                 this.getMoveSpaces(piece).forEach(space => {
                     if (!this.testMove(piece, space)) {
-                        console.log("piece: ", piece, "space: ", space);
                         checkmate = false;
                     }
                 });
@@ -692,5 +691,64 @@ export class ChessService {
             })
         );
         this._selectedPiece = null;
+    }
+
+    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
+    canMovePieceNew(p: chessPiece, sp: chessSpace): boolean {
+        let type = p.type;
+        let take = false;
+        let canMove = false;
+
+        if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
+            take = true;
+        }
+
+        switch (type) {
+            case "chessPawn":
+                if (
+                    take &&
+                    (<chessPawn>p).canTake(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                ) {
+                    canMove = true;
+                } else if (
+                    !take &&
+                    (<chessPawn>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                ) {
+                    canMove = true;
+                } else {
+                    canMove = false;
+                }
+                break;
+            case "rook":
+                canMove =
+                    (<Rook>p).canMove(sp.row, sp.col) && this.isMoveClear(p, sp)
+                        ? true
+                        : false;
+                break;
+            case "knight":
+                canMove = (<Knight>p).canMove(sp.row, sp.col) ? true : false;
+                break;
+            case "bishop":
+                canMove =
+                    (<Bishop>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                        ? true
+                        : false;
+                break;
+            case "queen":
+                canMove =
+                    (<Queen>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                        ? true
+                        : false;
+                break;
+            case "chessKing":
+                canMove = (<chessKing>p).canMove(sp.row, sp.col) ? true : false;
+                break;
+        }
+
+        return canMove;
     }
 }
