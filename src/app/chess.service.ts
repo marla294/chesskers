@@ -185,7 +185,7 @@ export class ChessService {
 
         this.board.forEach(row =>
             row.forEach(space => {
-                if (this.canMovePiece(p, space)) {
+                if (this.canMovePieceNew(p, space)) {
                     spaceArray.push(space);
                 }
             })
@@ -258,7 +258,7 @@ export class ChessService {
         // Check if the pieces from the other team could take the king
         let check: boolean = false;
         pieceArray.forEach(piece => {
-            if (this.canMovePiece(piece, kingSp)) {
+            if (this.canMovePieceNew(piece, kingSp)) {
                 this._checkPiece = piece;
                 check = true;
             }
@@ -289,89 +289,6 @@ export class ChessService {
             });
         });
         return king;
-    }
-
-    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
-    canMovePiece(p: chessPiece, sp: chessSpace): boolean {
-        let type = p.type;
-        let move = false;
-
-        switch (type) {
-            /*
-            case "chessPawn":
-                if (
-                    ((<chessPawn>p).canMove(sp.row, sp.col) &&
-                        this.isMoveClear(p, sp)) ||
-                    (<chessPawn>p).canTake(sp.row, sp.col)
-                ) {
-                    move = true;
-                }
-                break;
-            */
-            case "rook":
-                if (
-                    (<Rook>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                ) {
-                    move = true;
-                }
-                break;
-
-            case "knight":
-                if ((<Knight>p).canMove(sp.row, sp.col)) {
-                    move = true;
-                }
-                break;
-
-            case "bishop":
-                if (
-                    (<Bishop>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                ) {
-                    move = true;
-                }
-                break;
-
-            case "queen":
-                if (
-                    (<Queen>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                ) {
-                    move = true;
-                }
-                break;
-
-            case "chessKing":
-                if ((<chessKing>p).canMove(sp.row, sp.col)) {
-                    move = true;
-                }
-                break;
-        }
-
-        // If there's a piece in the space I want to move to and it's the same color as me, don't allow a move here
-        if (sp.piece !== null && sp.piece.isWhite === p.isWhite) {
-            move = false;
-        }
-
-        if (type === "chessPawn") {
-            if (
-                sp.piece !== null &&
-                sp.piece.isWhite === !p.isWhite &&
-                (<chessPawn>p).canTake(sp.row, sp.col)
-            ) {
-                move = true;
-            } else if (
-                (<chessPawn>p).canMove(sp.row, sp.col) &&
-                this.isMoveClear(p, sp) &&
-                sp.piece === null
-            ) {
-                move = true;
-            } else {
-                move = false;
-            }
-        }
-
-        return move;
     }
 
     /* Function that will move the selected piece to the given space
