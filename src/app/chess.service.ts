@@ -316,7 +316,7 @@ export class ChessService {
         // storing piece old space in case king is in check
         let space_old = this.findPiece(p);
         // whether king is in check
-        let check = false;
+        let check = true;
 
         // move piece to new space to see if king is in check
         space_old.clearPiece();
@@ -325,21 +325,13 @@ export class ChessService {
         // test if the king is in check after moving the piece
         check = this.check();
 
-        if (!test) {
-            if (!check) {
-                this.highlightKingSpace(false);
-                this.initializeSelected();
-                this._whiteTurn = !this._whiteTurn;
-                this.loadWhiteTurn(this._whiteTurn);
-                this.clearSelections();
-            } else {
-                // after the move the king was in check so revert
-                sp.clearPiece();
-                space_old.addPiece(p);
-                check = true;
-            }
+        if (!test && !check) {
+            this.highlightKingSpace(false);
+            this.initializeSelected();
+            this._whiteTurn = !this._whiteTurn;
+            this.loadWhiteTurn(this._whiteTurn);
+            this.clearSelections();
         } else {
-            // this is a test so move the original piece back to old space
             sp.clearPiece();
             space_old.addPiece(p);
         }
