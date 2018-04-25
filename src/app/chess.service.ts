@@ -307,9 +307,9 @@ export class ChessService {
         // If you can't move the piece there, re-select it
         if (this.canMovePiece(this._selectedPiece, sp)) {
             if (take) {
-                this.moveSelectedToTake(sp.piece);
+                this.movePieceToTake(this._selectedPiece, sp.piece);
             } else {
-                this.moveSelectedToEmptySp(sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp);
             }
         } else {
             this.selectAPiece(this._selectedPiece);
@@ -317,25 +317,26 @@ export class ChessService {
     }
 
     // Move the selected piece to take a piece
-    moveSelectedToTake(p: chessPiece) {
-        let sp = this.findPiece(p);
+    movePieceToTake(p: chessPiece, take: chessPiece) {
+        let sp = this.findPiece(take);
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-        if (this.moveSelectedToEmptySp(sp)) {
+        if (this.movePieceToEmptySp(p, sp)) {
             // If the king was in check from the move, put the old piece back in the empty space
-            sp.addPiece(p);
+            sp.addPiece(take);
             this.highlightKingSpace(true);
         }
     }
 
-    // Move the selected piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake
-    moveSelectedToEmptySp(sp: chessSpace): boolean {
-        let space_old = this.findPiece(this._selectedPiece); // storing piece old space in case king is in check
+    // Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake
+    movePieceToEmptySp(p: chessPiece, sp: chessSpace): boolean {
+        // storing piece old space in case king is in check
+        let space_old = this.findPiece(p);
         let check = false;
 
         space_old.clearPiece();
-        sp.addPiece(this._selectedPiece);
+        sp.addPiece(p);
 
         if (!this.check()) {
             // after the move the king is not in check
@@ -347,7 +348,7 @@ export class ChessService {
         } else {
             // after the move the king was in check so revert
             sp.clearPiece();
-            space_old.addPiece(this._selectedPiece);
+            space_old.addPiece(p);
             check = true;
         }
         return check;
@@ -397,11 +398,11 @@ export class ChessService {
             if (isLeft) {
                 rookSp.clearPiece();
                 this.board[row][2].addPiece(rook);
-                this.moveSelectedToEmptySp(sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp);
             } else {
                 rookSp.clearPiece();
                 this.board[row][4].addPiece(rook);
-                this.moveSelectedToEmptySp(sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp);
             }
         } else {
             this.moveSelected(sp);
