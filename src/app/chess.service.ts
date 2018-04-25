@@ -185,7 +185,7 @@ export class ChessService {
 
         this.board.forEach(row =>
             row.forEach(space => {
-                if (this.canMovePieceNew(p, space)) {
+                if (this.canMovePiece(p, space)) {
                     spaceArray.push(space);
                 }
             })
@@ -258,7 +258,7 @@ export class ChessService {
         // Check if the pieces from the other team could take the king
         let check: boolean = false;
         pieceArray.forEach(piece => {
-            if (this.canMovePieceNew(piece, kingSp)) {
+            if (this.canMovePiece(piece, kingSp)) {
                 this._checkPiece = piece;
                 check = true;
             }
@@ -305,7 +305,7 @@ export class ChessService {
         // If you can move the selected piece to a space, then do it.
         // Either take the piece in the space or move to the empty space
         // If you can't move the piece there, re-select it
-        if (this.canMovePieceNew(this._selectedPiece, sp)) {
+        if (this.canMovePiece(this._selectedPiece, sp)) {
             if (take) {
                 this.moveSelectedToTake(sp.piece);
             } else {
@@ -547,7 +547,7 @@ export class ChessService {
     }
 
     /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
-    canMovePieceNew(p: chessPiece, sp: chessSpace): boolean {
+    canMovePiece(p: chessPiece, sp: chessSpace): boolean {
         let type = p.type;
         let take = false;
         let canMove = false;
