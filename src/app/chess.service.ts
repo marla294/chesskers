@@ -497,10 +497,7 @@ export class ChessService {
     clearSelections() {
         this.board.forEach(row =>
             row.forEach(space => {
-                space.highlight = space.moveTo = space.jump = false;
-                if (space.piece !== null) {
-                    space.piece.jump = false;
-                }
+                space.highlight = space.moveTo = false;
             })
         );
         this._selectedPiece = null;
