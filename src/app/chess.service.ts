@@ -384,13 +384,9 @@ export class ChessService {
 
     // Determines whether to use the straight or diag function to check
     isMoveClear(p: chessPiece, sp: chessSpace) {
-        let spRow = sp.row;
-        let spCol = sp.col;
-        let pRow = p.row;
-        let pCol = p.col;
         let isClear = true;
 
-        if (spRow === pRow || spCol === pCol) {
+        if (sp.row === p.row || sp.col === p.col) {
             isClear = this.isMoveClearStraight(p, sp);
         } else {
             isClear = this.isMoveClearDiag(p, sp);
@@ -423,10 +419,8 @@ export class ChessService {
             let colEnd = colStart + colDiff;
             let colArr = this.board[p.row].slice(colStart + 1, colEnd);
 
-            colArr.forEach(sp => {
-                if (sp.piece !== null) {
-                    isClear = false;
-                }
+            isClear = !colArr.some(sp => {
+                return sp.piece !== null;
             });
         }
 
