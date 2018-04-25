@@ -430,37 +430,25 @@ export class ChessService {
     // Determines if the space has a piece between the piece
     // and the space on a diagonal line
     isMoveClearDiag(p: chessPiece, sp: chessSpace): boolean {
-        let spRow = sp.row;
-        let spCol = sp.col;
-        let pRow = p.row;
-        let pCol = p.col;
-        let diagLen = Math.abs(spRow - pRow);
+        let pRow: number = p.row;
+        let pCol: number = p.col;
+        let diagLen = Math.abs(sp.row - p.row);
         let isClear = true;
 
+        if (sp.row < p.row) {
+            pRow = -p.row;
+        }
+
+        if (sp.col < p.col) {
+            pCol = -p.col;
+        }
+
         for (let i = 1; i < diagLen; i++) {
-            // Up Right
-            if (spRow < pRow && spCol > pCol) {
-                if (this.board[pRow - i][pCol + i].piece !== null) {
-                    isClear = false;
-                }
-            }
-            // Up Left
-            if (spRow < pRow && spCol < pCol) {
-                if (this.board[pRow - i][pCol - i].piece !== null) {
-                    isClear = false;
-                }
-            }
-            // Down Right
-            if (spRow > pRow && spCol > pCol) {
-                if (this.board[pRow + i][pCol + i].piece !== null) {
-                    isClear = false;
-                }
-            }
-            // Down Left
-            if (spRow > pRow && spCol < pCol) {
-                if (this.board[pRow + i][pCol - i].piece !== null) {
-                    isClear = false;
-                }
+            if (
+                this.board[Math.abs(pRow + i)][Math.abs(pCol + i)].piece !==
+                null
+            ) {
+                isClear = false;
             }
         }
 
