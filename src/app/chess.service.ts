@@ -203,28 +203,11 @@ export class ChessService {
             check = this.movePieceToEmptySp(p, sp, true);
         } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
             // piece to take here
-            check = this.movePieceToTakeTest(p, sp.piece);
+            check = this.movePieceToTake(p, sp.piece, true);
         } else {
             // can't move here, so king would still be in check
             check = true;
         }
-
-        return check;
-    }
-
-    // Move the given piece to take a piece
-    movePieceToTakeTest(p: chessPiece, take: chessPiece): boolean {
-        let sp = this.findPiece(take);
-        let check = false;
-
-        sp.clearPiece(); // clear out the taken piece from the space
-
-        if (this.movePieceToEmptySp(p, sp, true)) {
-            // If the king was in check from the move
-            check = true;
-        }
-
-        sp.addPiece(take);
 
         return check;
     }
@@ -289,7 +272,7 @@ export class ChessService {
         // If you can't move the piece there, re-select it
         if (this.canMovePiece(this._selectedPiece, sp)) {
             if (take) {
-                this.movePieceToTake(this._selectedPiece, sp.piece);
+                this.movePieceToTake(this._selectedPiece, sp.piece, false);
             } else {
                 this.movePieceToEmptySp(this._selectedPiece, sp, false);
             }
@@ -298,20 +281,25 @@ export class ChessService {
         }
     }
 
-    // Move the selected piece to take a piece
-    movePieceToTake(p: chessPiece, take: chessPiece) {
+    // Move the given piece to take a piece.  'test' variable tells if it's just a test
+    movePieceToTake(p: chessPiece, take: chessPiece, test: boolean): boolean {
         let sp = this.findPiece(take);
+        let check = false;
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-        if (this.movePieceToEmptySp(p, sp, false)) {
-            // If the king was in check from the move, put the old piece back in the empty space
+        check = this.movePieceToEmptySp(p, sp, test);
+
+        // If the king was in check from the move, or this was a test, put the old piece back in the empty space
+        if (check || test) {
             sp.addPiece(take);
             this.highlightKingSpace(true);
         }
+
+        return check;
     }
 
-    // Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.  'test' variable tells if it's a boolean
+    // Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.  'test' variable tells if it's just a test
     movePieceToEmptySp(p: chessPiece, sp: chessSpace, test: boolean): boolean {
         // storing piece old space in case king is in check
         let space_old = this.findPiece(p);
