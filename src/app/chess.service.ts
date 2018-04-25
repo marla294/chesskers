@@ -241,19 +241,15 @@ export class ChessService {
 
     /* Find the king space for the current team's turn */
     findKingSpace(): chessSpace {
-        let king: chessSpace = null;
-        this.board.forEach(row => {
-            row.forEach(space => {
-                if (
-                    space.piece !== null &&
-                    space.piece.isWhite === this._whiteTurn &&
-                    space.piece.type === "chessKing"
-                ) {
-                    king = space;
-                }
-            });
-        });
-        return king;
+        // Get current team pieces
+        let pieceArray = this.getPieceArray(this._whiteTurn);
+
+        // Find that king
+        let king: chessPiece = pieceArray.filter(
+            piece => piece.type === "chessKing"
+        )[0];
+
+        return this.findPiece(king);
     }
 
     /* Function that will move the selected piece to the given space
