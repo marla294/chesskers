@@ -1,4 +1,4 @@
-import { Piece, chessPiece }	from './pieces/piece';
+import { Piece, chessPiece } from "./pieces/piece";
 
 export class Space {
 	playable: boolean;
@@ -17,7 +17,7 @@ export class Space {
 
 	// Add piece to space
 	addPiece(p: Piece) {
-		if (this.piece == null) {
+		if (this.piece === null) {
 			this.piece = p;
 			this.piece.movePiece(this.row, this.col);
 		}
@@ -25,19 +25,19 @@ export class Space {
 
 	// Clear piece out of space by setting to null
 	clearPiece() {
-		if (this.piece != null) {
+		if (this.piece !== null) {
 			this.piece = null;
 		}
-    }
+	}
 }
 
 export class chessSpace extends Space {
 	piece: chessPiece = null;
 	check: boolean = false;
 
-		// Add piece to space
+	// Add piece to space
 	addPiece(p: chessPiece) {
-		if (this.piece == null) {
+		if (this.piece === null) {
 			this.piece = p;
 			this.piece.movePiece(this.row, this.col);
 		}
@@ -45,8 +45,8 @@ export class chessSpace extends Space {
 
 	// Clear piece out of space by setting to null
 	clearPiece() {
-		if (this.piece != null) {
+		if (this.piece !== null) {
 			this.piece = null;
 		}
-    }
+	}
 }

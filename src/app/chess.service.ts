@@ -505,17 +505,7 @@ export class ChessService {
 
     // Finds a piece on the board and returns the space it is on
     findPiece(p: chessPiece): chessSpace {
-        let sp: chessSpace = null;
-
-        // Look through the board and see if the piece is on a space
-        this.board.forEach(row =>
-            row.forEach(space => {
-                if (space.piece === p) {
-                    sp = space;
-                }
-            })
-        );
-
+        let sp: chessSpace = this.board[p.row][p.col];
         return sp;
     }
 
