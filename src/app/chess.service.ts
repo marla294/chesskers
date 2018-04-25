@@ -200,7 +200,7 @@ export class ChessService {
 
         if (sp.piece === null) {
             // move to empty space
-            check = this.movePieceToEmptySpTest(p, sp);
+            check = this.movePieceToEmptySp(p, sp, true);
         } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
             // piece to take here
             check = this.movePieceToTakeTest(p, sp.piece);
@@ -219,30 +219,12 @@ export class ChessService {
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-        if (this.movePieceToEmptySpTest(p, sp)) {
+        if (this.movePieceToEmptySp(p, sp, true)) {
             // If the king was in check from the move
             check = true;
         }
 
         sp.addPiece(take);
-
-        return check;
-    }
-
-    // Move any piece to an empty space.  For testing if king is in check
-    movePieceToEmptySpTest(p: chessPiece, sp: chessSpace): boolean {
-        let space_old = this.findPiece(p); // storing piece old space in case king is in check
-        let check = false;
-
-        space_old.clearPiece();
-        sp.addPiece(p);
-
-        if (this.check()) {
-            check = true;
-        }
-
-        sp.clearPiece();
-        space_old.addPiece(p);
 
         return check;
     }
@@ -309,7 +291,7 @@ export class ChessService {
             if (take) {
                 this.movePieceToTake(this._selectedPiece, sp.piece);
             } else {
-                this.movePieceToEmptySp(this._selectedPiece, sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp, false);
             }
         } else {
             this.selectAPiece(this._selectedPiece);
@@ -322,35 +304,46 @@ export class ChessService {
 
         sp.clearPiece(); // clear out the taken piece from the space
 
-        if (this.movePieceToEmptySp(p, sp)) {
+        if (this.movePieceToEmptySp(p, sp, false)) {
             // If the king was in check from the move, put the old piece back in the empty space
             sp.addPiece(take);
             this.highlightKingSpace(true);
         }
     }
 
-    // Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake
-    movePieceToEmptySp(p: chessPiece, sp: chessSpace): boolean {
+    // Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.  'test' variable tells if it's a boolean
+    movePieceToEmptySp(p: chessPiece, sp: chessSpace, test: boolean): boolean {
         // storing piece old space in case king is in check
         let space_old = this.findPiece(p);
+        // whether king is in check
         let check = false;
 
+        // move piece to new space to see if king is in check
         space_old.clearPiece();
         sp.addPiece(p);
 
-        if (!this.check()) {
-            // after the move the king is not in check
-            this.highlightKingSpace(false);
-            this.initializeSelected();
-            this._whiteTurn = !this._whiteTurn;
-            this.loadWhiteTurn(this._whiteTurn);
-            this.clearSelections();
+        // test if the king is in check after moving the piece
+        check = this.check();
+
+        if (!test) {
+            if (!check) {
+                this.highlightKingSpace(false);
+                this.initializeSelected();
+                this._whiteTurn = !this._whiteTurn;
+                this.loadWhiteTurn(this._whiteTurn);
+                this.clearSelections();
+            } else {
+                // after the move the king was in check so revert
+                sp.clearPiece();
+                space_old.addPiece(p);
+                check = true;
+            }
         } else {
-            // after the move the king was in check so revert
+            // this is a test so move the original piece back to old space
             sp.clearPiece();
             space_old.addPiece(p);
-            check = true;
         }
+
         return check;
     }
 
@@ -398,11 +391,11 @@ export class ChessService {
             if (isLeft) {
                 rookSp.clearPiece();
                 this.board[row][2].addPiece(rook);
-                this.movePieceToEmptySp(this._selectedPiece, sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp, false);
             } else {
                 rookSp.clearPiece();
                 this.board[row][4].addPiece(rook);
-                this.movePieceToEmptySp(this._selectedPiece, sp);
+                this.movePieceToEmptySp(this._selectedPiece, sp, false);
             }
         } else {
             this.moveSelected(sp);
