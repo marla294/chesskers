@@ -130,7 +130,7 @@ export class ChessService {
             // Evaluating if piece can be taken by selected piece
             let type = this._selectedPiece.type;
             let sp = this.findPiece(p);
-            this.moveSelected(sp);
+            this.movePiece(this._selectedPiece, sp);
         } else {
             // piece is same color as selected piece so select the new piece
             this.selectAPiece(p);
@@ -145,7 +145,7 @@ export class ChessService {
         ) {
             this.castle(sp);
         } else if (this._selectedPiece !== null) {
-            this.moveSelected(sp);
+            this.movePiece(this._selectedPiece, sp);
         }
     }
 
@@ -253,9 +253,8 @@ export class ChessService {
     }
 
     /* Function that will move the selected piece to the given space
-    If the space contains a piece of the opposite color the piece will be taken,
-    otherwise the selected piece will just move to the empty space. */
-    moveSelected(sp: chessSpace) {
+    If the space contains a piece of the opposite color the piece will be taken, otherwise the selected piece will just move to the empty space. */
+    movePiece(p: chessPiece, sp: chessSpace) {
         // take = whether the space the piece wants to move to holds a piece that can be taken
         let take =
             sp.piece !== null &&
@@ -374,7 +373,7 @@ export class ChessService {
                 this.movePieceToEmptySp(this._selectedPiece, sp, false);
             }
         } else {
-            this.moveSelected(sp);
+            this.movePiece(this._selectedPiece, sp);
         }
     }
 
