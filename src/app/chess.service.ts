@@ -130,7 +130,7 @@ export class ChessService {
             // Evaluating if piece can be taken by selected piece
             let type = this._selectedPiece.type;
             let sp = this.findPiece(p);
-            this.movePiece(this._selectedPiece, sp);
+            this.movePiece(this._selectedPiece, sp, false);
         } else {
             // piece is same color as selected piece so select the new piece
             this.selectAPiece(p);
@@ -145,7 +145,7 @@ export class ChessService {
         ) {
             this.castle(sp);
         } else if (this._selectedPiece !== null) {
-            this.movePiece(this._selectedPiece, sp);
+            this.movePiece(this._selectedPiece, sp, false);
         }
     }
 
@@ -194,24 +194,6 @@ export class ChessService {
         return spaceArray;
     }
 
-    /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
-    testMove(p: chessPiece, sp: chessSpace): boolean {
-        let check: boolean = false; // Flag that we return saying whether the move removes the check from the king
-
-        if (sp.piece === null) {
-            // move to empty space
-            check = this.movePieceToEmptySp(p, sp, true);
-        } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
-            // piece to take here
-            check = this.movePieceToTake(p, sp.piece, true);
-        } else {
-            // can't move here, so king would still be in check
-            check = true;
-        }
-
-        return check;
-    }
-
     /* Check function will see if the king of the team of the current turn is in check.  If it is, the current team will only be able to move pieces that get the king out of check. */
     check(): boolean {
         // Get other team pieces
@@ -254,7 +236,10 @@ export class ChessService {
 
     /* Function that will move the selected piece to the given space
     If the space contains a piece of the opposite color the piece will be taken, otherwise the selected piece will just move to the empty space. */
-    movePiece(p: chessPiece, sp: chessSpace) {
+    movePiece(p: chessPiece, sp: chessSpace, test: boolean): boolean {
+        // Flag saying whether we removed the check from the king, for test mode
+        let check: boolean = false;
+
         // take = whether the space the piece wants to move to holds a piece that can be taken
         let take =
             sp.piece !== null && sp.piece.isWhite === !p.isWhite ? true : false;
@@ -271,6 +256,26 @@ export class ChessService {
         } else {
             this.selectAPiece(p);
         }
+
+        return check;
+    }
+
+    /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
+    testMove(p: chessPiece, sp: chessSpace): boolean {
+        let check: boolean = false; // Flag that we return saying whether the move removes the check from the king
+
+        if (sp.piece === null) {
+            // move to empty space
+            check = this.movePieceToEmptySp(p, sp, true);
+        } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
+            // piece to take here
+            check = this.movePieceToTake(p, sp.piece, true);
+        } else {
+            // can't move here, so king would still be in check
+            check = true;
+        }
+
+        return check;
     }
 
     // Move the given piece to take a piece.  'test' variable tells if it's just a test
