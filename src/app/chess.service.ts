@@ -164,15 +164,14 @@ export class ChessService {
 
         // Moves every piece for the current team still on the board and tests whether it will get the king out of check.  If it does, then there's no winner.  If none of the pieces get the king out of check, even the king himself, then someone won.
         let pieceArray = this.getPieceArray(this._whiteTurn);
-        if (checkmate) {
-            pieceArray.forEach(piece => {
-                this.getMoveSpaces(piece).forEach(space => {
-                    if (!this.testMove(piece, space)) {
-                        checkmate = false;
-                    }
-                });
+
+        pieceArray.forEach(piece => {
+            this.getMoveSpaces(piece).forEach(space => {
+                if (!this.movePiece(piece, space, true)) {
+                    checkmate = false;
+                }
             });
-        }
+        });
 
         if (checkmate) {
             this.loadIsWinner(this._whiteTurn ? "Black" : "White");
@@ -247,32 +246,27 @@ export class ChessService {
         // If you can move the selected piece to a space, then do it.
         // Either take the piece in the space or move to the empty space
         // If you can't move the piece there, re-select it
-        if (this.canMovePiece(p, sp)) {
-            if (take) {
-                check = this.movePieceToTake(p, sp.piece, test);
+        if (!test) {
+            if (this.canMovePiece(p, sp)) {
+                if (take) {
+                    this.movePieceToTake(p, sp.piece, false);
+                } else {
+                    this.movePieceToEmptySp(p, sp, false);
+                }
             } else {
-                check = this.movePieceToEmptySp(p, sp, test);
+                this.selectAPiece(p);
             }
-        } else if (!test) {
-            this.selectAPiece(p);
-        }
-
-        return check;
-    }
-
-    /* For a given piece, test if moving it to the given space will leave the king in check.  Then move it back leaving the board the same as it was before the test. */
-    testMove(p: chessPiece, sp: chessSpace): boolean {
-        let check: boolean = false; // Flag that we return saying whether the move removes the check from the king
-
-        if (sp.piece === null) {
-            // move to empty space
-            check = this.movePieceToEmptySp(p, sp, true);
-        } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
-            // piece to take here
-            check = this.movePieceToTake(p, sp.piece, true);
-        } else {
-            // can't move here, so king would still be in check
-            check = true;
+        } else if (test) {
+            if (sp.piece === null) {
+                // move to empty space
+                check = this.movePieceToEmptySp(p, sp, true);
+            } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
+                // piece to take here
+                check = this.movePieceToTake(p, sp.piece, true);
+            } else {
+                // can't move here, so king would still be in check
+                check = true;
+            }
         }
 
         return check;
@@ -289,6 +283,7 @@ export class ChessService {
 
         // If the king was in check from the move, or this was a test, put the old piece back in the empty space
         if (check || test) {
+            console.log("movePieceToTake");
             sp.addPiece(take);
             this.highlightKingSpace(true);
         }
@@ -375,7 +370,7 @@ export class ChessService {
                 this.movePieceToEmptySp(this._selectedPiece, sp, false);
             }
         } else {
-            this.movePiece(this._selectedPiece, sp);
+            this.movePiece(this._selectedPiece, sp, false);
         }
     }
 
