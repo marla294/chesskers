@@ -257,22 +257,19 @@ export class ChessService {
     movePiece(p: chessPiece, sp: chessSpace) {
         // take = whether the space the piece wants to move to holds a piece that can be taken
         let take =
-            sp.piece !== null &&
-            sp.piece.isWhite === !this._selectedPiece.isWhite
-                ? true
-                : false;
+            sp.piece !== null && sp.piece.isWhite === !p.isWhite ? true : false;
 
         // If you can move the selected piece to a space, then do it.
         // Either take the piece in the space or move to the empty space
         // If you can't move the piece there, re-select it
-        if (this.canMovePiece(this._selectedPiece, sp)) {
+        if (this.canMovePiece(p, sp)) {
             if (take) {
-                this.movePieceToTake(this._selectedPiece, sp.piece, false);
+                this.movePieceToTake(p, sp.piece, false);
             } else {
-                this.movePieceToEmptySp(this._selectedPiece, sp, false);
+                this.movePieceToEmptySp(p, sp, false);
             }
         } else {
-            this.selectAPiece(this._selectedPiece);
+            this.selectAPiece(p);
         }
     }
 
