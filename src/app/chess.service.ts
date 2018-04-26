@@ -249,11 +249,11 @@ export class ChessService {
         // If you can't move the piece there, re-select it
         if (this.canMovePiece(p, sp)) {
             if (take) {
-                this.movePieceToTake(p, sp.piece, false);
+                check = this.movePieceToTake(p, sp.piece, test);
             } else {
-                this.movePieceToEmptySp(p, sp, false);
+                check = this.movePieceToEmptySp(p, sp, test);
             }
-        } else {
+        } else if (!test) {
             this.selectAPiece(p);
         }
 
