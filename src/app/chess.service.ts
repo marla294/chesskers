@@ -260,7 +260,7 @@ export class ChessService {
             if (sp.piece === null) {
                 // move to empty space
                 check = this.movePieceToEmptySp(p, sp, true);
-            } else if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
+            } else if (take) {
                 // piece to take here
                 check = this.movePieceToTake(p, sp.piece, true);
             } else {
@@ -283,7 +283,6 @@ export class ChessService {
 
         // If the king was in check from the move, or this was a test, put the old piece back in the empty space
         if (check || test) {
-            console.log("movePieceToTake");
             sp.addPiece(take);
             this.highlightKingSpace(true);
         }
