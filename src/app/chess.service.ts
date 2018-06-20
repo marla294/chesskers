@@ -378,30 +378,30 @@ export class ChessService {
     // Determines if the space has a piece between the piece
     // and the space on a straight line
     isMoveClearStraight(p: chessPiece, sp: chessSpace): boolean {
-        let colDiff = Math.abs(p.col - sp.col);
-        let rowDiff = Math.abs(p.row - sp.row);
+        const colDiff = Math.abs(p.col - sp.col);
+        const rowDiff = Math.abs(p.row - sp.row);
 
         let isClear = true;
 
-        if (colDiff === 0) {
-            let rowStart = Math.min(p.row, sp.row);
-            let rowEnd = rowStart + rowDiff;
+        // Moving along a row
+        if (!colDiff) {
+            const rowStart = Math.min(p.row, sp.row);
+            const rowEnd = rowStart + rowDiff;
 
             for (let i = rowStart + 1; i < rowEnd; i++) {
-                if (this.board[i][p.col].piece !== null) {
+                if (this.board[i][p.col].piece) {
                     isClear = false;
                 }
             }
         }
 
-        if (rowDiff === 0) {
-            let colStart = Math.min(p.col, sp.col);
-            let colEnd = colStart + colDiff;
-            let colArr = this.board[p.row].slice(colStart + 1, colEnd);
+        // Moving along a column
+        if (!rowDiff) {
+            const colStart = Math.min(p.col, sp.col);
+            const colEnd = colStart + colDiff;
+            const colArr = this.board[p.row].slice(colStart + 1, colEnd);
 
-            isClear = !colArr.some(sp => {
-                return sp.piece !== null;
-            });
+            isClear = !colArr.some(sp => sp.piece);
         }
 
         return isClear;
