@@ -425,8 +425,7 @@ export class ChessService {
 
     // Finds a piece on the board and returns the space it is on
     findPiece(p: chessPiece): chessSpace {
-        let sp: chessSpace = this.board[p.row][p.col];
-        return sp;
+        return this.board[p.row][p.col];
     }
 
     // Get array of pieces for the white or the black team
