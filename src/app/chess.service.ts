@@ -430,10 +430,10 @@ export class ChessService {
 
     // Get array of pieces for the white or the black team
     getPieceArray(white: boolean) {
-        let pieceArray = new Array();
+        let pieceArray = [];
         this.board.forEach(row => {
             row.forEach(space => {
-                if (space.piece !== null && space.piece.isWhite === white) {
+                if (space.piece && space.piece.isWhite === white) {
                     pieceArray.push(space.piece);
                 }
             });
