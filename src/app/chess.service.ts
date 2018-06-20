@@ -120,32 +120,23 @@ export class ChessService {
 
     // Click on a piece on the board
     clickAPiece(p: chessPiece) {
-        if (this._selectedPiece === null) {
-            // Piece is being selected not taken
-            this.selectAPiece(p);
-        } else if (
-            this._selectedPiece !== null &&
-            p.isWhite === !this._selectedPiece.isWhite
-        ) {
-            // Evaluating if piece can be taken by selected piece
-            let type = this._selectedPiece.type;
-            let sp = this.findPiece(p);
-            this.movePiece(this._selectedPiece, sp, false);
+        // If there is already a selected piece, and the piece being clicked is the opposite color,
+        // see if we can take the piece that was clicked on
+        if (this._selectedPiece && p.isWhite === !this._selectedPiece.isWhite) {
+            this.movePiece(this._selectedPiece, this.findPiece(p), false);
         } else {
-            // piece is same color as selected piece so select the new piece
+            // Only other thing we could be doing is selecting a different piece from what we already
+            // have selected
             this.selectAPiece(p);
         }
     }
 
     // Click on an empty space on the board
     clickEmptySpace(sp: chessSpace) {
-        if (
-            this._selectedPiece !== null &&
+        if (this._selectedPiece) {
             this._selectedPiece.type === "chessKing"
-        ) {
-            this.castle(sp);
-        } else if (this._selectedPiece !== null) {
-            this.movePiece(this._selectedPiece, sp, false);
+                ? this.castle(sp)
+                : this.movePiece(this._selectedPiece, sp, false);
         }
     }
 
@@ -249,9 +240,9 @@ export class ChessService {
         if (!test) {
             if (this.canMovePiece(p, sp)) {
                 if (take) {
-                    this.movePieceToTake(p, sp.piece, false);
+                    check = this.movePieceToTake(p, sp.piece, test);
                 } else {
-                    this.movePieceToEmptySp(p, sp, false);
+                    check = this.movePieceToEmptySp(p, sp, test);
                 }
             } else {
                 this.selectAPiece(p);
@@ -379,15 +370,9 @@ export class ChessService {
 
     // Determines whether to use the straight or diag function to check
     isMoveClear(p: chessPiece, sp: chessSpace) {
-        let isClear = true;
-
-        if (sp.row === p.row || sp.col === p.col) {
-            isClear = this.isMoveClearStraight(p, sp);
-        } else {
-            isClear = this.isMoveClearDiag(p, sp);
-        }
-
-        return isClear;
+        return sp.row === p.row || sp.col === p.col
+            ? this.isMoveClearStraight(p, sp)
+            : this.isMoveClearDiag(p, sp);
     }
 
     // Determines if the space has a piece between the piece
