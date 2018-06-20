@@ -325,6 +325,8 @@ export class ChessService {
 
     // Special move where the king and rook switch places
     // See https://en.wikipedia.org/wiki/Castling?oldformat=true
+    // Bug - if you move the king down a few rows, but to the right
+    // column, castling still happens but it shouldn't
     castle(sp: chessSpace) {
         let isAllowed: boolean = false;
         let isLeft: boolean = sp.col < this._selectedPiece.col;
@@ -429,6 +431,7 @@ export class ChessService {
     }
 
     // Get array of pieces for the white or the black team
+    // See if I can use array.filter() to do this instead
     getPieceArray(white: boolean) {
         let pieceArray = [];
         this.board.forEach(row => {
@@ -443,6 +446,7 @@ export class ChessService {
     }
 
     // Clears all highlights, direction flags, and selected pieces from board
+    // See if I can use array.filter() to do this instead
     clearSelections() {
         this.board.forEach(row =>
             row.forEach(space => {
