@@ -156,17 +156,7 @@ export class Rook extends chessPiece {
 	// if there are pieces in the way.  That will be the job of the chess service
 	// to figure out.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		if (this.row === row && this.col === col) {
-			// no moving to the same spot
-			canM = false;
-		} else if (this.row === row) {
-			canM = true;
-		} else if (this.col === col) {
-			canM = true;
-		}
-
-		return canM;
+		return this.row === row || this.col === col;
 	}
 }
 
