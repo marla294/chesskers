@@ -98,13 +98,8 @@ export class chessPiece extends Piece {
 
 	constructor(color: string, r: number, c: number) {
 		super(color, r, c);
-		if (color === "black") {
-			this.isWhite = false;
-		} else if (color === "red") {
-			this.isWhite = true;
-		} else if (color === "white") {
-			this.isWhite = true;
-		}
+
+		this.isWhite = color === "black" ? false : true;
 	}
 
 	canMove(row: number, col: number): boolean {
@@ -126,7 +121,6 @@ export class chessPawn extends chessPiece {
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 
-		// Can only move forward in the same column
 		if (col === this.col) {
 			if (!this.initialized) {
 				return rowMove <= 2 && rowMove > 0 ? true : false;
