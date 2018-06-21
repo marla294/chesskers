@@ -194,14 +194,10 @@ export class Bishop extends chessPiece {
 	// if there are pieces in the way.  That will be the job of the chess service
 	// to figure out.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		let rowMove = Math.abs(row - this.row);
-		let colMove = Math.abs(col - this.col);
-		if (rowMove === colMove) {
-			canM = true;
-		}
+		const rowMove = Math.abs(row - this.row);
+		const colMove = Math.abs(col - this.col);
 
-		return canM;
+		return rowMove === colMove;
 	}
 }
 
@@ -217,14 +213,10 @@ export class chessKing extends chessPiece {
 	// are pieces in the way.  That will be the job of the chess service to figure
 	// out.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		let rowMove = Math.abs(row - this.row);
-		let colMove = Math.abs(col - this.col);
-		if (rowMove < 2 && colMove < 2) {
-			canM = true;
-		}
+		const rowMove = Math.abs(row - this.row);
+		const colMove = Math.abs(col - this.col);
 
-		return canM;
+		return rowMove <= 1 && colMove <= 1;
 	}
 }
 
