@@ -88,9 +88,6 @@ export class King extends Pawn {
 
 // Chess
 
-/*
-This will be the master class that all other chess pieces will build off of.  'isRed' will eventually be removed from the main Piece class and put on a 'checkerPiece' class instead.
-*/
 export class chessPiece extends Piece {
 	type: string = "chessPawn";
 	game: string = "chess";
@@ -102,6 +99,9 @@ export class chessPiece extends Piece {
 		this.isWhite = color === "black" ? false : true;
 	}
 
+	/*
+	For all canMove functions - given a row and column on the board, determine if a chessPiece can move to this space, given the rules of chess.
+	*/
 	canMove(row: number, col: number): boolean {
 		return false;
 	}
@@ -112,12 +112,11 @@ export class chessPawn extends chessPiece {
 	game: string = "chess";
 	initialized: boolean = false; // Whether the pawn has moved 1 space or not
 
-	// Given an empty space on the board, determines whether pawn can move to this
-	// space or not, according to the rules of chess.  On the first move, the pawn
-	// is allowed to move 2 spaces forward.  Otherwise, the pawn is only allowed
-	// to move forward 1 space.  This function does not take into account if there
-	// are pieces in the way.  That will be the job of the chess service to figure
-	// out.
+	/*
+	Pawn Movement:
+	- On first move, can move 1 or 2 spaces forward in same column
+	- On subsequent moves, can move only 1 space forward on the same column
+	*/
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 
@@ -130,7 +129,10 @@ export class chessPawn extends chessPiece {
 		}
 	}
 
-	// A pawn can take pieces directly to the left or right of him
+	/*
+	Pawn Movement:
+	- Pawn can capture 1 square diagonally right or left in front
+	*/
 	canTake(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 		const colMove = Math.abs(col - this.col);
@@ -144,11 +146,10 @@ export class Rook extends chessPiece {
 	game: string = "chess";
 	initialized: boolean = false; // for castling
 
-	// Given an empty space on the board, determines whether rook can move to this
-	// space or not, according to the rules of chess.  Rooks are allowed to move
-	// straight forward or straight back.  This function does not take into account
-	// if there are pieces in the way.  That will be the job of the chess service
-	// to figure out.
+	/*
+	Rook Movement:
+	- Rook can move and capture on same row or column
+	*/
 	canMove(row: number, col: number): boolean {
 		return this.row === row || this.col === col;
 	}
@@ -158,10 +159,11 @@ export class Knight extends chessPiece {
 	type: string = "knight";
 	game: string = "chess";
 
-	// Given an empty space on the board, determines whether knight can move to this
-	// space or not, according to the rules of chess.  Knights are allowed to move
-	// 2 spaces forward and 1 space to the side, OR 2 spaces to the side and one space
-	// back...  you'll see.  Knights can jump over other pieces.
+	/*
+	Knight Movement:
+	- Knights can jump
+	- Knights can move 2 squares on a row or column and 1 square on a row or column
+	*/
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 		const colMove = Math.abs(col - this.col);
@@ -182,11 +184,10 @@ export class Bishop extends chessPiece {
 	type: string = "bishop";
 	game: string = "chess";
 
-	// Given an empty space on the board, determines whether bishop can move to this
-	// space or not, according to the rules of chess.  Bishops are allowed to move
-	// on a diagonal forward or back.  This function does not take into account
-	// if there are pieces in the way.  That will be the job of the chess service
-	// to figure out.
+	/*
+	Bishop Movement:
+	- Bishops can move diagonally anywhere on the board
+	*/
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 		const colMove = Math.abs(col - this.col);
@@ -200,12 +201,10 @@ export class chessKing extends chessPiece {
 	game: string = "chess";
 	initialized: boolean = false; // for castling
 
-	// Given an empty space on the board, determines whether king can move to this
-	// space or not, according to the rules of chess.  Kings are allowed to move
-	// on a diagonal forward or back, OR on a straight line forward or back, but
-	// only one space at a time.  This function does not take into account if there
-	// are pieces in the way.  That will be the job of the chess service to figure
-	// out.
+	/*
+	King Movement:
+	- Kings can move in any direction 1 square
+	*/
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 		const colMove = Math.abs(col - this.col);
@@ -218,11 +217,10 @@ export class Queen extends chessPiece {
 	type: string = "queen";
 	game: string = "chess";
 
-	// Given an empty space on the board, determines whether queen can move to this
-	// space or not, according to the rules of chess.  Queens are allowed to move
-	// on a diagonal forward or back, OR on a straight line forward or back.  This
-	// function does not take into account if there are pieces in the way.  That
-	// will be the job of the chess service to figure out.
+	/*
+	Queen Movement:
+	- Queens can move in any direction
+	*/
 	canMove(row: number, col: number): boolean {
 		const rowMove = Math.abs(row - this.row);
 		const colMove = Math.abs(col - this.col);
