@@ -230,20 +230,19 @@ export class Queen extends chessPiece {
 	// function does not take into account if there are pieces in the way.  That
 	// will be the job of the chess service to figure out.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		let rowMove = Math.abs(row - this.row);
-		let colMove = Math.abs(col - this.col);
+		const rowMove = Math.abs(row - this.row);
+		const colMove = Math.abs(col - this.col);
+
+		// diagonal
 		if (rowMove === colMove) {
-			// diagonal
-			canM = true;
-		} else if (this.row === row) {
-			// straight
-			canM = true;
-		} else if (this.col === col) {
-			// straight
-			canM = true;
+			return true;
 		}
 
-		return canM;
+		// straight
+		if (this.row === row || this.col === col) {
+			return true;
+		}
+
+		return false;
 	}
 }
