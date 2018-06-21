@@ -138,13 +138,10 @@ export class chessPawn extends chessPiece {
 
 	// A pawn can take pieces directly to the left or right of him
 	canTake(row: number, col: number): boolean {
-		let canT = false;
+		const rowMove = Math.abs(row - this.row);
+		const colMove = Math.abs(col - this.col);
 
-		if (Math.abs(this.col - col) === 1 && Math.abs(this.row - row) === 1) {
-			canT = true;
-		}
-
-		return canT;
+		return rowMove === 1 && colMove === 1 ? true : false;
 	}
 }
 
