@@ -169,16 +169,18 @@ export class Knight extends chessPiece {
 	// 2 spaces forward and 1 space to the side, OR 2 spaces to the side and one space
 	// back...  you'll see.  Knights can jump over other pieces.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		let rowMove = Math.abs(row - this.row);
-		let colMove = Math.abs(col - this.col);
+		const rowMove = Math.abs(row - this.row);
+		const colMove = Math.abs(col - this.col);
+
 		if (rowMove === 2 && colMove === 1) {
-			canM = true;
-		} else if (rowMove === 1 && colMove === 2) {
-			canM = true;
+			return true;
 		}
 
-		return canM;
+		if (rowMove === 1 && colMove === 2) {
+			return true;
+		}
+
+		return false;
 	}
 }
 
