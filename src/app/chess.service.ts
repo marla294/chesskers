@@ -446,7 +446,6 @@ export class ChessService {
     }
 
     // Clears all highlights, direction flags, and selected pieces from board
-    // See if I can use array.filter() to do this instead
     clearSelections() {
         this.board.forEach(row =>
             row.forEach(space => {

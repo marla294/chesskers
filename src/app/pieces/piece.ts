@@ -118,35 +118,22 @@ export class chessPawn extends chessPiece {
 	initialized: boolean = false; // Whether the pawn has moved 1 space or not
 
 	// Given an empty space on the board, determines whether pawn can move to this
-	// space or not, according to the rules of chess.  The first move, the pawn
+	// space or not, according to the rules of chess.  On the first move, the pawn
 	// is allowed to move 2 spaces forward.  Otherwise, the pawn is only allowed
 	// to move forward 1 space.  This function does not take into account if there
 	// are pieces in the way.  That will be the job of the chess service to figure
 	// out.
 	canMove(row: number, col: number): boolean {
-		let canM = false;
-		let rowMove = row - this.row;
+		const rowMove = Math.abs(row - this.row);
+
+		// Can only move forward in the same column
 		if (col === this.col) {
-			// Can only move forward in the same column
-			if (this.initialized === false) {
-				// Pawn has not been used
-				if (this.isWhite === true && rowMove < 3 && rowMove > 0) {
-					canM = true;
-				}
-				if (this.isWhite === false && rowMove > -3 && rowMove < 0) {
-					canM = true;
-				}
+			if (!this.initialized) {
+				return rowMove <= 2 && rowMove > 0 ? true : false;
 			} else {
-				// Pawn has been used
-				if (this.isWhite === true && rowMove === 1) {
-					canM = true;
-				}
-				if (this.isWhite === false && rowMove === -1) {
-					canM = true;
-				}
+				return rowMove === 1 ? true : false;
 			}
 		}
-		return canM;
 	}
 
 	// A pawn can take pieces directly to the left or right of him
