@@ -457,15 +457,11 @@ export class ChessService {
 
     /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
     canMovePiece(p: chessPiece, sp: chessSpace): boolean {
-        let type = p.type;
-        let take = false;
         let canMove = false;
 
-        if (sp.piece !== null && sp.piece.isWhite === !p.isWhite) {
-            take = true;
-        }
+        const take = sp.piece && sp.piece.isWhite === !p.isWhite ? true : false;
 
-        switch (type) {
+        switch (p.type) {
             case "chessPawn":
                 if (
                     take &&
