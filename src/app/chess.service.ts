@@ -472,32 +472,27 @@ export class ChessService {
                     return true;
                 }
                 return false;
-                break;
             case "rook":
                 return (<Rook>p).canMove(sp.row, sp.col) &&
                     this.isMoveClear(p, sp)
                     ? true
                     : false;
-                break;
             case "knight":
                 return (<Knight>p).canMove(sp.row, sp.col) ? true : false;
-                break;
             case "bishop":
                 return (<Bishop>p).canMove(sp.row, sp.col) &&
                     this.isMoveClear(p, sp)
                     ? true
                     : false;
-                break;
             case "queen":
                 return (<Queen>p).canMove(sp.row, sp.col) &&
                     this.isMoveClear(p, sp)
                     ? true
                     : false;
-                break;
             case "chessKing":
                 return (<chessKing>p).canMove(sp.row, sp.col) ? true : false;
-                break;
+            default:
+                return false;
         }
-        return false;
     }
 }
