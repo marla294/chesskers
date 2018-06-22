@@ -322,13 +322,17 @@ export class ChessService {
         let rookSp: chessSpace = this.board[row][rookCol];
         let rook: Rook;
 
-        if (
-            this._selectedPiece.type === "chessKing" &&
-            !(<chessKing>this._selectedPiece).initialized
-        ) {
+        // If the selected piece is not the king, we can't castle
+        if (this._selectedPiece.type !== "chessKing") {
+            return;
+        }
+
+        const king: chessKing = <chessKing>this._selectedPiece;
+
+        if (!king.initialized) {
             if (
                 spaceMoved === 2 &&
-                rookSp.piece !== null &&
+                rookSp.piece &&
                 rookSp.piece.type === "rook" &&
                 !(<Rook>rookSp.piece).initialized
             ) {
@@ -471,7 +475,6 @@ export class ChessService {
                 }
             });
         });
-
         return pieceArray;
     }
 
