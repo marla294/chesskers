@@ -309,20 +309,6 @@ export class ChessService {
         return check;
     }
 
-    // If the selected piece needs to be initialized on the first turn, do that here
-    initializeSelected() {
-        let type = this._selectedPiece.type;
-        if (type === "chessPawn") {
-            (<chessPawn>this._selectedPiece).initialized = true;
-        }
-        if (type === "chessKing") {
-            (<chessKing>this._selectedPiece).initialized = true;
-        }
-        if (type === "rook") {
-            (<Rook>this._selectedPiece).initialized = true;
-        }
-    }
-
     // Special move where the king and rook switch places
     // See https://en.wikipedia.org/wiki/Castling?oldformat=true
     // Bug - if you move the king down a few rows, but to the right
@@ -363,6 +349,47 @@ export class ChessService {
             }
         } else {
             this.movePiece(this._selectedPiece, sp, false);
+        }
+    }
+
+    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
+    canMovePiece(p: chessPiece, sp: chessSpace): boolean {
+        switch (p.type) {
+            case "chessPawn":
+                const take =
+                    sp.piece && sp.piece.isWhite === !p.isWhite ? true : false;
+                if (take && (<chessPawn>p).canTake(sp.row, sp.col)) {
+                    return true;
+                }
+                if (
+                    !take &&
+                    (<chessPawn>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                ) {
+                    return true;
+                }
+                return false;
+            case "rook":
+                return (<Rook>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                    ? true
+                    : false;
+            case "knight":
+                return (<Knight>p).canMove(sp.row, sp.col) ? true : false;
+            case "bishop":
+                return (<Bishop>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                    ? true
+                    : false;
+            case "queen":
+                return (<Queen>p).canMove(sp.row, sp.col) &&
+                    this.isMoveClear(p, sp)
+                    ? true
+                    : false;
+            case "chessKing":
+                return (<chessKing>p).canMove(sp.row, sp.col) ? true : false;
+            default:
+                return false;
         }
     }
 
@@ -425,6 +452,9 @@ export class ChessService {
         return true;
     }
 
+    /* Utilities
+    Just some functions that make life a little easier */
+
     // Finds a piece on the board and returns the space it is on
     findPiece(p: chessPiece): chessSpace {
         return this.board[p.row][p.col];
@@ -455,44 +485,17 @@ export class ChessService {
         this._selectedPiece = null;
     }
 
-    /* For a piece on the board, check if it can move to the specified space, or take the piece in the space (if there is a piece there)*/
-    canMovePiece(p: chessPiece, sp: chessSpace): boolean {
-        switch (p.type) {
-            case "chessPawn":
-                const take =
-                    sp.piece && sp.piece.isWhite === !p.isWhite ? true : false;
-                if (take && (<chessPawn>p).canTake(sp.row, sp.col)) {
-                    return true;
-                }
-                if (
-                    !take &&
-                    (<chessPawn>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                ) {
-                    return true;
-                }
-                return false;
-            case "rook":
-                return (<Rook>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                    ? true
-                    : false;
-            case "knight":
-                return (<Knight>p).canMove(sp.row, sp.col) ? true : false;
-            case "bishop":
-                return (<Bishop>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                    ? true
-                    : false;
-            case "queen":
-                return (<Queen>p).canMove(sp.row, sp.col) &&
-                    this.isMoveClear(p, sp)
-                    ? true
-                    : false;
-            case "chessKing":
-                return (<chessKing>p).canMove(sp.row, sp.col) ? true : false;
-            default:
-                return false;
+    // If the selected piece needs to be initialized on the first turn, do that here
+    initializeSelected() {
+        let type = this._selectedPiece.type;
+        if (type === "chessPawn") {
+            (<chessPawn>this._selectedPiece).initialized = true;
+        }
+        if (type === "chessKing") {
+            (<chessKing>this._selectedPiece).initialized = true;
+        }
+        if (type === "rook") {
+            (<Rook>this._selectedPiece).initialized = true;
         }
     }
 }
