@@ -310,21 +310,13 @@ export class ChessService {
     }
 
     // Special move where the king and rook switch places
-    // See https://en.wikipedia.org/wiki/Castling?oldformat=true
-    // Bug - if you move the king down a few rows, but to the right
-    // column, castling still happens but it shouldn't
+    // Note that this function is always called on the king
+    // when it moves to an empty space
     castle(sp: chessSpace) {
-        // If the selected piece is not the king, we can't castle
-        if (this._selectedPiece.type !== "chessKing") {
-            return;
-        }
-
         let isAllowed = false;
         const king = <chessKing>this._selectedPiece;
-
         const isLeft = sp.col < king.col;
         const castleMove = Math.abs(king.col - sp.col) === 2 ? true : false;
-
         const rookSp = this.board[king.isWhite ? 0 : 7][isLeft ? 0 : 7];
         let rook = rookSp.piece;
 
@@ -336,16 +328,15 @@ export class ChessService {
             rook = <Rook>rookSp.piece;
         }
 
+        // Preventing you from castling using a different row
+        if (sp.row !== king.row) {
+            isAllowed = false;
+        }
+
         if (isAllowed) {
-            if (isLeft) {
-                rookSp.clearPiece();
-                this.board[king.isWhite ? 0 : 7][2].addPiece(rook);
-                this.movePieceToEmptySp(king, sp, false);
-            } else {
-                rookSp.clearPiece();
-                this.board[king.isWhite ? 0 : 7][4].addPiece(rook);
-                this.movePieceToEmptySp(king, sp, false);
-            }
+            rookSp.clearPiece();
+            this.board[king.isWhite ? 0 : 7][isLeft ? 2 : 4].addPiece(rook);
+            this.movePieceToEmptySp(king, sp, false);
         } else {
             this.movePiece(king, sp, false);
         }
