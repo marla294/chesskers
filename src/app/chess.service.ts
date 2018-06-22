@@ -314,45 +314,40 @@ export class ChessService {
     // Bug - if you move the king down a few rows, but to the right
     // column, castling still happens but it shouldn't
     castle(sp: chessSpace) {
-        let isAllowed: boolean = false;
-        let isLeft: boolean = sp.col < this._selectedPiece.col;
-        let spaceMoved: number = Math.abs(this._selectedPiece.col - sp.col);
-        let row: number = this._selectedPiece.isRed ? 0 : 7;
-        let rookCol: number = isLeft ? 0 : 7;
-        let rookSp: chessSpace = this.board[row][rookCol];
-        let rook: Rook;
-
         // If the selected piece is not the king, we can't castle
         if (this._selectedPiece.type !== "chessKing") {
             return;
         }
 
-        const king: chessKing = <chessKing>this._selectedPiece;
+        let isAllowed = false;
+        const king = <chessKing>this._selectedPiece;
 
-        if (!king.initialized) {
-            if (
-                spaceMoved === 2 &&
-                rookSp.piece &&
-                rookSp.piece.type === "rook" &&
-                !(<Rook>rookSp.piece).initialized
-            ) {
-                rook = <Rook>rookSp.piece;
-                isAllowed = true;
-            }
+        const isLeft = sp.col < king.col;
+        const castleMove = Math.abs(king.col - sp.col) === 2 ? true : false;
+
+        const rookSp = this.board[king.isWhite ? 0 : 7][isLeft ? 0 : 7];
+        let rook = rookSp.piece;
+
+        // Figuring out if we are allowed to castle
+        if (!rook || rook.type !== "rook" || (<Rook>rook).initialized) {
+            isAllowed = false;
+        } else {
+            isAllowed = !king.initialized && castleMove ? true : false;
+            rook = <Rook>rookSp.piece;
         }
 
         if (isAllowed) {
             if (isLeft) {
                 rookSp.clearPiece();
-                this.board[row][2].addPiece(rook);
-                this.movePieceToEmptySp(this._selectedPiece, sp, false);
+                this.board[king.isWhite ? 0 : 7][2].addPiece(rook);
+                this.movePieceToEmptySp(king, sp, false);
             } else {
                 rookSp.clearPiece();
-                this.board[row][4].addPiece(rook);
-                this.movePieceToEmptySp(this._selectedPiece, sp, false);
+                this.board[king.isWhite ? 0 : 7][4].addPiece(rook);
+                this.movePieceToEmptySp(king, sp, false);
             }
         } else {
-            this.movePiece(this._selectedPiece, sp, false);
+            this.movePiece(king, sp, false);
         }
     }
 
