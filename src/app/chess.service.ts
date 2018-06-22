@@ -500,7 +500,5 @@ export class ChessService {
             default:
                 return false;
         }
-
-        return false;
     }
 }
