@@ -497,8 +497,7 @@ export class ChessService {
             case "chessKing":
                 return (<chessKing>p).canMove(sp.row, sp.col) ? true : false;
                 break;
-            default:
-                return false;
         }
+        return false;
     }
 }
