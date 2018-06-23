@@ -262,7 +262,7 @@ export class ChessService {
 
 	// Move the given piece to take a piece.  'test' variable tells if it's just a test
 	movePieceToTake(p: chessPiece, take: chessPiece, test: boolean): boolean {
-		let sp = this.findPiece(take);
+		const sp = this.findPiece(take);
 		let check = false;
 
 		sp.clearPiece(); // clear out the taken piece from the space
