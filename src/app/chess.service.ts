@@ -245,7 +245,7 @@ export class ChessService {
 				this.selectAPiece(p);
 			}
 		} else {
-			if (sp.piece === null) {
+			if (!sp.piece) {
 				// move to empty space
 				check = this.movePieceToEmptySp(p, sp, true);
 			} else if (take) {
