@@ -217,9 +217,7 @@ export class ChessService {
 		let pieceArray = this.getPieceArray(this._whiteTurn);
 
 		// Find that king
-		let king: chessPiece = pieceArray.filter(
-			piece => piece.type === "chessKing"
-		)[0];
+		let king = pieceArray.filter(piece => piece.type === "chessKing")[0];
 
 		return this.findPiece(king);
 	}
