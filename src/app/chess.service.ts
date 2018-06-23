@@ -228,26 +228,23 @@ export class ChessService {
     If the space contains a piece of the opposite color the piece will be taken, otherwise the selected piece will just move to the empty space. */
 	movePiece(p: chessPiece, sp: chessSpace, test: boolean): boolean {
 		// Flag saying whether we removed the check from the king, for test mode
-		let check: boolean = false;
+		let check = false;
 
 		// take = whether the space the piece wants to move to holds a piece that can be taken
-		let take =
-			sp.piece !== null && sp.piece.isWhite === !p.isWhite ? true : false;
+		const take = sp.piece && sp.piece.isWhite === !p.isWhite;
 
 		// If you can move the selected piece to a space, then do it.
 		// Either take the piece in the space or move to the empty space
 		// If you can't move the piece there, re-select it
 		if (!test) {
 			if (this.canMovePiece(p, sp)) {
-				if (take) {
-					check = this.movePieceToTake(p, sp.piece, test);
-				} else {
-					check = this.movePieceToEmptySp(p, sp, test);
-				}
+				check = take
+					? this.movePieceToTake(p, sp.piece, test)
+					: this.movePieceToEmptySp(p, sp, test);
 			} else {
 				this.selectAPiece(p);
 			}
-		} else if (test) {
+		} else {
 			if (sp.piece === null) {
 				// move to empty space
 				check = this.movePieceToEmptySp(p, sp, true);
