@@ -213,8 +213,14 @@ export class ChessService {
 
 	/* Find the king space for the current team's turn */
 	findKingSpace(): chessSpace {
-		const pieceArray = this.getPieceArray(this._whiteTurn);
-		const king = pieceArray.filter(piece => piece.type === "chessKing")[0];
+		// Get current team pieces
+		let pieceArray = this.getPieceArray(this._whiteTurn);
+
+		// Find that king
+		let king: chessPiece = pieceArray.filter(
+			piece => piece.type === "chessKing"
+		)[0];
+
 		return this.findPiece(king);
 	}
 
@@ -275,7 +281,7 @@ export class ChessService {
 	// Move a piece to an empty space.  If the king was in check while moving, return true for moveSelectedToTake.  'test' variable tells if it's just a test
 	movePieceToEmptySp(p: chessPiece, sp: chessSpace, test: boolean): boolean {
 		// storing piece old space in case king is in check
-		const space_old = this.findPiece(p);
+		let space_old = this.findPiece(p);
 		// whether king is in check
 		let check = true;
 
