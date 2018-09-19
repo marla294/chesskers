@@ -2,6 +2,10 @@
 
 ## About
 
+URL: https://marla294.github.io/chesskers/
+
+Author: Marla Foreman
+
 This is a chess AND checkers game that can be played online.
 
 ## Tech Used
