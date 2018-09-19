@@ -125,8 +125,6 @@ export class ChessService {
 		if (this._selectedPiece && p.isWhite === !this._selectedPiece.isWhite) {
 			this.movePiece(this._selectedPiece, this.findPiece(p), false);
 		} else {
-			// Only other thing we could be doing is selecting a different piece from what we already
-			// have selected
 			this.selectAPiece(p);
 		}
 	}
@@ -152,8 +150,6 @@ export class ChessService {
 	/* Function that will determine whether the king can escape check.  Runs every time the king is in check.*/
 	checkmate() {
 		let checkmate = true;
-
-		// Moves every piece for the current team still on the board and tests whether it will get the king out of check.  If it does, then there's no winner.  If none of the pieces get the king out of check, even the king himself, then someone won.
 		let pieceArray = this.getPieceArray(this._whiteTurn);
 
 		pieceArray.forEach(piece => {
