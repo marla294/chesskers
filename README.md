@@ -6,6 +6,8 @@ URL: https://marla294.github.io/chesskers/
 
 Author: Marla Foreman
 
+Extended from my other repo, checkers: https://github.com/marla294/checkers
+
 This is a chess AND checkers game that can be played online.
 
 ## Tech Used
